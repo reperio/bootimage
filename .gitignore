@@ -1,0 +1,5 @@
+*.so
+*.[oa]
+stage/
+*.cpio.gz
+*.iso
