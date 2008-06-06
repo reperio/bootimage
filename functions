@@ -2,7 +2,7 @@
 # COMMON FUNCTIONS FILE
 #
 
-function get () {
+get () {
   URL=$1
   cd ${SRCDIR}
   wget -c ${URL}

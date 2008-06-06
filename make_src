@@ -1,7 +1,7 @@
 #!/bin/sh
 
 # Import VERSION
-. configure.in
+. ./configure.in
 
 ##
 # This script will enter srcctrl/ and run every script there with:

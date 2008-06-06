@@ -3,22 +3,22 @@
 # SYSLINUX
 # 
 
-. functions
+. ./functions
 
 FILENAME='syslinux-3.63.tar.bz2'
 URL='http://www.kernel.org/pub/linux/utils/boot/syslinux/syslinux-3.63.tar.bz2'
 DIRNAME='syslinux-3.63'
 
-function fetch () { 
+fetch () { 
   get ${URL}
 }
 
-function unpack () {
+unpack () {
   cd ${SRCDIR}
   tar xvjf ${FILENAME}
 }
 
-function build () {
+build () {
   cd ${SRCDIR}/${DIRNAME}
   ./configure
   make
