@@ -1,3 +1,5 @@
+#!/bin/sh
+
 ##
 # This script will enter modules/ and run every script there with:
 # 'fetch', 'unpack', and 'build' successively
@@ -5,6 +7,17 @@
 # If a module needs to do the install to STAGEDIR itself, that should be done
 # inside of make_new_initrd in the TOPDIR
 #
+
+while getopts c: name
+do
+  case ${name} in
+  c)  CONFIGOPTIONS=$OPTARG
+      printf 'Global configure options set to %s' ${CONFIGOPTIONS};;
+  ?)  printf "Usage: %s: [-i] initrd_version kernel_version" $0
+      exit 1;;
+  esac
+done
+shift $(($OPTIND -1))
 
 ##
 # FETCH
@@ -27,7 +40,7 @@ done
 #
 
 for file in modules/*; do
-  ${file} build
+  ${file} build ${CONFIGOPTS}
 done
 
 
