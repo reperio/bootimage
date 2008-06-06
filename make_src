@@ -1,7 +1,10 @@
 #!/bin/sh
 
+# Import VERSION
+. configure.in
+
 ##
-# This script will enter modules/ and run every script there with:
+# This script will enter srcctrl/ and run every script there with:
 # 'fetch', 'unpack', and 'build' successively
 #
 # If a module needs to do the install to STAGEDIR itself, that should be done
@@ -12,6 +15,7 @@ while getopts c: name
 do
   case ${name} in
   c)  CONFIGOPTIONS=$OPTARG
+      export CONFIGOPTIONS
       printf 'Global configure options set to %s' ${CONFIGOPTIONS};;
   ?)  printf "Usage: %s: [-i] initrd_version kernel_version" $0
       exit 1;;
@@ -19,28 +23,37 @@ do
 done
 shift $(($OPTIND -1))
 
+TOPDIR=${PWD}
+export TOPDIR
+SRCDIR=${PWD}/src
+export SRCDIR
+STAGEDIR=${PWD}/stage/initrd-${VERSION}
+export STAGEDIR
+CDSTAGEDIR=${PWD}/stage/iso-${VERSION}
+export CDSTAGEDIR
+
 ##
 # FETCH
 #
 
-for file in modules/*; do
-  ${file} fetch
+for file in srcctrl/*; do
+  sh ${file} fetch
 done
 
 ##
 # UNPACK
 #
 
-for file in modules/*; do
-  ${file} unpack
+for file in srcctrl/*; do
+  sh ${file} unpack
 done
 
 ##
 # BUILD
 #
 
-for file in modules/*; do
-  ${file} build ${CONFIGOPTS}
+for file in srcctrl/*; do
+  sh ${file} build
 done
 
 

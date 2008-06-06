@@ -3,25 +3,31 @@
 # SYSLINUX
 # 
 
-. ../functions
+. functions
 
 FILENAME='syslinux-3.63.tar.bz2'
 URL='http://www.kernel.org/pub/linux/utils/boot/syslinux/syslinux-3.63.tar.bz2'
+DIRNAME='syslinux-3.63'
 
 function fetch () { 
-  get ${URL} ${FILENAME}
+  get ${URL} ${SRCDIR}/${FILENAME}
 }
 
 function unpack () {
-  cd ../
+  cd {$SRCDIR}
   tar xvjf ${FILENAME}
 }
 
 function build () {
-  cd ../syslinux-3.63
+  cd ${SRCDIR}/${DIRNAME}
   ./configure
   make
 }
 
 $1 $2
+
+if [ $? != 0 ]; then
+  printf 'Script %s failed on function %s' $0 $1
+  exit 1
+fi
 
