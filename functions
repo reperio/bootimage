@@ -5,7 +5,10 @@
 function get () {
   URL=$1
   DEST=$2
-  wget -c ${URL} ${DEST}
+  if [ -f ${DEST}]; then
+    return 0
+  fi
+  wget ${URL} ${DEST}
   if [i $? != 0 ]; then
     printf 'Could not fetch %s' ${URL}
     return 1
