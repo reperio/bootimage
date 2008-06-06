@@ -20,7 +20,17 @@ fetch () {
 
 unpack () {
   cd ${SRCDIR}
-  tar xvjf ${FILENAME}
+  if [ ${FILENAME} == ${FILENAME%bz2} ]; then
+    tar xvzf ${FILENAME}
+    if [ $? != 0 ]; then
+      return 1
+    fi
+  else
+    tar xvjf ${FILENAME}
+    if [ $? != 0 ]; then
+      return 1
+    fi
+  fi
 }
 
 build () {
