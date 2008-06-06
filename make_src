@@ -39,7 +39,9 @@ export
 #
 
 for file in srcctrl/*; do
-  sh ${file} fetch
+  if [ -x ${file} ]; then
+    sh ${file} fetch
+  fi
 done
 
 ##
@@ -47,7 +49,9 @@ done
 #
 
 for file in srcctrl/*; do
-  sh ${file} unpack
+  if [ -x ${file} ]; then
+    sh ${file} unpack
+  fi
 done
 
 ##
@@ -55,7 +59,9 @@ done
 #
 
 for file in srcctrl/*; do
-  sh ${file} build
+  if [ -x ${file} ]; then
+    sh ${file} build
+  fi
 done
 
 

@@ -116,6 +116,12 @@ make CONFIG_PREFIX=${STAGEDIR} install
 chmod -v u+s ${STAGEDIR}/bin/busybox
 
 ##
+# DO SYSLINUX
+#
+
+
+
+##
 # SET UP THE INITRD FILESYSTEM
 #
 
