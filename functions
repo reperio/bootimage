@@ -3,14 +3,29 @@
 #
 
 get () {
-  URL=$1
+  GETURL=$1
   cd ${SRCDIR}
-  wget -c ${URL}
+  wget -c ${GETURL}
   if [i $? != 0 ]; then
-    printf 'Could not fetch %s' ${URL}
+    printf 'Could not fetch %s' ${GETURL}
     return 1
   fi
   return 0
 }
 
+fetch () { 
+  #FIXME - add some kind of age checking
+  get ${URL}
+}
+
+unpack () {
+  cd ${SRCDIR}
+  tar xvjf ${FILENAME}
+}
+
+build () {
+  cd ${SRCDIR}/${DIRNAME}
+  ./configure ${CONFIGOPTIONS}
+  make
+}
 

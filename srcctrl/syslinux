@@ -9,25 +9,33 @@ FILENAME='syslinux-3.63.tar.bz2'
 URL='http://www.kernel.org/pub/linux/utils/boot/syslinux/syslinux-3.63.tar.bz2'
 DIRNAME='syslinux-3.63'
 
-fetch () { 
-  get ${URL}
-}
+##
+# If you want to to override the default behavior, uncomment these lines
+#
 
-unpack () {
-  cd ${SRCDIR}
-  tar xvjf ${FILENAME}
-}
+#fetch () { 
+#  get ${URL}
+#  get someOtherURL
+#}
 
-build () {
-  cd ${SRCDIR}/${DIRNAME}
-  ./configure
-  make
-}
+#unpack () {
+#  cd ${SRCDIR}
+#  tar xvjf ${FILENAME}
+#  cd ${DIRNAME}
+#  svn up
+#}
+
+#build () {
+#  cd ${SRCDIR}/${DIRNAME}
+#  ./autogen.sh ${CONFIGOPTIONS}
+#  make
+#  make anothertask
+#}
 
 $1 $2
 
 if [ $? != 0 ]; then
-  printf 'Script %s failed on function %s' $0 $1
+  printf 'Source control script %s failed on function %s' $0 $1
   exit 1
 fi
 
