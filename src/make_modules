@@ -1,0 +1,33 @@
+##
+# This script will enter modules/ and run every script there with:
+# 'fetch', 'unpack', and 'build' successively
+#
+# If a module needs to do the install to STAGEDIR itself, that should be done
+# inside of make_new_initrd in the TOPDIR
+#
+
+##
+# FETCH
+#
+
+for file in modules/*; do
+  ${file} fetch
+done
+
+##
+# UNPACK
+#
+
+for file in modules/*; do
+  ${file} unpack
+done
+
+##
+# BUILD
+#
+
+for file in modules/*; do
+  ${file} build
+done
+
+
