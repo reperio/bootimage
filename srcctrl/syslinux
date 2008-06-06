@@ -1,0 +1,27 @@
+##
+# Get a known-good copy of:
+# SYSLINUX
+# 
+
+. ../functions
+
+FILENAME='syslinux-3.63.tar.bz2'
+URL='http://www.kernel.org/pub/linux/utils/boot/syslinux/syslinux-3.63.tar.bz2'
+
+function fetch () { 
+  get ${URL} ${FILENAME}
+}
+
+function unpack () {
+  cd ../
+  tar xvjf ${FILENAME}
+}
+
+function build () {
+  cd ../syslinux-3.63
+  ./configure
+  make
+}
+
+$1 $2
+
