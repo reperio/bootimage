@@ -4,3 +4,7 @@ stage/
 src/
 *.cpio.gz
 *.iso
+*.tar.bz2
+*.tar.gz
+*.tgz
+*.tbz2
