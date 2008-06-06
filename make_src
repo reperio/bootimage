@@ -32,6 +32,8 @@ export STAGEDIR
 CDSTAGEDIR=${PWD}/stage/iso-${VERSION}
 export CDSTAGEDIR
 
+export
+
 ##
 # FETCH
 #
