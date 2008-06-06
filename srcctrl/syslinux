@@ -25,12 +25,10 @@ DIRNAME='syslinux-3.63'
 #  svn up
 #}
 
-#build () {
-#  cd ${SRCDIR}/${DIRNAME}
-#  ./autogen.sh ${CONFIGOPTIONS}
-#  make
-#  make anothertask
-#}
+build () {
+  cd ${SRCDIR}/${DIRNAME}
+  make
+}
 
 $1 $2
 
