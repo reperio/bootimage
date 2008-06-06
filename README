@@ -1,0 +1,54 @@
+How this works
+----------------------------------------------
+!! Do not change any initrd directly, nor change the initrd-XXXX directly !!
+
+Edit the initrd.template which is a symlink to the current version of the
+initrd you are working on.  
+
+initrd.template/
+--------------------
+ *  This directory should contain the directory structure, scripts, and config 
+    files.
+ *  Binaries should not be stored in this directory
+
+src/
+--------------------
+ *  All the source code for all binaries that will be stored in the initrd
+ *  These should be built on jupiter directly
+ *  Just run make on them, but not make install
+ *  There is no need to build them as static 
+
+kernel/
+--------------------
+ *  Each kernel should be stored here in a directory named linux-<VER>
+ *  The kernel needs to be pre-configured built, and modules built too
+
+make_new_initrd
+--------------------
+ *  Takes 2 arguments, the version# and the kernel version number. 
+    * the initrd will be named bootimage-<VERSION#>.gz
+    * kernel modules will be installed in the initrd from kernel/<KERNELVER>
+      * make sure all modules are already built, as it will just run
+        a make modules_install in the directory
+ *  Copies everything from the current template into a staging directory 
+ *  This script should have the details of copying stuff from the src directory
+    into the initrd, all binaries that are not busybox should be stored in
+    /usr/local/bin or /usr/local/sbin
+ *  When executed the script will attempt to find all the .so files needed by
+    binaries in /usr/local/bin and /usr/local/sbin and copy them into the 
+    appropriate lib directories on the initrd
+ *  a file is created, bootimage-<VERSION#>.gz the kernel will be copied as well
+    and named kernel-<VERSION#>
+ *  These files are copied to /tftpboot/bootimage/ as well
+
+initrd.template/etc/startup.sh
+----------------------------------
+ *  This script handles the dispatching of the various features the 
+    startup=<NAME> kernel argument will cause the script to execute 
+    /etc/<NAME>/startup.sh
+ *  any kernel command line argument is available to you by sourcing
+    the file /tmp/cmdline.dat - to prevent namespace clobbering all variables
+    are name _variable (i.e. _image).
+    
+
+

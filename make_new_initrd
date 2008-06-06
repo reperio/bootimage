@@ -1,0 +1,298 @@
+#!/bin/sh
+
+# Current release version
+VERSION='2.31'
+
+# Current stable kernel version
+KERNELVER='2.6.25'
+ARCH='x86_64'
+
+IGNOREROOT=0
+
+##
+## This script is described in README
+##
+
+##
+# PERFORM SANITY CHECKS
+#
+
+# Here to provide future options
+while getopts ia: name
+do
+  case ${name} in
+  i)  echo 'Ignore non-root builder'
+      IGNOREROOT=1;;
+  a)
+			echo "ARCH = $OPTARG";
+			exit 1;;
+  ?)  printf "Usage: %s: [-i] initrd_version kernel_version" $0
+      exit 1;;
+  esac
+done
+shift $(($OPTIND -1))
+
+#FIXME
+#if [[ $((whoami)) == 'root' ]]; then
+#  ROOTUSER=1
+#else
+#  ROOTUSER=0
+#fi
+
+#if [[ ROOTUSER && IGNOREROOT ]]; then
+#  echo "You're not root! Override with -i"
+#  exit 1
+#fi 
+
+# Use the current stable or custom?
+
+if [[ ${1} && ${2} ]]; then
+  VERSION=$1
+  KERNELVER=$2
+fi
+
+if [ ! -d initrd.template ]; then
+  echo 'initrd.template is not linked to a workable initrd directory'
+  exit 1
+fi
+
+if [ ! -d iso.template ]; then
+  echo 'iso.template is not linked to a workable ISO skeleton directory'
+  exit 1
+fi
+
+TOPDIR=${PWD}
+STAGEDIR=${PWD}/stage/initrd-${VERSION}
+CDSTAGEDIR=${PWD}/stage/iso-${VERSION}
+KERNELDIR=${PWD}/kernel/linux-${KERNELVER}
+KERNELBIN=${PWD}/kernel/linux-${KERNELVER}/arch/${ARCH}/boot/bzImage
+
+printf "kernel source %s
+initrd stage of %s\n" $KERNELDIR $STAGEDIR
+
+if [ ! -d ${STAGEDIR} ]; then
+  mkdir -p ${STAGEDIR}
+else
+  rm -rf ${STAGEDIR}/*
+fi
+
+if [ $? != 0 ]; then
+  echo 'Failed to create the stage directory.'
+fi
+
+cp -av initrd.template/* ${STAGEDIR}
+
+if [ ! -d ${CDSTAGEDIR} ]; then
+  mkdir ${CDSTAGEDIR}
+else
+  rm -rf ${CDSTAGEDIR}/*
+fi
+
+if [ $? != 0 ]; then
+  echo 'Failed to create the ISO stage directory.'
+fi
+
+cp -av iso.template/* ${CDSTAGEDIR}
+
+
+##
+# SET UP THE KERNEL
+# this assumes that the kernel and modules have already been built
+#
+
+cd ${KERNELDIR}
+make modules_install INSTALL_MOD_PATH=${STAGEDIR}
+rm ${STAGEDIR}/lib/modules/${KERNELVER}-${ARCH}/build
+rm ${STAGEDIR}/lib/modules/${KERNELVER}-${ARCH}/source
+
+cp ${TOPDIR}/kernel/linux-${KERNELVER}/arch/${ARCH}/boot/bzImage ${TOPDIR}/dist/kernel-${VERSION}
+
+##
+# DO BUSYBOX
+#
+
+cd ${TOPDIR}/src/busybox-1.9.0/
+make CONFIG_PREFIX=${STAGEDIR} install
+chmod -v u+s ${STAGEDIR}/bin/busybox
+
+##
+# SET UP THE INITRD FILESYSTEM
+#
+
+BINARIES="\
+src/afio-2.5/afio \
+src/e2fsprogs-1.40.4/misc/badblocks \
+src/udev-114/extras/cdrom_id/cdrom_id \
+src/util-linux-2.12r/fdisk/cfdisk \
+src/breakin/breakin_monitor/cryptpasswd \
+src/dropbear-0.50/dbclient \
+src/act_dmi/dmidecode \
+src/e2fsprogs-1.40.4/e2fsck/e2fsck \
+src/ethtool-6/ethtool \
+src/util-linux-2.12r/fdisk/fdisk \
+src/htop-0.7/htop \
+src/links-0.98/links \
+src/pciutils-2.2.9/lspci \
+src/LVM2.2.01.15/tools/lvm \
+src/mcelog-0.8pre/mcelog \
+src/mdadm-2.6.4/mdadm \
+src/mdinfo-act/mdinfo \
+src/e2fsprogs-1.40.4/misc/mke2fs \
+src/util-linux-2.12r/disk-utils/mkswap \
+src/parted-1.8.2-act/parted/parted \
+src/rsync-2.6.9/rsync \
+src/screen-4.0.3/screen \
+src/lm_sensors-2.10.0/prog/sensors/sensors \
+src/util-linux-2.12r/fdisk/sfdisk \
+src/smartmontools-5.37/smartctl \
+src/tcpdump-3.9.8/tcpdump \
+src/e2fsprogs-1.40.4/misc/tune2fs \
+src/3ware/tw_cli \
+src/udev-114/udevcontrol \
+src/udev-114/udevinfo \
+src/udev-114/udevmonitor \
+src/udev-114/udevtest \
+src/udev-114/udevtrigger \
+src/udpcast/udp-receiver \
+src/udpcast/udp-sender \
+src/udev-114/extras/volume_id/vol_id \
+src/wget-1.9.1/src/wget"
+
+cd ${TOPDIR}
+for file in ${BINARIES}; do
+  cp -vp ${file} ${STAGEDIR}/usr/local/bin
+  if [ $? != 0 ]; then
+    echo "Copying a required binary ${file} failed. Please check $0"
+    exit 1
+  fi
+done
+
+#sbin
+
+SBINARIES="\
+src/dropbear-0.50/dropbear
+src/udev-114/udevd"
+
+cd ${TOPDIR}
+for file in ${SBINARIES}; do
+  cp -vp ${file} ${STAGEDIR}/usr/local/sbin
+  if [ $? != 0 ]; then
+    echo "Copying a required sbin binary ${file} failed. Please check $0"
+    exit 1
+  fi
+done
+
+
+##
+# CREATE BREAKIN
+# appears to assume that hpl and mpi were already staged
+#
+
+mkdir -v ${STAGEDIR}/usr/local/breakin
+if [ $? != 0 ]; then
+  echo "Mkdir for breakin failed. Please check $0"
+  exit 1
+fi
+
+cp -vp src/breakin/breakin_monitor/breakin.dynamic ${STAGEDIR}/usr/local/bin/breakin
+if [ $? != 0 ]; then
+  echo "Copy breakin binary failed. Please check $0"
+  exit 1
+fi
+
+cp -vpr src/breakin/breakin_stage/* ${STAGEDIR}/usr/local/breakin/
+if [ $? != 0 ]; then
+  echo "Copy breakin deps failed. Please check $0"
+  exit 1
+fi
+
+##
+# GATHER THE SHARED OBJECTS
+#
+
+perl findso.pl ${STAGEDIR}
+
+# add a few additional manually
+
+ADDLIBS="\
+ld-linux-x86-64.so.2 \
+libnss_compat.so.2 \
+libnss_dns.so.2 \
+libnss_files.so.2 \
+libresolv.so.2 \
+librt.so.1 \
+libuuid.so.1 \
+libnuma.so \
+libparted-1.8.so.2"
+
+for file in $ADDLIBS; do
+  uri=$(/sbin/ldconfig -p | awk -F'> ' '{print $2}' | grep -m1 ${file})
+  if [ $uri ]; then
+    cp -pv --parents ${uri} ${STAGEDIR}
+  fi
+done
+
+##
+# COMPRESS INITRD FOR FOSS EDITION
+#
+
+cd ${STAGEDIR}
+find . | cpio -o -H newc | gzip > ${TOPDIR}/dist/initrd-v${VERSION}.cpio.gz
+if [ $? != 0 ]; then
+  echo "Make initramfs failed."
+  exit 1
+fi
+
+##
+# INSTALL TFTP
+# maybe the maker doesn't have a tftp directory
+
+cd ${TOPDIR}
+cp -v dist/kernel-${VERSION} /tftpboot/bootimage/kernel-jason
+cp -v dist/initrd-v${VERSION}.cpio.gz /tftpboot/bootimage/bootimage-jason.gz
+
+##
+# MAKE ISO FOR FOSS EDITION
+#
+
+cd ${TOPDIR}
+cp -v dist/kernel-${VERSION} ${CDSTAGEDIR}/isolinux/kernel
+cp -v dist/initrd-v${VERSION}.cpio.gz ${CDSTAGEDIR}/isolinux/initrd.img
+mkisofs -o dist/cdrom-${VERSION}.iso -b isolinux/isolinux.bin -c isolinux/boot.cat \
+	-no-emul-boot -boot-load-size 4 -boot-info-table ${CDSTAGEDIR}
+if [ $? != 0 ]; then
+  echo "Make ISO failed."
+  exit 1
+fi
+
+##
+# OPTIONAL PROPRIETARY OVERLAY
+#
+cd ${TOPDIR}
+if [ -d ../bootimage.private ]; then
+  cp -av ../bootimage.private/* ${STAGEDIR}
+  perl findso.pl ${STAGEDIR}
+  cd ${STAGEDIR}
+  find . | cpio -o -H newc | gzip > ${TOPDIR}/dist/initrd-v${VERSION}-nonfree.cpio.gz
+  if [ $? != 0 ]; then
+    echo "Make nonfree initramfs failed."
+    exit 1
+  fi
+  cd ${TOPDIR}
+  cp dist/initrd-v${VERSION}.cpio.gz ${CDSTAGEDIR}/isolinux/initrd.img
+  mkisofs -o dist/cdrom-${VERSION}-nonfree.iso -b isolinux/isolinux.bin -c isolinux/boot.cat \
+    -no-emul-boot -boot-load-size 4 -boot-info-table ${CDSTAGEDIR}
+  if [ $? != 0 ]; then
+    echo "Make nonfree ISO failed."
+    exit 1
+  fi
+fi
+
+
+##
+# SUCCESS
+#
+
+echo "BUILD COMPLETED SUCESSFULLY"
+
+# vim:ts=2:sw=2

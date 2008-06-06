@@ -1,0 +1,5 @@
+# /etc/profile: system-wide .profile file for the Bourne shells
+
+
+PATH=$PATH:/usr/local/bin
+export PATH

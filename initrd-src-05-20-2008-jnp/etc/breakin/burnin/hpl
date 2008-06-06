@@ -1,0 +1,87 @@
+#!/bin/ash
+
+. /etc/library.sh
+
+MATHLIB="goto"
+
+# read in our hardware configs
+if [ -e /var/run/breakin.dat ]
+then
+	. /var/run/breakin.dat
+fi
+
+BINARY="xhpl.barcelona.${MATHLIB}"
+RUNNING_JOB=""
+
+# the top template
+cat /usr/local/breakin/hpl/HPL-top.txt > /usr/local/breakin/hpl/HPL.dat
+
+# we first figure out our N based on the ammount of RAM we have
+N_SIZE=`/usr/local/breakin/hpl/hpl_calc_n.atlas ${MEM_TOTAL}`
+
+echo "${N_SIZE}         Ns" >> /usr/local/breakin/hpl/HPL.dat
+
+cat /usr/local/breakin/hpl/HPL-middle.txt >> /usr/local/breakin/hpl/HPL.dat
+
+if [ "${CPU_QTY}" = "1" ]
+then
+	echo "1     Ps" >> /usr/local/breakin/hpl/HPL.dat	
+	echo "1     Qs" >> /usr/local/breakin/hpl/HPL.dat	
+
+elif [ "${CPU_QTY}" = "2" ]
+then
+
+	echo "2     Ps" >> /usr/local/breakin/hpl/HPL.dat	
+	echo "1     Qs" >> /usr/local/breakin/hpl/HPL.dat	
+
+elif [ "${CPU_QTY}" = "4" ]
+then
+
+	echo "2     Ps" >> /usr/local/breakin/hpl/HPL.dat	
+	echo "2     Qs" >> /usr/local/breakin/hpl/HPL.dat	
+
+elif [ "${CPU_QTY}" = "8" ]
+then
+
+	echo "4     Ps" >> /usr/local/breakin/hpl/HPL.dat	
+	echo "2     Qs" >> /usr/local/breakin/hpl/HPL.dat	
+
+elif [ "${CPU_QTY}" = "16" ]
+then
+
+	echo "4     Ps" >> /usr/local/breakin/hpl/HPL.dat	
+	echo "4     Qs" >> /usr/local/breakin/hpl/HPL.dat	
+elif [ "${CPU_QTY}" = "32" ]
+then
+
+	echo "8     Ps" >> /usr/local/breakin/hpl/HPL.dat	
+	echo "4     Qs" >> /usr/local/breakin/hpl/HPL.dat	
+fi
+cat /usr/local/breakin/hpl/HPL-bottom.txt >> /usr/local/breakin/hpl/HPL.dat
+
+echo "${CPU_MODEL}" | grep "Intel" > /dev/null 2>&1
+if [ "$?" = "0" ]
+then
+	BINARY="xhpl.intel.${MATHLIB}"
+fi
+
+
+OMP_NUM_THREADS=1
+GOTO_NUM_THREADS=1
+export OMP_NUM_THREADS GOTO_NUM_THREADS
+
+#export LD_LIBRARY_PATH=/opt/hpl/libs
+cd /usr/local/breakin/hpl
+/usr/local/breakin/mpi/bin/mpirun -np ${CPU_QTY} ${BINARY} > /tmp/hpl.log 2>&1
+
+if [ "$?" -ne 0 ]
+then
+	cat /tmp/hpl.log > /errors/hpl.log
+	echo "test failed possible memory or cpu errors" 
+	exit 1
+else
+	GFLOPS=`grep ^WR /tmp/hpl.log | tail -1 | awk '{print $7}'`
+	echo "MSG: Passed (${GFLOPS} GFLOPS)" 
+	exit 0
+fi
+done
