@@ -31,8 +31,8 @@ STAGEDIR=${PWD}/stage/initrd-${VERSION}
 export STAGEDIR
 CDSTAGEDIR=${PWD}/stage/iso-${VERSION}
 export CDSTAGEDIR
-
-export
+PATCHDIR=${PWD}/patches
+export PATCHDIR
 
 ##
 # FETCH

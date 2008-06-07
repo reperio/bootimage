@@ -1,0 +1,31 @@
+##
+# Get a known-good copy of:
+# actdmi
+# 
+
+. ./functions
+
+GITURL="ssh://${USERNAME}@jupiter.corp.advancedclustering.com/home/git/actdmi.git"
+DIRNAME='actdmi'
+
+fetch () { 
+  git_fetch ${GITURL} ${DIRNAME}
+}
+
+unpack () {
+  # nothing to do here..
+  return  
+}
+
+build () {
+  cd ${SRCDIR}/${DIRNAME}
+  make
+}
+
+$1 $2
+
+if [ $? != 0 ]; then
+  printf 'Source control script %s failed on function %s' $0 $1
+  exit 1
+fi
+
