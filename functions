@@ -4,13 +4,21 @@
 
 get () {
   GETURL=$1
-  cd ${SRCDIR}
-  wget -c ${GETURL}
-  if [i $? != 0 ]; then
-    printf 'Could not fetch %s' ${GETURL}
-    return 1
+
+  FILENAME=`basename ${GETURL}`
+
+  if [ -e "${SRCDIR}/${FILENAME}" ]
+  then
+    return 0
+  else
+    cd ${SRCDIR}
+    wget -c ${GETURL}
+    if [i $? != 0 ]; then
+      printf 'Could not fetch %s' ${GETURL}
+      return 1
+    fi
+    return 0
   fi
-  return 0
 }
 
 fetch () { 

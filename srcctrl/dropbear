@@ -1,0 +1,41 @@
+##
+# Get a known-good copy of:
+# SYSLINUX
+# 
+
+. ./functions
+
+FILENAME='dropbear-0.51.tar.bz2'
+URL='http://matt.ucc.asn.au/dropbear/releases/dropbear-0.51.tar.bz2'
+DIRNAME='dropbear-0.51'
+
+##
+# If you want to to override the default behavior, uncomment these functions
+#
+
+#fetch () { 
+#  get ${URL}
+#  get someOtherURL
+#}
+
+#unpack () {
+#  cd ${SRCDIR}
+#  tar xvzf ${FILENAME}
+#  cd ${DIRNAME}
+#}
+
+build () {
+  cd ${SRCDIR}/${DIRNAME}
+  ./configure  --disable-syslog --disable-shadow --disable-lastlog \
+      --disable-utmp --disable-utmpx --disable-wtmp --disable-wtmpx \
+      --disable-pututline --disable-pututxline
+  make
+}
+
+$1 $2
+
+if [ $? != 0 ]; then
+  printf 'Source control script %s failed on function %s' $0 $1
+  exit 1
+fi
+

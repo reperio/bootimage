@@ -1,0 +1,38 @@
+##
+# Get a known-good copy of:
+# SYSLINUX
+# 
+
+. ./functions
+
+FILENAME='afio-2.5.tgz'
+URL='http://www.ibiblio.org/pub/Linux/system/backup/afio-2.5.tgz'
+DIRNAME='afio-2.5'
+
+##
+# If you want to to override the default behavior, uncomment these functions
+#
+
+#fetch () { 
+#  get ${URL}
+#  get someOtherURL
+#}
+
+unpack () {
+  cd ${SRCDIR}
+  tar xvzf ${FILENAME}
+  cd ${DIRNAME}
+}
+
+build () {
+  cd ${SRCDIR}/${DIRNAME}
+  make
+}
+
+$1 $2
+
+if [ $? != 0 ]; then
+  printf 'Source control script %s failed on function %s' $0 $1
+  exit 1
+fi
+
