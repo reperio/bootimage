@@ -62,3 +62,21 @@ build () {
   make
 }
 
+install () {
+  for file in ${BINARIES}; do
+    cp -vp ${file} ${STAGEDIR}/usr/local/bin
+    if [ $? != 0 ]; then
+      echo "Copying a required binary ${file} failed. Please check $0"
+      return 1
+    fi
+  done
+
+  for file in ${SBINARIES}; do
+    cp -vp ${file} ${STAGEDIR}/usr/local/sbin
+    if [ $? != 0 ]; then
+      echo "Copying a required sbin binary ${file} failed. Please check $0"
+      return 1
+    fi
+  done
+}
+

@@ -9,6 +9,14 @@ FILENAME='someprogram-1.23.tar.bz2'
 URL='http://mirrors.kernel.org/someprogram-1.23.tar.bz2'
 DIRNAME='someprogram-1.23'
 
+BINARIES="\
+foo \
+bar"
+
+SBINARIES="\
+food \
+bard"
+
 ##
 # If you want to to override the default behavior, uncomment these functions
 #
@@ -30,6 +38,10 @@ DIRNAME='someprogram-1.23'
 #  ./autogen.sh ${CONFIGOPTIONS}
 #  make
 #  make anothertask
+#}
+
+#install () {
+#  cp -pv ${SRCDIR}/${DIRNAME}/somebinary #{STAGEDIR}/path/to/bin
 #}
 
 $1 $2
