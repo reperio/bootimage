@@ -27,7 +27,13 @@ DIRNAME='linux-2.6.25.5'
 
 build () {
 
-  cp ${PATCHDIR}/kernel.config ${SRCDIR}/${DIRNAME}/.config
+  if [ ! -e ${PATCHDIR}/kernel.`uname -m`.config ]
+  then
+    echo "No kernel config file found: ${PATCHDIR}/kernel.`uname -m`.config"
+    return 1
+  fi
+
+  cp ${PATCHDIR}/kernel.`uname -m`.config ${SRCDIR}/${DIRNAME}/.config
   cd ${SRCDIR}/${DIRNAME}
 
   make oldconfig
