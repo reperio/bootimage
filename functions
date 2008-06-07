@@ -3,18 +3,16 @@
 #
 
 get () {
-  GETURL=$1
+  _URL=$1
+  _FILENAME=`basename ${_URL}`
 
-  FILENAME=`basename ${GETURL}`
-
-  if [ -e "${SRCDIR}/${FILENAME}" ]
-  then
+  if [ -e "${SRCDIR}/${_FILENAME}" ]; then
     return 0
   else
     cd ${SRCDIR}
-    wget -c ${GETURL}
+    wget -c ${_URL}
     if [i $? != 0 ]; then
-      printf 'Could not fetch %s' ${GETURL}
+      printf 'Could not fetch %s' ${_URL}
       return 1
     fi
     return 0
