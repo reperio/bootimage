@@ -18,6 +18,21 @@ fetch () {
   get ${URL}
 }
 
+git_fetch () {
+  _URL=$1
+  _DIRNAME=$2
+
+  if [ -e ${SRCDIR}/${_DIRNAME}/.git ]
+  then
+     cd ${SRCDIR}/${_DIRNAME}
+     git-pull 
+  else
+     cd ${SRCDIR}
+     git-clone ${_URL}
+  fi
+}
+
+
 unpack () {
   cd ${SRCDIR}
   if [ ${FILENAME} == ${FILENAME%bz2} ]; then
