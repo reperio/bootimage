@@ -11,7 +11,7 @@ get () {
   else
     cd ${SRCDIR}
     wget -c ${_URL}
-    if [i $? != 0 ]; then
+    if [ $? != 0 ]; then
       printf 'Could not fetch %s' ${_URL}
       return 1
     fi
