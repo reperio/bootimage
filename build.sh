@@ -5,10 +5,7 @@
 
 ##
 # This script will enter srcctrl/ and run every script there with:
-# 'fetch', 'unpack', and 'build' successively
-#
-# If a module needs to do the install to STAGEDIR itself, that should be done
-# inside of make_new_initrd in the TOPDIR
+# 'fetch', 'unpack', 'build', and 'install' successively
 #
 
 while getopts c: name
@@ -35,36 +32,44 @@ PATCHDIR=${PWD}/patches
 export PATCHDIR
 
 ##
+# A stupid runparts implementation
+#
+
+simple_runparts () {
+  DIR=${1}
+  OPERAND=${2}
+  for file in ${1}/*; do
+    if [ -x ${file} ]; then
+      cd ${TOPDIR}
+      sh ${file} ${OPERAND}
+    fi
+  done
+}
+
+##
 # FETCH
 #
 
-for file in srcctrl/*; do
-  if [ -x ${file} ]; then
-    cd ${TOPDIR}
-    sh ${file} fetch
-  fi
-done
+simple_runparts srcctrl fetch
 
 ##
 # UNPACK
 #
 
-for file in srcctrl/*; do
-  if [ -x ${file} ]; then
-    cd ${TOPDIR}
-    sh ${file} unpack
-  fi
-done
+simple_runparts srcctrl unpack
 
 ##
 # BUILD
 #
 
-for file in srcctrl/*; do
-  if [ -x ${file} ]; then
-    cd ${TOPDIR}
-    sh ${file} build
-  fi
-done
+simple_runparts srcctrl build
+
+##
+# INSTALL
+#
+
+simple_runparts srcctrl install
 
 
+
+# vim:ts=2:sw=2:expandtab
