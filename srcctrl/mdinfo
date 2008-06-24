@@ -5,8 +5,9 @@
 
 . ./functions
 
-GITURL="ssh://${USERNAME}@jupiter.corp.advancedclustering.com/home/git/mdinfo.git"
+GITURL="ssh://${SUDO_USER}@jupiter.corp.advancedclustering.com/home/git/mdinfo.git"
 DIRNAME='mdinfo'
+BINARIES='mdinfo'
 
 fetch () { 
   git_fetch ${GITURL} ${DIRNAME}

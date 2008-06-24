@@ -5,7 +5,7 @@
 
 . ./functions
 
-GITURL="ssh://${USERNAME}@jupiter.corp.advancedclustering.com/home/git/breakin.git"
+GITURL="ssh://${SUDO_USER}@jupiter.corp.advancedclustering.com/home/git/breakin.git"
 DIRNAME='breakin'
 
 fetch () { 
@@ -21,6 +21,10 @@ build () {
   cd ${SRCDIR}/${DIRNAME}
   make
 }
+
+#install () {
+#  #
+#}
 
 $1 $2
 
