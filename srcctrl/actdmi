@@ -7,8 +7,7 @@
 
 GITURL="ssh://${SUDO_USER}@jupiter.corp.advancedclustering.com/home/git/actdmi.git"
 DIRNAME='actdmi'
-BINARIES="dmidecode"
-SBINARIES=''
+BINARIES='act_dmi'
 
 fetch () { 
   git_fetch ${GITURL} ${DIRNAME}
@@ -23,10 +22,6 @@ build () {
   cd ${SRCDIR}/${DIRNAME}
   make
 }
-
-#install () {
-#  #pass
-#}
 
 $1 $2
 
