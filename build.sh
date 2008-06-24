@@ -47,6 +47,34 @@ simple_runparts () {
 }
 
 ##
+# Begin main
+#
+
+if [ ! -d ${STAGEDIR} ]; then
+  mkdir -p ${STAGEDIR}
+else
+  rm -rf ${STAGEDIR}/*
+fi
+
+if [ $? != 0 ]; then
+  echo 'Failed to create the stage directory.'
+fi
+
+cp -av initrd.template/* ${STAGEDIR}
+
+if [ ! -d ${CDSTAGEDIR} ]; then
+  mkdir ${CDSTAGEDIR}
+else
+  rm -rf ${CDSTAGEDIR}/*
+fi
+
+if [ $? != 0 ]; then
+  echo 'Failed to create the ISO stage directory.'
+fi
+
+cp -av iso.template/* ${CDSTAGEDIR}
+
+##
 # FETCH
 #
 
