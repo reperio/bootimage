@@ -5,8 +5,10 @@
 
 . ./functions
 
-GITURL="ssh://${USERNAME}@jupiter.corp.advancedclustering.com/home/git/actdmi.git"
+GITURL="ssh://${SUDO_USER}@jupiter.corp.advancedclustering.com/home/git/actdmi.git"
 DIRNAME='actdmi'
+BINARIES="dmidecode"
+SBINARIES=''
 
 fetch () { 
   git_fetch ${GITURL} ${DIRNAME}
@@ -21,6 +23,10 @@ build () {
   cd ${SRCDIR}/${DIRNAME}
   make
 }
+
+#install () {
+#  #pass
+#}
 
 $1 $2
 
