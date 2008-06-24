@@ -8,6 +8,7 @@
 FILENAME='dropbear-0.51.tar.bz2'
 URL='http://matt.ucc.asn.au/dropbear/releases/dropbear-0.51.tar.bz2'
 DIRNAME='dropbear-0.51'
+SBINARIES='dropbear'
 
 ##
 # If you want to to override the default behavior, uncomment these functions
