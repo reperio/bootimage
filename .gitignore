@@ -1,4 +1,3 @@
-configure.in
 *.so
 *.[oa]
 stage/
