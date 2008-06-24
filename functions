@@ -63,6 +63,7 @@ unpack () {
 build () {
   cd ${SRCDIR}/${DIRNAME}
   ./configure ${CONFIGOPTIONS}
+  make clean
   make
 }
 
