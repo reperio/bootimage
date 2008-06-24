@@ -40,6 +40,12 @@ git_fetch () {
 
 
 unpack () {
+  # skip it if already extracted
+  if [ -d ${DIRNAME} ]
+  then
+    return 0
+  fi
+
   cd ${SRCDIR}
   if [ ${FILENAME} == ${FILENAME%bz2} ]; then
     tar xvzf ${FILENAME}
