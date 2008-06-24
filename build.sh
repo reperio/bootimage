@@ -30,6 +30,10 @@ CDSTAGEDIR=${PWD}/stage/iso-${VERSION}
 export CDSTAGEDIR
 PATCHDIR=${PWD}/patches
 export PATCHDIR
+KERNELDIR=${PWD}/kernel/linux-${KERNELVER}
+export KERNELDIR
+KERNELBIN=${PWD}/kernel/linux-${KERNELVER}/arch/${ARCH}/boot/bzImage
+export KERNELBIN
 
 ##
 # A stupid runparts implementation
