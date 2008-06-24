@@ -1,6 +1,6 @@
 ##
 # Get a known-good copy of:
-# SYSLINUX
+# Linux Kernel
 # 
 
 . ./functions
@@ -8,6 +8,7 @@
 FILENAME='linux-2.6.25.5.tar.bz2'
 URL='http://www.kernel.org/pub/linux/kernel/v2.6/linux-2.6.25.5.tar.bz2'
 DIRNAME='linux-2.6.25.5'
+KERNELVER='2.6.25'
 
 ##
 # If you want to to override the default behavior, uncomment these functions
@@ -41,11 +42,13 @@ build () {
   make modules
 }
 
-# install () {
-#  cp ${SRCDIR}/${DIRNAME}/arch/`uname -m`/boot/bzImage ${KERNELDIR}/kernel-${VERSION}
-#  cd ${SRCDIR}/${DIRNAME}
-#  make modules_install INSTALL_MOD_PATH=${STAGEDIR}
-# }
+install () {
+  cd ${SRCDIR}/${DIRNAME}
+  make modules_install INSTALL_MOD_PATH=${STAGEDIR}
+  rm ${STAGEDIR}/lib/modules/${KERNELVER}-${ARCH}/build
+  rm ${STAGEDIR}/lib/modules/${KERNELVER}-${ARCH}/source
+  cp ${TOPDIR}/kernel/linux-${KERNELVER}/arch/${ARCH}/boot/bzImage ${TOPDIR}/dist/kernel
+}
 
 $1 $2
 
