@@ -27,20 +27,22 @@ KERNELVER='2.6.25'
 #}
 
 build () {
-
-  if [ ! -e ${PATCHDIR}/kernel.${ARCH}.config ]
+  if [ ! -f ${SRCDIR}/${DIRNAME}/.config ]
   then
-    echo "No kernel config file found: ${PATCHDIR}/kernel.${ARCH}.config"
-    return 1
+    if [ ! -e ${PATCHDIR}/kernel.${ARCH}.config ]
+    then
+      echo "No kernel config file found: ${PATCHDIR}/kernel.${ARCH}.config"
+      return 1
+    fi
+
+    cp ${PATCHDIR}/kernel.${ARCH}.config ${SRCDIR}/${DIRNAME}/.config
+    cd ${SRCDIR}/${DIRNAME}
+
+    make clean
+    make oldconfig
+    make bzImage
+    make modules
   fi
-
-  cp ${PATCHDIR}/kernel.${ARCH}.config ${SRCDIR}/${DIRNAME}/.config
-  cd ${SRCDIR}/${DIRNAME}
-
-  make clean
-  make oldconfig
-  make bzImage
-  make modules
 }
 
 install () {
@@ -48,7 +50,7 @@ install () {
   make modules_install INSTALL_MOD_PATH=${STAGEDIR}
   rm ${STAGEDIR}/lib/modules/${KERNELVER}-${ARCH}/build
   rm ${STAGEDIR}/lib/modules/${KERNELVER}-${ARCH}/source
-  cp ${TOPDIR}/kernel/linux-${KERNELVER}/arch/${ARCH}/boot/bzImage ${TOPDIR}/dist/kernel
+  cp arch/${ARCH}/boot/bzImage ${TOPDIR}/dist/kernel-${VERSION}
 }
 
 $1 $2
