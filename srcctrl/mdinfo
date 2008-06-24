@@ -24,10 +24,6 @@ build () {
   make
 }
 
-#install () {
-#  #pass
-#}
-
 $1 $2
 
 if [ $? != 0 ]; then
