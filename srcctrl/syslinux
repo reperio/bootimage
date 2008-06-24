@@ -34,8 +34,8 @@ build () {
 
 install () {
   cd ${SRCDIR}/${DIRNAME}
-  cp -av com32/menu/vesamenu.c32 ${CDSTAGEDIR}/isolinux/vesamenu.c32
-  cp -av isolinux.bin ${CDSTAGEDIR}/isolinux/isolinux.bin
+  cp -pv com32/menu/vesamenu.c32 ${CDSTAGEDIR}/isolinux/vesamenu.c32
+  cp -pv isolinux.bin ${CDSTAGEDIR}/isolinux/isolinux.bin
 }
 
 $1 $2
