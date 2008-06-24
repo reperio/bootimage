@@ -20,8 +20,13 @@ unpack () {
 
 build () {
   cd ${SRCDIR}/${DIRNAME}
+  make clean
   make
 }
+
+#install () {
+#  #pass
+#}
 
 $1 $2
 
