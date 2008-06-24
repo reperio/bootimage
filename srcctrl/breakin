@@ -22,9 +22,28 @@ build () {
   make
 }
 
-#install () {
-#  #
-#}
+install () {
+  # appears to assume that hpl and mpi were already staged
+
+  mkdir -v ${STAGEDIR}/usr/local/breakin
+  if [ $? != 0 ]; then
+    echo "Mkdir for breakin failed. Please check $0"
+    exit 1
+  fi
+
+  cp -vp src/breakin/breakin ${STAGEDIR}/usr/local/bin/breakin
+  if [ $? != 0 ]; then
+    echo "Copy breakin binary failed. Please check $0"
+    exit 1
+  fi
+  
+  #FIXME the worst part of this project
+  #cp -vpr src/breakin/breakin_stage/* ${STAGEDIR}/usr/local/breakin/
+  #if [ $? != 0 ]; then
+  #  echo "Copy breakin deps failed. Please check $0"
+  #  exit 1
+  #fi
+}
 
 $1 $2
 
