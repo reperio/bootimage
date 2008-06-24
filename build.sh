@@ -95,4 +95,70 @@ for operand in fetch unpack build install; do
   fi
 done
 
+##
+# COMPRESS INITRD FOR FOSS EDITION
+#
+
+cd ${STAGEDIR}
+find . | cpio -o -H newc | gzip > ${TOPDIR}/dist/initrd-v${VERSION}.cpio.gz
+if [ $? != 0 ]; then
+  echo "Make initramfs failed."
+  exit 1
+fi
+
+##
+# INSTALL TFTP
+# maybe the maker doesn't have a tftp directory
+
+cd ${TOPDIR}
+if [ -d /tftpboot/bootimage ]; then
+  cp -v dist/kernel-${VERSION} /tftpboot/bootimage/kernel-jason
+  cp -v dist/initrd-v${VERSION}.cpio.gz /tftpboot/bootimage/bootimage-jason.gz
+fi
+
+##
+# MAKE ISO FOR FOSS EDITION
+#
+
+cd ${TOPDIR}
+cp -v dist/kernel-${VERSION} ${CDSTAGEDIR}/isolinux/kernel
+cp -v dist/initrd-v${VERSION}.cpio.gz ${CDSTAGEDIR}/isolinux/initrd.img
+mkisofs -o dist/cdrom-${VERSION}.iso -b isolinux/isolinux.bin -c isolinux/boot.cat \
+	-no-emul-boot -boot-load-size 4 -boot-info-table ${CDSTAGEDIR}
+if [ $? != 0 ]; then
+  echo "Make ISO failed."
+  exit 1
+fi
+
+##
+# OPTIONAL PROPRIETARY OVERLAY
+#
+cd ${TOPDIR}
+if [ -d ../bootimage.private ]; then
+  cp -av ../bootimage.private/* ${STAGEDIR}
+  perl findso.pl ${STAGEDIR}
+  cd ${STAGEDIR}
+  find . | cpio -o -H newc | gzip > ${TOPDIR}/dist/initrd-v${VERSION}-nonfree.cpio.gz
+  if [ $? != 0 ]; then
+    echo "Make nonfree initramfs failed."
+    exit 1
+  fi
+  cd ${TOPDIR}
+  cp dist/initrd-v${VERSION}.cpio.gz ${CDSTAGEDIR}/isolinux/initrd.img
+  mkisofs -o dist/cdrom-${VERSION}-nonfree.iso -b isolinux/isolinux.bin -c isolinux/boot.cat \
+    -no-emul-boot -boot-load-size 4 -boot-info-table ${CDSTAGEDIR}
+  if [ $? != 0 ]; then
+    echo "Make nonfree ISO failed."
+    exit 1
+  fi
+fi
+
+
+##
+# SUCCESS
+#
+
+echo "BUILD COMPLETED SUCESSFULLY"
+exit 0
+
 # vim:ts=2:sw=2:expandtab
