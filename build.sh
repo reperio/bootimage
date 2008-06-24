@@ -46,6 +46,10 @@ simple_runparts () {
     if [ -x ${file} ]; then
       cd ${TOPDIR}
       sh ${file} ${_OPERAND}
+      if [ $? != 0 ]
+      then
+        return 1
+      fi
     fi
   done
 }
@@ -79,29 +83,16 @@ fi
 cp -av iso.template/* ${CDSTAGEDIR}
 
 ##
-# FETCH
+# Fetch, unpack, build and install
 #
 
-simple_runparts srcctrl fetch
-
-##
-# UNPACK
-#
-
-simple_runparts srcctrl unpack
-
-##
-# BUILD
-#
-
-simple_runparts srcctrl build
-
-##
-# INSTALL
-#
-
-simple_runparts srcctrl install
-
-
+for operand in fetch unpack build install; do
+  simple_runparts srcctrl ${operand}
+  if [ $? != 0 ]
+  then
+    echo "Exiting due to error."
+    exit 1
+  fi
+done
 
 # vim:ts=2:sw=2:expandtab
