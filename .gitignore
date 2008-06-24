@@ -2,6 +2,7 @@
 *.[oa]
 stage/
 src/
+dist/
 *.cpio.gz
 *.iso
 *.tar.bz2
