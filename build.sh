@@ -38,7 +38,7 @@ export PATCHDIR
 simple_runparts () {
   DIR=${1}
   OPERAND=${2}
-  for file in ${1}/*; do
+  for file in ${DIR}/*; do
     if [ -x ${file} ]; then
       cd ${TOPDIR}
       sh ${file} ${OPERAND}
