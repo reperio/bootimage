@@ -28,15 +28,16 @@ KERNELVER='2.6.25'
 
 build () {
 
-  if [ ! -e ${PATCHDIR}/kernel.`uname -m`.config ]
+  if [ ! -e ${PATCHDIR}/kernel.${ARCH}.config ]
   then
-    echo "No kernel config file found: ${PATCHDIR}/kernel.`uname -m`.config"
+    echo "No kernel config file found: ${PATCHDIR}/kernel.${ARCH}.config"
     return 1
   fi
 
-  cp ${PATCHDIR}/kernel.`uname -m`.config ${SRCDIR}/${DIRNAME}/.config
+  cp ${PATCHDIR}/kernel.${ARCH}.config ${SRCDIR}/${DIRNAME}/.config
   cd ${SRCDIR}/${DIRNAME}
 
+  make clean
   make oldconfig
   make bzImage
   make modules

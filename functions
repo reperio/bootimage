@@ -41,7 +41,7 @@ git_fetch () {
 
 unpack () {
   # skip it if already extracted
-  if [ -d ${DIRNAME} ]
+  if [ -d ${SRCDIR}/${DIRNAME} ]
   then
     return 0
   fi
@@ -67,6 +67,7 @@ build () {
 }
 
 install () {
+  cd ${SRCDIR}/${DIRNAME}
   for file in ${BINARIES}; do
     cp -vp ${file} ${STAGEDIR}/usr/local/bin
     if [ $? != 0 ]; then
