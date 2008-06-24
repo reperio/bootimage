@@ -96,6 +96,32 @@ for operand in fetch unpack build install; do
 done
 
 ##
+# GATHER THE SHARED OBJECTS
+#
+
+perl findso.pl ${STAGEDIR}
+
+# add a few additional manually
+
+ADDLLIBS="\
+ld-linux-x86-64.so.2 \
+libnss_compat.so.2 \
+libnss_dns.so.2 \
+libnss_files.so.2 \
+libresolv.so.2 \
+librt.so.1 \
+libuuid.so.1 \
+libnuma.so \
+libparted-1.8.so.2"
+
+for file in $ADDLLIBS; do
+  uri=$(/sbin/ldconfig -p | awk -F'> ' '{print $2}' | grep -m1 ${file})
+  if [ $uri ]; then
+    cp -pv --parents ${uri} ${STAGEDIR}
+  fii
+done
+
+##
 # COMPRESS INITRD FOR FOSS EDITION
 #
 
