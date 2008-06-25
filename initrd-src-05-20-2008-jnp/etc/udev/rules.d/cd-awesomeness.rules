@@ -1,8 +1,0 @@
-# import optical drive properties
-
-KERNEL=="sr[0-9]*|hd[a-z]|pcd[0-9]*", IMPORT{program}="/usr/local/bin/cdrom_id --export $tempnode"
-
-ACTION=="add", SUBSYSTEM=="block", ENV{GENERATED}!="?*", ENV{ID_CDROM}=="?*", \
-        SUBSYSTEMS!="usb|ieee1394", \
-        PROGRAM="/etc/udev/scripts/find_next_cd", SYMLINK+="%c"
-
