@@ -1,0 +1,21 @@
+##
+# Get a known-good copy of:
+# screen
+# 
+
+. ./functions
+
+FILENAME='screen-4.0.2.tar.gz'
+URL='ftp://mirrors.kernel.org/gnu/screen/screen-4.0.2.tar.gz'
+DIRNAME='screen-4.0.2'
+
+BINARIES="\
+screen"
+
+$1 $2
+
+if [ $? != 0 ]; then
+  printf 'Source control script %s failed on function %s' $0 $1
+  exit 1
+fi
+
