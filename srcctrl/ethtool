@@ -1,0 +1,21 @@
+##
+# Get a known-good copy of:
+# ethtool
+# 
+
+. ./functions
+
+FILENAME='ethtool-6.tar.gz'
+URL='http://internap.dl.sourceforge.net/sourceforge/gkernel/ethtool-6.tar.gz'
+DIRNAME='ethtool-6'
+
+BINARIES="\
+ethtool"
+
+$1 $2
+
+if [ $? != 0 ]; then
+  printf 'Source control script %s failed on function %s' $0 $1
+  exit 1
+fi
+
