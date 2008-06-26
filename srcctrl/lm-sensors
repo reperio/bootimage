@@ -12,6 +12,11 @@ DIRNAME='lm_sensors-3.0.2'
 BINARIES="\
 prog/sensors/sensors"
 
+build () {
+  make clean
+  make
+}
+
 $1 $2
 
 if [ $? != 0 ]; then
