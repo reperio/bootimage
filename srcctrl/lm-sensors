@@ -13,6 +13,7 @@ BINARIES="\
 prog/sensors/sensors"
 
 build () {
+  cd ${SRCDIR}/${DIRNAME}
   make clean
   make
 }
