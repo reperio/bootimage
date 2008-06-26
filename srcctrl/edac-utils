@@ -1,0 +1,22 @@
+##
+# Get a known-good copy of:
+# edac-utils
+# 
+
+. ./functions
+
+FILENAME='edac-utils-0.12.tar.bz2'
+URL=''http://internap.dl.sourceforge.net/sourceforge/edac-utils/edac-utils-0.12.tar.bz2
+DIRNAME='edac-utils-0.12'
+
+BINARIES="\
+src/util/edac-util \
+src/util/edac-ctl"
+
+$1 $2
+
+if [ $? != 0 ]; then
+  printf 'Source control script %s failed on function %s' $0 $1
+  exit 1
+fi
+
