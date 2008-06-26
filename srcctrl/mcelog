@@ -12,6 +12,11 @@ DIRNAME='mcelog-0.8pre'
 BINARIES="\
 mcelog"
 
+build () {
+  make clean
+  make
+}
+
 $1 $2
 
 if [ $? != 0 ]; then
