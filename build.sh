@@ -138,7 +138,7 @@ for file in $ADDLLIBS; do
   uri=$(/sbin/ldconfig -p | awk -F'> ' '{print $2}' | grep -m1 ${file})
   if [ $uri ]; then
     cp -pv --parents ${uri} ${STAGEDIR}
-  fii
+  fi
 done
 
 ##
