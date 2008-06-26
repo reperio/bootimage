@@ -44,7 +44,6 @@ simple_runparts () {
   _OPERAND=${2}
   for file in ${_DIR}/*; do
     if [ -x ${file} ]; then
-      cd ${TOPDIR}
       sh ${file} ${_OPERAND}
       if [ $? != 0 ]
       then
@@ -106,6 +105,7 @@ fi
 # Fetch, unpack, build and install
 #
 
+cd ${TOPDIR}
 for operand in fetch unpack build install; do
   simple_runparts ${TOPDIR}/srcctrl ${operand}
   if [ $? != 0 ]
