@@ -1,0 +1,21 @@
+##
+# Get a known-good copy of:
+# htop
+# 
+
+. ./functions
+
+FILENAME='htop-0.8.tar.gz'
+URL='http://internap.dl.sourceforge.net/sourceforge/htop/htop-0.8.tar.gz'
+DIRNAME='htop-0.8'
+
+BINARIES="\
+htop"
+
+$1 $2
+
+if [ $? != 0 ]; then
+  printf 'Source control script %s failed on function %s' $0 $1
+  exit 1
+fi
+
