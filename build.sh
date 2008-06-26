@@ -66,9 +66,16 @@ fi
 
 if [ $? != 0 ]; then
   echo 'Failed to create the stage directory.'
+  exit 1
 fi
 
-cp -av initrd.template/* ${STAGEDIR}
+cd ${STAGEDIR}
+tar -xvf ${TOPDIR}/initrd.template --strip 1
+
+if [ $? != 0 ]; then
+  echo 'Failed to copy template in to stage directory.'
+  exit 1
+fi
 
 if [ ! -d ${CDSTAGEDIR} ]; then
   mkdir ${CDSTAGEDIR}
@@ -78,16 +85,22 @@ fi
 
 if [ $? != 0 ]; then
   echo 'Failed to create the ISO stage directory.'
+  exit 1
 fi
 
-cp -av iso.template/* ${CDSTAGEDIR}
+cp -av ${TOPDIR}/iso.template/* ${CDSTAGEDIR}
+
+if [ $? != 0 ]; then
+  echo 'Failed to create the ISO stage directory.'
+  exit 1
+fi
 
 ##
 # Fetch, unpack, build and install
 #
 
 for operand in fetch unpack build install; do
-  simple_runparts srcctrl ${operand}
+  simple_runparts ${TOPDIR}/srcctrl ${operand}
   if [ $? != 0 ]
   then
     echo "Exiting due to error."
@@ -99,7 +112,7 @@ done
 # GATHER THE SHARED OBJECTS
 #
 
-perl findso.pl ${STAGEDIR}
+perl ${TOPDIR}/findso.pl ${STAGEDIR}
 
 # add a few additional manually
 
