@@ -13,6 +13,7 @@ BINARIES="\
 mcelog"
 
 build () {
+  cd ${SRCDIR}/${DIRNAME}
   make clean
   make
 }
