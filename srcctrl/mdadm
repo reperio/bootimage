@@ -1,0 +1,21 @@
+##
+# Get a known-good copy of:
+# mdadm
+# 
+
+. ./functions
+
+FILENAME='mdadm-2.6.7.tar.bz2'
+URL='http://www.kernel.org/pub/linux/utils/raid/mdadm/mdadm-2.6.7.tar.bz2'
+DIRNAME='mdadm-2.6.7'
+
+BINARIES="\
+mdadm"
+
+$1 $2
+
+if [ $? != 0 ]; then
+  printf 'Source control script %s failed on function %s' $0 $1
+  exit 1
+fi
+
