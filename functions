@@ -70,7 +70,7 @@ build () {
 install () {
   cd ${SRCDIR}/${DIRNAME}
   for file in ${BINARIES}; do
-    cp -vp ${file} ${STAGEDIR}/usr/local/bin
+    cp -vp ${file} ${STAGEDIR}/usr/bin
     if [ $? != 0 ]; then
       echo "Copying a required binary ${file} failed. Please check $0"
       return 1
@@ -78,7 +78,7 @@ install () {
   done
 
   for file in ${SBINARIES}; do
-    cp -vp ${file} ${STAGEDIR}/usr/local/sbin
+    cp -vp ${file} ${STAGEDIR}/usr/sbin
     if [ $? != 0 ]; then
       echo "Copying a required sbin binary ${file} failed. Please check $0"
       return 1
