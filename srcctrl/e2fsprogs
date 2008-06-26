@@ -1,0 +1,24 @@
+##
+# Get a known-good copy of:
+# e2fsprogs
+# 
+
+. ./functions
+
+FILENAME='e2fsprogs-1.40.11.tar.gz'
+URL='http://internap.dl.sourceforge.net/sourceforge/e2fsprogs/e2fsprogs-1.40.11.tar.gz'
+DIRNAME='e2fsprogs-1.40.11'
+
+BINARIES="\
+e2fsck/e2fsck \
+misc/badblocks \
+misc/mke2fs \
+misc/tune2fs"
+
+$1 $2
+
+if [ $? != 0 ]; then
+  printf 'Source control script %s failed on function %s' $0 $1
+  exit 1
+fi
+
