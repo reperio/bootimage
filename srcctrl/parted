@@ -1,0 +1,21 @@
+##
+# Get a known-good copy of:
+# parted
+# 
+
+. ./functions
+
+FILENAME='parted-1.8.8.tar.bz2'
+URL='http://ftp.gnu.org/gnu/parted/parted-1.8.8.tar.bz2'
+DIRNAME='parted-1.8.8'
+
+BINARIES="\
+parted/parted"
+
+$1 $2
+
+if [ $? != 0 ]; then
+  printf 'Source control script %s failed on function %s' $0 $1
+  exit 1
+fi
+
