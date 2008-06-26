@@ -1,0 +1,21 @@
+##
+# Get a known-good copy of:
+# lvm2
+# 
+
+. ./functions
+
+FILENAME='LVM2.2.02.38.tgz'
+URL='ftp://sources.redhat.com/pub/lvm2/LVM2.2.02.38.tgz'
+DIRNAME='LVM2.2.02.38'
+
+BINARIES="\
+tools/lvm"
+
+$1 $2
+
+if [ $? != 0 ]; then
+  printf 'Source control script %s failed on function %s' $0 $1
+  exit 1
+fi
+
