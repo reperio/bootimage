@@ -1,0 +1,21 @@
+##
+# Get a known-good copy of:
+# mcelog
+# 
+
+. ./functions
+
+FILENAME='mcelog-0.8pre.tar.gz'
+URL='ftp://ftp.x86-64.org/pub/linux/tools/mcelog/mcelog-0.8pre.tar.gz'
+DIRNAME='mcelog-0.8pre'
+
+BINARIES="\
+mcelog"
+
+$1 $2
+
+if [ $? != 0 ]; then
+  printf 'Source control script %s failed on function %s' $0 $1
+  exit 1
+fi
+
