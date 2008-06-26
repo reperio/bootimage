@@ -1,0 +1,21 @@
+##
+# Get a known-good copy of:
+# pciutils
+# 
+
+. ./functions
+
+FILENAME='pciutils-3.0.0.tar.gz'
+URL='ftp://atrey.karlin.mff.cuni.cz/pub/linux/pci/pciutils-3.0.0.tar.gz'
+DIRNAME='pciutils-3.0.0'
+
+BINARIES="\
+lspci"
+
+$1 $2
+
+if [ $? != 0 ]; then
+  printf 'Source control script %s failed on function %s' $0 $1
+  exit 1
+fi
+
