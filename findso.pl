@@ -13,14 +13,26 @@ my %libs;
 
 for my $i (@exefiles) {
 
+	#print "Looking at $i\n";
+
 	open(LDD, "ldd $i |") || die "$!";
 	while (my $line = <LDD>) {
 		chomp $line;
-		if ($line =~ /\=\>/) {
+		if ( ($line =~ /\=\>/) || ($line =~/^\s+\//)) {
 			$line =~ s/\([^\)]+\)//g;
 			my ($short, $libpath) = split(/ \=\> /, $line);
 
-			if ($libpath =~ /^\//) {
+			$short =~ s/^\s+//g;
+			$short =~ s/\s+$//g;
+
+			$libpath =~ s/^\s+//g;
+			$libpath =~ s/\s+$//g;
+
+			if ($short =~ /^\s*\//) {
+				#print "SHORT = $short\n";
+				$libs{$short} = 1;
+			}
+			elsif ($libpath =~ /^\//) {
 				$libs{$libpath} = 1;
 			}
 		}
