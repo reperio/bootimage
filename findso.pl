@@ -9,9 +9,10 @@ if (!$PATH) {
 
 my %libs;
 
-while ($i = <$PATH/usr/local/bin/*>) {
+@exefiles = `find $PATH -type f -perm /u+x -print`;
 
-	#print "Finding shared objects for $i\n";
+for my $i (@exefiles) {
+
 	open(LDD, "ldd $i |") || die "$!";
 	while (my $line = <LDD>) {
 		chomp $line;
