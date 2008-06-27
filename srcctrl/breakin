@@ -37,6 +37,18 @@ install () {
     exit 1
   fi
   
+  cp -vp src/breakin/cryptpasswd ${STAGEDIR}/usr/local/bin/cryptpasswd
+  if [ $? != 0 ]; then
+    echo "Copy breakin cryptpasswd failed. Please check $0"
+    exit 1
+  fi
+  
+  cp -vp src/breakin/hpl_calc_n ${STAGEDIR}/usr/local/bin/hpl_calc_n
+  if [ $? != 0 ]; then
+    echo "Copy breakin cryptpasswd failed. Please check $0"
+    exit 1
+  fi
+  
   #FIXME the worst part of this project
   #cp -vpr src/breakin/breakin_stage/* ${STAGEDIR}/usr/local/breakin/
   #if [ $? != 0 ]; then
