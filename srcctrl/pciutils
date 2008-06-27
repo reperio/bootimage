@@ -12,6 +12,12 @@ DIRNAME='pciutils-3.0.0'
 BINARIES="\
 lspci"
 
+build () {
+  cd ${SRCDIR}/${DIRNAME}
+  make clean
+  make
+}
+
 $1 $2
 
 if [ $? != 0 ]; then
