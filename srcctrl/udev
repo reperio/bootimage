@@ -11,6 +11,9 @@ DIRNAME='udev-124'
 
 BINARIES="\
 udevadm \
+extras/volume_id/vol_id \
+extras/cdrom_id/cdrom_id \
+extras/scsi_id/scsi_id \
 extras/path_id/path_id \
 extras/firmware/firmware.sh"
 
@@ -21,6 +24,7 @@ build () {
   cd ${SRCDIR}/${DIRNAME}
   make clean
   make
+  make EXTRAS="extras/cdrom_id extras/scsi_id extras/volume_id"
 }
 
 $1 $2
