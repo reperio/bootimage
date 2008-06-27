@@ -47,7 +47,7 @@ unpack () {
   fi
 
   cd ${SRCDIR}
-  if [ ${FILENAME} == ${FILENAME%bz2} ]; then
+  if [ ${FILENAME} = ${FILENAME%bz2} ]; then
     tar xvzf ${FILENAME}
     if [ $? != 0 ]; then
       return 1
