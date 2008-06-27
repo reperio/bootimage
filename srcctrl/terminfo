@@ -1,0 +1,43 @@
+##
+# Get a known-good copy of:
+# SOMEPROGRAM
+# 
+
+. ./functions
+
+FILENAME=''
+URL=''
+DIRNAME=''
+
+BINARIES=""
+
+SBINARIES=""
+
+##
+# If you want to to override the default behavior, uncomment these functions
+#
+
+fetch () { 
+  echo "Nothing to fetch for terminfo"
+}
+
+unpack () {
+  echo "Nothing to unpack for terminfo"
+}
+
+build () {
+  echo "Nothing to build for terminfo"
+}
+
+install () {
+  mkdir -p ${STAGEDIR}/usr/share/terminfo
+  cp -Lr /usr/share/terminfo/* ${STAGEDIR}/usr/share/terminfo
+}
+
+$1 $2
+
+if [ $? != 0 ]; then
+  printf 'Source control script %s failed on function %s' $0 $1
+  exit 1
+fi
+
