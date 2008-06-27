@@ -13,9 +13,14 @@ BINARIES="\
 prog/sensors/sensors"
 
 build () {
+  checkdone
   cd ${SRCDIR}/${DIRNAME}
   make clean
   make
+  if [ $? != 0 ]; then
+    return 1
+  fi
+  markdone
 }
 
 $1 $2

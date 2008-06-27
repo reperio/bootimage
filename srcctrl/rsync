@@ -12,17 +12,6 @@ DIRNAME='rsync-3.0.2'
 BINARIES="\
 rsync"
 
-#build () {
-#  cd ${SRCDIR}/${DIRNAME}
-#  ./autogen.sh ${CONFIGOPTIONS}
-#  make
-#  make anothertask
-#}
-
-#install () {
-#  cp -pv ${SRCDIR}/${DIRNAME}/somebinary #{STAGEDIR}/path/to/bin
-#}
-
 $1 $2
 
 if [ $? != 0 ]; then

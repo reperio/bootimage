@@ -21,10 +21,18 @@ SBINARIES="\
 udevd"
 
 build () {
+  checkdone
   cd ${SRCDIR}/${DIRNAME}
   make clean
   make
+  if [ $? != 0 ]; then
+    return 1
+  fi
   make EXTRAS="extras/cdrom_id extras/scsi_id extras/volume_id"
+  if [ $? != 0 ]; then
+    return 1
+  fi
+  markdone
 }
 
 $1 $2

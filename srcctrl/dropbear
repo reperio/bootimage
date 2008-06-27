@@ -10,27 +10,17 @@ URL='http://matt.ucc.asn.au/dropbear/releases/dropbear-0.51.tar.bz2'
 DIRNAME='dropbear-0.51'
 SBINARIES='dropbear'
 
-##
-# If you want to to override the default behavior, uncomment these functions
-#
-
-#fetch () { 
-#  get ${URL}
-#  get someOtherURL
-#}
-
-#unpack () {
-#  cd ${SRCDIR}
-#  tar xvzf ${FILENAME}
-#  cd ${DIRNAME}
-#}
-
 build () {
+  checkdone
   cd ${SRCDIR}/${DIRNAME}
   ./configure  --disable-syslog --disable-shadow --disable-lastlog \
       --disable-utmp --disable-utmpx --disable-wtmp --disable-wtmpx \
       --disable-pututline --disable-pututxline
   make
+  if [ $? != 0 ]; then
+    return 1
+  fi
+  markdone
 }
 
 $1 $2

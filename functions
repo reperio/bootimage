@@ -60,7 +60,25 @@ unpack () {
   fi
 }
 
+checkdone () {
+  #  short ciruit a build operation on the calling script
+  if [ -f ${SRCDIR}/${DIRNAME}/.buildfoo ]; then
+    BUILDFOO=$(cat ${SRCDIR}/${DIRNAME}/.buildfoo)
+    if [ ${CONFIGOPTIONS} ]; then
+      if [ ${CONFIGOPTIONS} = ${BUILDFOO} ]; then
+        exit 0
+      fi
+    fi
+    exit 0
+  fi
+}
+
+markdone () {
+  echo ${CONFIGOPTIONS} > ${SRCDIR}/${DIRNAME}/.buildfoo
+}
+
 build () {
+  checkdone
   cd ${SRCDIR}/${DIRNAME}
   ./configure ${CONFIGOPTIONS}
   if [ $? != 0 ]; then
@@ -71,6 +89,7 @@ build () {
   if [ $? != 0 ]; then
     return 1
   fi
+  markdone
 }
 
 install () {
