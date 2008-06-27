@@ -15,7 +15,7 @@ parted/parted"
 build () {
   cd ${SRCDIR}/${DIRNAME}
   # make compatible with GCC 4.3
-  CFLAGS='-fgnu89-inline' ./configure
+  CFLAGS='-fgnu89-inline' ./configure --without-readline
   if [ $? != 0 ]; then
     return 1
   fi
