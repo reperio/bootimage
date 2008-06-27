@@ -44,6 +44,6 @@ for my $i (@exefiles) {
 }
 
 foreach my $library (sort keys %libs) {
-	system("cp $library $PATH/$library");
+	system("cp --parents $library $PATH");
 	print $library . "\n";
 }
