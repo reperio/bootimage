@@ -141,6 +141,10 @@ for file in $ADDLLIBS; do
   fi
 done
 
+# create the ld library cache
+
+ldconfig -r ${STAGEDIR} -f /etc/ld.so.conf -C /etc/ld.so.cache
+
 ##
 # COMPRESS INITRD FOR FOSS EDITION
 #
