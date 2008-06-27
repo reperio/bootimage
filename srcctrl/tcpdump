@@ -1,0 +1,32 @@
+##
+# Get a known-good copy of:
+# tcpdump
+# 
+
+. ./functions
+
+FILENAME='tcpdump-3.9.8.tar.gz'
+URL='http://www.tcpdump.org/release/tcpdump-3.9.8.tar.gz'
+DIRNAME='tcpdump-3.9.8'
+
+BINARIES="\
+tcpdump"
+
+#build () {
+#  cd ${SRCDIR}/${DIRNAME}
+#  ./autogen.sh ${CONFIGOPTIONS}
+#  make
+#  make anothertask
+#}
+
+#install () {
+#  cp -pv ${SRCDIR}/${DIRNAME}/somebinary #{STAGEDIR}/path/to/bin
+#}
+
+$1 $2
+
+if [ $? != 0 ]; then
+  printf 'Source control script %s failed on function %s' $0 $1
+  exit 1
+fi
+

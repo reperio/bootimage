@@ -1,0 +1,33 @@
+##
+# Get a known-good copy of:
+# udpcast
+# 
+
+. ./functions
+
+FILENAME='udpcast-20071228.tar.gz'
+URL='http://udpcast.linux.lu/download/udpcast-20071228.tar.gz'
+DIRNAME='udpcast-20071228'
+
+BINARIES="\
+udp-receiver \
+udp-sender"
+
+#build () {
+#  cd ${SRCDIR}/${DIRNAME}
+#  ./autogen.sh ${CONFIGOPTIONS}
+#  make
+#  make anothertask
+#}
+
+#install () {
+#  cp -pv ${SRCDIR}/${DIRNAME}/somebinary #{STAGEDIR}/path/to/bin
+#}
+
+$1 $2
+
+if [ $? != 0 ]; then
+  printf 'Source control script %s failed on function %s' $0 $1
+  exit 1
+fi
+

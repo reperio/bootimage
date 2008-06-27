@@ -1,0 +1,32 @@
+##
+# Get a known-good copy of:
+# SOMEPROGRAM
+# 
+
+. ./functions
+
+FILENAME='smartmontools-5.38.tar.gz'
+URL='http://internap.dl.sourceforge.net/sourceforge/smartmontools/smartmontools-5.38.tar.gz'
+DIRNAME='smartmontools-5.38'
+
+BINARIES="\
+smartctl"
+
+#build () {
+#  cd ${SRCDIR}/${DIRNAME}
+#  ./autogen.sh ${CONFIGOPTIONS}
+#  make
+#  make anothertask
+#}
+
+#install () {
+#  cp -pv ${SRCDIR}/${DIRNAME}/somebinary #{STAGEDIR}/path/to/bin
+#}
+
+$1 $2
+
+if [ $? != 0 ]; then
+  printf 'Source control script %s failed on function %s' $0 $1
+  exit 1
+fi
+
