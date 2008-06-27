@@ -12,6 +12,12 @@ DIRNAME='mdadm-2.6.7'
 BINARIES="\
 mdadm"
 
+build () {
+  cd ${SRCDIR}/${DIRNAME}
+  make clean
+  make
+}
+
 $1 $2
 
 if [ $? != 0 ]; then
