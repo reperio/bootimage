@@ -12,7 +12,7 @@ DIRNAME='busybox-1.10.4'
 build () {
   checkdone
   cd ${SRCDIR}/${DIRNAME}
-  make defconfig
+  cp ${TOPDIR}/patches/busybox.config ./.config
   make
   if [ $? != 0 ]; then
     echo "Building busybox failed."
