@@ -10,18 +10,7 @@ URL='http://ftp.gnu.org/gnu/wget/wget-1.11.3.tar.bz2'
 DIRNAME='wget-1.11.3'
 
 BINARIES="\
-wget"
-
-#build () {
-#  cd ${SRCDIR}/${DIRNAME}
-#  ./autogen.sh ${CONFIGOPTIONS}
-#  make
-#  make anothertask
-#}
-
-#install () {
-#  cp -pv ${SRCDIR}/${DIRNAME}/somebinary #{STAGEDIR}/path/to/bin
-#}
+src/wget"
 
 $1 $2
 
