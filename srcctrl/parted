@@ -13,6 +13,7 @@ BINARIES="\
 parted/parted"
 
 build () {
+  checkdone
   cd ${SRCDIR}/${DIRNAME}
   # make compatible with GCC 4.3
   CFLAGS='-fgnu89-inline' ./configure
@@ -20,6 +21,10 @@ build () {
     return 1
   fi
   make
+  if [ $? != 0 ]; then
+    return 1
+  fi
+  markdone
 }
 
 $1 $2

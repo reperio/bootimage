@@ -11,25 +11,15 @@ DIRNAME='syslinux-3.63'
 BINARIES=''
 SBINARIES=''
 
-##
-# If you want to to override the default behavior, uncomment these functions
-#
-
-#fetch () { 
-#  get ${URL}
-#  get someOtherURL
-#}
-
-#unpack () {
-#  cd ${SRCDIR}
-#  tar xvjf ${FILENAME}
-#  cd ${DIRNAME}
-#  svn up
-#}
-
 build () {
+  checkdone
   cd ${SRCDIR}/${DIRNAME}
+  make clean
   make
+  if [ $? != 0 ]; then
+    return 1
+  fi
+  markdone
 }
 
 install () {

@@ -19,8 +19,13 @@ unpack () {
 }
 
 build () {
+  checkdone
   cd ${SRCDIR}/${DIRNAME}
   make
+  if [ $? != 0 ]; then
+    return 1
+  fi
+  markdone
 }
 
 $1 $2

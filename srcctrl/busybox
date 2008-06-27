@@ -10,6 +10,7 @@ URL='http://busybox.net/downloads/busybox-1.10.4.tar.bz2'
 DIRNAME='busybox-1.10.4'
 
 build () {
+  checkdone
   cd ${SRCDIR}/${DIRNAME}
   make defconfig
   make
@@ -17,6 +18,7 @@ build () {
     echo "Building busybox failed."
     return 1
   fi
+  markdone
 }
 
 install () {
