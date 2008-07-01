@@ -31,7 +31,7 @@ build () {
 
 install () {
   mkdir -p ${STAGEDIR}/usr/share/terminfo
-  cp -Lr /usr/share/terminfo/* ${STAGEDIR}/usr/share/terminfo
+  cp -LPr /lib/terminfo/* ${STAGEDIR}/lib/terminfo/
 }
 
 $1 $2

@@ -69,6 +69,19 @@ if [ $? != 0 ]; then
 fi
 
 cd ${STAGEDIR}
+SKEL='usr usr/bin usr/local usr/local/bin usr/lib usr/share usr/src tmp lib lib/terminfo var var/lib var/log etc'
+for dir in $SKEL; do
+  mkdir ${dir}
+  if [ $? != 0 ]; then
+    echo "Failed to create a required directory in the target stage.\n"
+    exit 1
+  fi
+done
+chmod +t tmp
+if [ $? != 0 ]; then
+  echo "Failed to sticky bit on tmp.\n"
+  exit 1
+fi
 
 if [ ! -d ${CDSTAGEDIR} ]; then
   mkdir ${CDSTAGEDIR}
