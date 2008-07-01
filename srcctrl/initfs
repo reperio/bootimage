@@ -23,7 +23,7 @@ build () {
 
 install () {
   cd ${SRCDIR}/${DIRNAME}
-  make install INSTALLPREFIX=${SRCDIR}/${DIRNAME}
+  make install INSTALLPREFIX=${STAGEDIR}
 }
 
 $1 $2
