@@ -69,19 +69,6 @@ if [ $? != 0 ]; then
 fi
 
 cd ${STAGEDIR}
-tar -xvf ${TOPDIR}/initrd.template --strip 1
-
-if [ $? != 0 ]; then
-  echo 'Failed to copy template in to stage directory.'
-  exit 1
-fi
-
-tar -xvf ${TOPDIR}/devfiles.tgz
-
-if [ $? != 0 ]; then
-  echo 'Failed to create dev directory in to stage directory.'
-  exit 1
-fi
 
 if [ ! -d ${CDSTAGEDIR} ]; then
   mkdir ${CDSTAGEDIR}
