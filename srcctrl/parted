@@ -27,6 +27,11 @@ build () {
   markdone
 }
 
+install () {
+  cd ${SRCDIR}/${DIRNAME}
+  make install prefix=${STAGEDIR}/usr
+}
+
 $1 $2
 
 if [ $? != 0 ]; then
