@@ -39,25 +39,39 @@ git_fetch () {
 }
 
 
-unpack () {
+untar () {
+  _FILENAME=$1
+  _DIRNAME=$2
+  
   # skip it if already extracted
-  if [ -d ${SRCDIR}/${DIRNAME} ]
+  if [ -d ${SRCDIR}/${_DIRNAME} ]
   then
     return 0
   fi
 
   cd ${SRCDIR}
-  if [ ${FILENAME} = ${FILENAME%bz2} ]; then
-    tar xvzf ${FILENAME}
+  if [ ${_FILENAME} = ${_FILENAME%bz2} ]; then
+    tar xvzf ${_FILENAME}
     if [ $? != 0 ]; then
       return 1
     fi
   else
-    tar xvjf ${FILENAME}
+    tar xvjf ${_FILENAME}
     if [ $? != 0 ]; then
       return 1
     fi
   fi
+}
+
+unpack () {
+  if [ $1 ]; then
+    _FILENAME=$1
+    _DIRNAME=$2
+  else
+    _FILENAME=${FILENAME}
+    _DIRNAME=${DIRNAME}
+  fi
+  untar ${_FILENAME} ${_DIRNAME}
 }
 
 checkdone () {
