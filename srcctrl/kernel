@@ -10,21 +10,22 @@ URL='http://www.kernel.org/pub/linux/kernel/v2.6/linux-2.6.25.9.tar.bz2'
 DIRNAME='linux-2.6.25.9'
 KERNELVER='2.6.25'
 
-##
-# If you want to to override the default behavior, uncomment these functions
-#
+fetch () { 
+  get ${URL}
+  svn checkout https://bluesmoke.svn.sourceforge.net/svnroot/bluesmoke/trunk/edac ${SRCDIR}/edac
+}
 
-#fetch () { 
-#  get ${URL}
-#  get someOtherURL
-#}
-
-#unpack () {
-#  cd ${SRCDIR}
-#  tar xvjf ${FILENAME}
-#  cd ${DIRNAME}
-#  svn up
-#}
+unpack () {
+  untar ${FILENAME} ${DIRNAME}
+  if [ $? != 0 ]
+  then
+    echo "Unpacking kernel tarball failed."
+    return 1
+  fi  
+  ln -s ${SRCDIR}/edac/patches/series.${KERNELVER} ${SRCDIR}/${DIRNAME}/series
+  ln -s ${SRCDIR}/edac/patches ${SRCDIR}/${DIRNAME}/patches
+  return 0
+}
 
 build () {
   if [ ! -f ${SRCDIR}/${DIRNAME}/.config ]
@@ -38,16 +39,45 @@ build () {
     cp ${PATCHDIR}/kernel.${ARCH}.config ${SRCDIR}/${DIRNAME}/.config
     cd ${SRCDIR}/${DIRNAME}
 
+    quilt push -a
+    #if [ $? != 0 ]
+    #then
+    #  echo "Patching in EDAC failed."
+    #  return 1
+    #fi
+
     make clean
     make oldconfig
+    if [ $? != 0 ]
+    then
+      echo "Converting provided config file failed."
+      return 1
+    fi
+    
     make bzImage
+    if [ $? != 0 ]
+    then
+      echo "Building kernel failed."
+      return 1
+    fi
+    
     make modules
+    if [ $? != 0 ]
+    then
+      echo "Building modules failed."
+      return 1
+    fi
   fi
 }
 
 install () {
   cd ${SRCDIR}/${DIRNAME}
   make modules_install INSTALL_MOD_PATH=${STAGEDIR}
+  if [ $? != 0 ]
+  then
+    echo "Installing compiled modules to stage failed."
+    return 1
+  fi
   rm ${STAGEDIR}/lib/modules/${KERNELVER}-${ARCH}/build
   rm ${STAGEDIR}/lib/modules/${KERNELVER}-${ARCH}/source
   cp arch/${ARCH}/boot/bzImage ${TOPDIR}/dist/kernel-${VERSION}
