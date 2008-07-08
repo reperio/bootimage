@@ -39,7 +39,7 @@ build () {
     cp ${PATCHDIR}/kernel.${ARCH}.config ${SRCDIR}/${DIRNAME}/.config
     cd ${SRCDIR}/${DIRNAME}
 
-    quilt push -a
+    quilt push -af
     #if [ $? != 0 ]
     #then
     #  echo "Patching in EDAC failed."
