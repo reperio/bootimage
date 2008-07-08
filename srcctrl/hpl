@@ -1,0 +1,132 @@
+##
+# Get a known-good copy of:
+# hpl
+# 
+
+if [ ${ARCH} = "x86" ]; then
+  ACML=acml-4-1-0-gfortran-32bit.tgz
+  ACMLSUB=contents-acml-4-1-0-gfortran-32bit.tgz
+else
+  ACML=acml-4-1-0-gfortran-64bit.tgz
+  ACMLSUB=contents-acml-4-1-0-gfortran-64bit.tgz
+fi
+
+. ./functions
+
+fetch () { 
+  get http://www-unix.mcs.anl.gov/mpi/mpich1/downloads/mpich.tar.gz
+  if [ $? != 0 ]; then
+    return 1
+  fi
+  get http://www.netlib.org/benchmark/hpl/hpl.tgz
+  if [ $? != 0 ]; then
+    return 1
+  fi
+  
+  if [ ! -e ${SRCDIR}/${ACML} ]; then
+    echo "The AMD Core Math Library is missing. Due to dist. restrictions, you must obtain this tarball manually. Check out http://www.amd.com/acml -- this library is required to actually place AMD CPU's under a sufficient level of stress as to reveal any defects. File missing is ${SRCDIR}/${ACML}"
+    return 1
+  fi
+}
+
+unpack () {
+  cd ${SRCDIR}
+  
+  untar mpich.tar.gz mpich-1.2.7p1
+  if [ $? != 0 ]; then
+    return 1
+  fi
+  
+  untar hpl.tgz hpl
+  if [ $? != 0 ]; then
+    return 1
+  fi
+  
+  untar ${ACML} ACML-EULA.txt
+  if [ $? != 0 ]; then
+    return 1
+  fi
+  
+  untar ${ACMLSUB} ReleaseNotes
+}
+
+build () {
+  cd ${SRCDIR}/mpich-1.2.7p1
+  if [ ! -e config.log ]; then
+    ./configure --with-device=ch_shmem --prefix=/usr/local/bootimage-mpich
+    if [ $? != 0 ]; then
+      return 1
+    fi
+    
+    make
+    if [ $? != 0 ]; then
+      return 1
+    fi
+  fi
+  
+  cd ${SRCDIR}/mpich-1.2.7p1  
+  make install
+  if [ $? != 0 ]; then
+    return 1
+  fi
+  # these two add about 10MB to the uncompressed ramfs
+  rm -rf /usr/local/bootimage-mpich/doc
+  rm -rf /usr/local/bootimage-mpich/man
+  
+  cd ${SRCDIR}/hpl
+  
+  cp -v ${TOPDIR}/patches/Make.Linux* ./
+  
+  if [ ${ARCH} = "x86" ]; then
+    # Build AMD against ACML
+    make arch=Linux_AMD_32
+    if [ $? != 0 ]; then
+      return 1
+    fi
+    
+    # Build Intel against MKL
+    #make arch=Linux_Intel_32
+    #if [ $? != 0 ]; then
+    #  return 1
+    #fi
+  else
+    # Build AMD against ACML
+    make arch=Linux_AMD_64
+    if [ $? != 0 ]; then
+      return 1
+    fi
+    
+    # Build Intel against MKL
+    #make arch=Linux_Intel_64
+    #if [ $? != 0 ]; then
+    #  return 1
+    #fi
+  fi
+}
+
+install () {
+  # this is insanely stupid but required because mpiinstall hard-codes
+  # the paths to everything inside the supporting MPI scripts
+  mv -v /usr/local/bootimage-mpich ${STAGEDIR}/usr/local
+  if [ $? != 0 ]; then
+    return 1
+  fi
+  
+  if [ ${ARCH} = "x86" ]; then
+    cp -av ${SRCDIR}/hpl/bin/Linux_AMD_32/xhpl ${STAGEDIR}/usr/local/bin/xhpl.amd
+    cp -av ${SRCDIR}/hpl/bin/Linux_Intel_32/xhpl ${STAGEDIR}/usr/local/bin/xhpl.intel
+    return 0 #FIXME
+  else
+    cp -av ${SRCDIR}/hpl/bin/Linux_AMD_64/xhpl ${STAGEDIR}/usr/local/bin/xhpl.amd
+    cp -av ${SRCDIR}/hpl/bin/Linux_Intel_64/xhpl ${STAGEDIR}/usr/local/bin/xhpl.intel
+    return 0 #FIXME
+  fi
+}
+
+$1 $2
+
+if [ $? != 0 ]; then
+  printf 'Source control script %s failed on function %s\n' $0 $1
+  exit 1
+fi
+
