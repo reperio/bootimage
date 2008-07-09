@@ -94,7 +94,7 @@ MPlib        = $(MPdir)/lib/libmpich.a
 #
 LAdir        = $(shell echo $$SRCDIR)/mkl/lib/em64t
 LAinc        = 
-LAlib        = $(LAdir)/libmkl_em64t.a
+LAlib        = -L$(LAdir) -lmkl -lguide -lpthread -lm
 #
 # ----------------------------------------------------------------------
 # - F77 / C interface --------------------------------------------------
