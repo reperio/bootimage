@@ -8,13 +8,19 @@
 # 'fetch', 'unpack', 'build', and 'install' successively
 #
 
-while getopts c: name
+ACMLVER='_mp'
+export ACMLVER
+
+while getopts gc: name
 do
   case ${name} in
+  a)  ACMLVER=''
+      export ACMLVER
+      printf 'ACML set to non-OpenMP; GCC 4.1 required!' ${ACMLVER};;
   c)  CONFIGOPTIONS=$OPTARG
       export CONFIGOPTIONS
-      printf 'Global configure options set to %s' ${CONFIGOPTIONS};;
-  ?)  printf "Usage: %s: [-i] initrd_version kernel_version" $0
+      printf 'Global configure options set to %s\n' ${CONFIGOPTIONS};;
+  ?)  printf "Usage: %s: [-a] [-c configure_opts]\n" $0
       exit 1;;
   esac
 done
