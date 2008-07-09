@@ -6,9 +6,11 @@
 if [ ${ARCH} = "x86" ]; then
   ACML=acml-4-1-0-gfortran-32bit.tgz
   ACMLSUB=contents-acml-4-1-0-gfortran-32bit.tgz
+  MKL=mkl/lib/32
 else
   ACML=acml-4-1-0-gfortran-64bit.tgz
   ACMLSUB=contents-acml-4-1-0-gfortran-64bit.tgz
+  MKL=mkl/lib/em64t
 fi
 
 . ./functions
@@ -27,7 +29,13 @@ fetch () {
     echo "The AMD Core Math Library is missing. Due to dist. restrictions, you must obtain this tarball manually. Check out http://www.amd.com/acml -- this library is required to actually place AMD CPU's under a sufficient level of stress as to reveal any defects. File missing is ${SRCDIR}/${ACML}"
     return 1
   fi
+  
+  if [ ! -d ${SRCDIR}/${MKL} ]; then
+    echo "The Intel MKL is missing. Due to dist. restrictions, you must obtain this tarball manually. Check out http://www.intel.com/products/software -- this library is required to actually place Intel CPU's under a sufficient level of stress as to reveal any defects. When running their installer (install.sh), set the prefix to ${SRCDIR}/mkl. File missing is ${SRCDIR}/${MKL}"
+    return 1
+  fi
 }
+
 
 unpack () {
   cd ${SRCDIR}
@@ -85,10 +93,10 @@ build () {
     fi
     
     # Build Intel against MKL
-    #make arch=Linux_Intel_32
-    #if [ $? != 0 ]; then
-    #  return 1
-    #fi
+    make arch=Linux_Intel_32
+    if [ $? != 0 ]; then
+      return 1
+    fi
   else
     # Build AMD against ACML
     make arch=Linux_AMD_64
@@ -97,10 +105,10 @@ build () {
     fi
     
     # Build Intel against MKL
-    #make arch=Linux_Intel_64
-    #if [ $? != 0 ]; then
-    #  return 1
-    #fi
+    make arch=Linux_Intel_64
+    if [ $? != 0 ]; then
+      return 1
+    fi
   fi
 }
 
@@ -115,11 +123,9 @@ install () {
   if [ ${ARCH} = "x86" ]; then
     cp -av ${SRCDIR}/hpl/bin/Linux_AMD_32/xhpl ${STAGEDIR}/usr/local/bin/xhpl.amd
     cp -av ${SRCDIR}/hpl/bin/Linux_Intel_32/xhpl ${STAGEDIR}/usr/local/bin/xhpl.intel
-    return 0 #FIXME
   else
     cp -av ${SRCDIR}/hpl/bin/Linux_AMD_64/xhpl ${STAGEDIR}/usr/local/bin/xhpl.amd
     cp -av ${SRCDIR}/hpl/bin/Linux_Intel_64/xhpl ${STAGEDIR}/usr/local/bin/xhpl.intel
-    return 0 #FIXME
   fi
 }
 
