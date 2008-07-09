@@ -61,13 +61,13 @@ TOUCH        = touch
 # - Platform identifier ------------------------------------------------
 # ----------------------------------------------------------------------
 #
-ARCH         = Linux_Intel
+ARCH         = Linux_Intel_64
 #
 # ----------------------------------------------------------------------
 # - HPL Directory Structure / HPL library ------------------------------
 # ----------------------------------------------------------------------
 #
-TOPdir       = $(HOME)/hpl
+TOPdir       = $(shell echo $$SRCDIR)/hpl
 INCdir       = $(TOPdir)/include
 BINdir       = $(TOPdir)/bin/$(ARCH)
 LIBdir       = $(TOPdir)/lib/$(ARCH)
@@ -92,9 +92,9 @@ MPlib        = $(MPdir)/lib/libmpich.a
 # header files,  LAlib  is defined  to be the name of  the library to be
 # used. The variable LAdir is only used for defining LAinc and LAlib.
 #
-LAdir        = $${SRCDIR}/mkl
-LAinc        = $(LAdir)/include
-LAlib        = $(LAdir)/libmkl.a
+LAdir        = $(shell echo $$SRCDIR)/mkl/lib/em64t
+LAinc        = 
+LAlib        = $(LAdir)/libmkl_em64t.a
 #
 # ----------------------------------------------------------------------
 # - F77 / C interface --------------------------------------------------
@@ -173,7 +173,7 @@ CCFLAGS      = $(HPL_DEFS) -fomit-frame-pointer -O3 -funroll-loops -W -Wall
 # On some platforms,  it is necessary  to use the Fortran linker to find
 # the Fortran internals used in the BLAS library.
 #
-LINKER       = /usr/bin/gfortran
+LINKER       = /usr/bin/gcc
 LINKFLAGS    = $(CCFLAGS)
 #
 ARCHIVER     = ar
