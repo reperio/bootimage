@@ -32,6 +32,9 @@ build () {
 install () {
   mkdir -p ${STAGEDIR}/usr/share/terminfo
   cp -LPr /lib/terminfo/* ${STAGEDIR}/lib/terminfo/
+  if [ $? != 0 ]; then
+    cp -av /etc/termcap ${STAGEDIR}/etc/
+  fi
 }
 
 $1 $2
