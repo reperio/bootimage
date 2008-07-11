@@ -95,7 +95,7 @@ MPlib        = $(MPdir)/lib/libmpich.a
 LAdir        = $(shell echo $$SRCDIR)/gfortran32$(shell echo $$ACMLVER)
 #LAinc        = $(LAdir)/include/acml.h
 LAinc        = 
-LAlib        = $(LAdir)/lib/libacml_mp.a
+LAlib        = $(LAdir)/lib/libacml$(shell echo $$ACMLVER).a
 #
 # ----------------------------------------------------------------------
 # - F77 / C interface --------------------------------------------------
@@ -168,11 +168,11 @@ HPL_DEFS     = $(F2CDEFS) $(HPL_OPTS) $(HPL_INCLUDES)
 # - Compilers / linkers - Optimization flags ---------------------------
 # ----------------------------------------------------------------------
 #
-CC           = /usr/bin/gcc-4.2
+CC           = /usr/bin/gcc
 CCNOOPT      = $(HPL_DEFS)
 CCFLAGS      = $(HPL_DEFS) -fomit-frame-pointer -O3 -funroll-loops -W -Wall
 #
-LINKER       = /usr/bin/gfortran-4.2
+LINKER       = /usr/bin/gfortran
 LINKFLAGS    = $(CCFLAGS) -lgomp
 #
 ARCHIVER     = ar
