@@ -11,7 +11,7 @@
 ACMLVER='_mp'
 export ACMLVER
 
-while getopts gc: name
+while getopts ac: name
 do
   case ${name} in
   a)  ACMLVER=''
