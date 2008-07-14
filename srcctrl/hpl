@@ -27,7 +27,11 @@ fetch () {
   
   if [ ! -e ${SRCDIR}/${ACML} ]; then
     echo "The AMD Core Math Library is missing. Due to dist. restrictions, you must obtain this tarball manually. Check out http://www.amd.com/acml -- this library is required to actually place AMD CPU's under a sufficient level of stress as to reveal any defects. File missing is ${SRCDIR}/${ACML}"
-    return 1
+    if [ ${DISABLEAMD} ]; then
+      echo "AMD disabled; ignoring."
+    else
+      return 1
+    fi
   fi
   
   if [ ! -d ${SRCDIR}/${MKL} ]; then
@@ -52,10 +56,21 @@ unpack () {
   
   untar ${ACML} ACML-EULA.txt
   if [ $? != 0 ]; then
-    return 1
+    if [ ${DISABLEAMD} ]; then
+      echo "AMD disabled; ignoring."
+    else
+      return 1
+    fi
   fi
   
   untar ${ACMLSUB} ReleaseNotes
+  if [ $? != 0 ]; then
+    if [ ${DISABLEAMD} ]; then
+      echo "AMD disabled; ignoring."
+    else
+      return 1
+    fi
+  fi
 }
 
 build () {
@@ -89,7 +104,11 @@ build () {
     # Build AMD against ACML
     make arch=Linux_AMD_32
     if [ $? != 0 ]; then
-      return 1
+      if [ ${DISABLEAMD} ]; then
+        echo "AMD disabled; ignoring."
+      else
+        return 1
+      fi
     fi
     
     # Build Intel against MKL
@@ -101,7 +120,11 @@ build () {
     # Build AMD against ACML
     make arch=Linux_AMD_64
     if [ $? != 0 ]; then
-      return 1
+      if [ ${DISABLEAMD} ]; then
+        echo "AMD disabled; ignoring."
+      else
+        return 1
+      fi
     fi
     
     # Build Intel against MKL

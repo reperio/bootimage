@@ -8,18 +8,15 @@
 # 'fetch', 'unpack', 'build', and 'install' successively
 #
 
-ACMLVER='_mp'
-export ACMLVER
-
 while getopts ac: name
 do
   case ${name} in
-  a)  ACMLVER=''
-      export ACMLVER
-      printf 'ACML set to non-OpenMP; GCC 4.1 required!' ${ACMLVER};;
+  a)  DISABLEAMD ='yes'
+      export DISABLEAMD
+      echo 'Disabled AMD building. xhpl.amd will not be built.';;
   c)  CONFIGOPTIONS=$OPTARG
       export CONFIGOPTIONS
-      printf 'Global configure options set to %s\n' ${CONFIGOPTIONS};;
+      printf 'Global ./configure options set to %s\n' ${CONFIGOPTIONS};;
   ?)  printf "Usage: %s: [-a] [-c configure_opts]\n" $0
       exit 1;;
   esac
@@ -124,6 +121,10 @@ done
 ##
 # GATHER THE SHARED OBJECTS
 #
+
+# all locally install support libs
+LD_LIBRARY_PATH=/usr/local/lib
+export LD_LIBRARY_PATH
 
 perl ${TOPDIR}/findso.pl ${STAGEDIR}
 

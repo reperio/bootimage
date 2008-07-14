@@ -92,10 +92,10 @@ MPlib        = $(MPdir)/lib/libmpich.a
 # header files,  LAlib  is defined  to be the name of  the library to be
 # used. The variable LAdir is only used for defining LAinc and LAlib.
 #
-LAdir        = $(shell echo $$SRCDIR)/gfortran64$(shell echo $$ACMLVER)
+LAdir        = $(shell echo $$SRCDIR)/gfortran64_mp
 #LAinc        = $(LAdir)/include/acml.h
 LAinc        = 
-LAlib        = $(LAdir)/lib/libacml$(shell echo $$ACMLVER).a
+LAlib        = $(LAdir)/lib/libacml_mp.a
 #
 # ----------------------------------------------------------------------
 # - F77 / C interface --------------------------------------------------
@@ -168,11 +168,11 @@ HPL_DEFS     = $(F2CDEFS) $(HPL_OPTS) $(HPL_INCLUDES)
 # - Compilers / linkers - Optimization flags ---------------------------
 # ----------------------------------------------------------------------
 #
-CC           = /usr/bin/gcc
+CC           = gcc-4.2
 CCNOOPT      = $(HPL_DEFS)
 CCFLAGS      = $(HPL_DEFS) -fomit-frame-pointer -O3 -funroll-loops -W -Wall
 #
-LINKER       = /usr/bin/gfortran
+LINKER       = gfortran-4.2
 LINKFLAGS    = $(CCFLAGS) -lgomp
 #
 ARCHIVER     = ar
