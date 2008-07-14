@@ -5,9 +5,9 @@
 
 . ./functions
 
-FILENAME='LVM2.2.02.38.tgz'
-URL='ftp://sources.redhat.com/pub/lvm2/LVM2.2.02.38.tgz'
-DIRNAME='LVM2.2.02.38'
+FILENAME='LVM2.2.02.28.tgz'
+URL='ftp://sources.redhat.com/pub/lvm2/LVM2.2.02.28.tgz'
+DIRNAME='LVM2.2.02.28'
 
 BINARIES="\
 tools/lvm"
