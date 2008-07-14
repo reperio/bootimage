@@ -11,7 +11,7 @@
 while getopts ac: name
 do
   case ${name} in
-  a)  DISABLEAMD ='yes'
+  a)  DISABLEAMD='yes'
       export DISABLEAMD
       echo 'Disabled AMD building. xhpl.amd will not be built.';;
   c)  CONFIGOPTIONS=$OPTARG
