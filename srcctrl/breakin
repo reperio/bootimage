@@ -5,7 +5,7 @@
 
 . ./functions
 
-GITURL="ssh://${SUDO_USER}@jupiter.corp.advancedclustering.com/home/git/breakin.git"
+GITURL="http://git.advancedclustering.com/breakin.git"
 DIRNAME='breakin'
 
 fetch () { 

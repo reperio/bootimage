@@ -5,7 +5,7 @@
 
 . ./functions
 
-GITURL="ssh://${SUDO_USER}@jupiter.corp.advancedclustering.com/home/git/bootimage-initfs.git"
+GITURL="http://git.advancedclustering.com/bootimage-initfs.git"
 DIRNAME='bootimage-initfs'
 
 fetch () { 

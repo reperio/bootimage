@@ -5,7 +5,7 @@
 
 . ./functions
 
-GITURL="ssh://${SUDO_USER}@jupiter.corp.advancedclustering.com/home/git/actdmi.git"
+GITURL="http://git.advancedclustering.com/actdmi.git"
 DIRNAME='actdmi'
 BINARIES='act_dmi'
 

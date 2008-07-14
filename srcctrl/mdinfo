@@ -5,7 +5,7 @@
 
 . ./functions
 
-GITURL="ssh://${SUDO_USER}@jupiter.corp.advancedclustering.com/home/git/mdinfo.git"
+GITURL="http://git.advancedclustering.com/mdinfo.git"
 DIRNAME='mdinfo'
 BINARIES='mdinfo'
 
