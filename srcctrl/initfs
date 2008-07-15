@@ -5,7 +5,7 @@
 
 . ./functions
 
-GITURL="http://git.advancedclustering.com/bootimage-initfs.git"
+GITURL="http://git.advancedclustering.com/git/bootimage-initfs.git"
 DIRNAME='bootimage-initfs'
 
 fetch () { 

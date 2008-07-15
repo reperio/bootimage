@@ -5,7 +5,7 @@
 
 . ./functions
 
-GITURL="http://git.advancedclustering.com/mdinfo.git"
+GITURL="http://git.advancedclustering.com/git/mdinfo.git"
 DIRNAME='mdinfo'
 BINARIES='mdinfo'
 

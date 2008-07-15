@@ -5,7 +5,7 @@
 
 . ./functions
 
-GITURL="http://git.advancedclustering.com/breakin.git"
+GITURL="http://git.advancedclustering.com/git/breakin.git"
 DIRNAME='breakin'
 
 fetch () { 
