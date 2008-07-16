@@ -2,6 +2,15 @@
 # COMMON FUNCTIONS FILE
 #
 
+eval `stty size 2>/dev/null | (read L C; echo LINES=${L:-24} COLUMNS=${C:-80})`
+
+ANSI_GREEN="\033[1;32m"
+ANSI_RED="\033[1;31m"
+ANSI_BLUE="\033[1;34m"
+ANSI_PURPLE="\033[1;35m"
+ANSI_LEFT="\033[${COLUMNS}G\033[10D"
+ANSI_DONE="\033[0m"
+
 get () {
   _URL=$1
   _FILENAME=`basename ${_URL}`
@@ -10,6 +19,7 @@ get () {
     return 0
   else
     cd ${SRCDIR}
+    echo "" >&2
     wget -c ${_URL}
     if [ $? != 0 ]; then
       printf 'Could not fetch %s' ${_URL}
@@ -31,10 +41,10 @@ git_fetch () {
   if [ -e ${SRCDIR}/${_DIRNAME}/.git ]
   then
      cd ${SRCDIR}/${_DIRNAME}
-     git-pull 
+     git-pull -q
   else
      cd ${SRCDIR}
-     git-clone ${_URL}
+     git-clone -q ${_URL}
   fi
 }
 

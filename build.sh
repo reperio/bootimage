@@ -3,6 +3,8 @@
 # Import VERSION
 . ./configure.in
 
+. ./functions
+
 ##
 # This script will enter srcctrl/ and run every script there with:
 # 'fetch', 'unpack', 'build', and 'install' successively
@@ -40,6 +42,8 @@ KERNELDIR=${PWD}/kernel/linux-${KERNELVER}
 export KERNELDIR
 KERNELBIN=${PWD}/kernel/linux-${KERNELVER}/arch/${ARCH}/boot/bzImage
 export KERNELBIN
+LOGDIR=${PWD}/log
+export LOGDIR
 
 ##
 # A stupid runparts implementation
@@ -48,13 +52,31 @@ export KERNELBIN
 simple_runparts () {
   _DIR=${1}
   _OPERAND=${2}
+
   for file in ${_DIR}/*; do
     if [ -x ${file} ]; then
-      sh ${file} ${_OPERAND}
+
+      _LOGFILE="${LOGDIR}/`basename ${file}`-${VERSION}.log"
+
+      echo -n "Running ${_OPERAND} on ${ANSI_BLUE}`basename ${file}`${ANSI_DONE}"
+
+      if [ "${_OPERAND}" = "fetch" ]
+      then
+        sh ${file} ${_OPERAND} > ${_LOGFILE}
+      else
+        sh ${file} ${_OPERAND} >> ${_LOGFILE}
+      fi
       if [ $? != 0 ]
       then
+        echo "${ANSI_LEFT}${ANSI_RED}[ FAIL ]${ANSI_DONE}"
+        echo ""
+        tail -20 ${_LOGFILE}
+        echo "Log file from stdout available here ${_LOGFILE}"
         return 1
       fi
+      echo "${ANSI_LEFT}${ANSI_GREEN}[ OK ]${ANSI_DONE}"
+    else
+      echo "${ANSI_RED}Skipping `basename ${file}` execute bit not set ${ANSI_DONE}"
     fi
   done
 }
@@ -100,7 +122,7 @@ if [ $? != 0 ]; then
   exit 1
 fi
 
-cp -av ${TOPDIR}/iso.template/* ${CDSTAGEDIR}
+cp -av ${TOPDIR}/iso.template/* ${CDSTAGEDIR} > ${LOGDIR}/iso-cp.log.${VERSION}
 
 if [ $? != 0 ]; then
   echo 'Failed to create the ISO stage directory.'
