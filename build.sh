@@ -8,16 +8,19 @@
 # 'fetch', 'unpack', 'build', and 'install' successively
 #
 
-while getopts ac: name
+while getopts agc: name
 do
   case ${name} in
   a)  DISABLEAMD='yes'
       export DISABLEAMD
       echo 'Disabled AMD building. xhpl.amd will not be built.';;
+  g)  USEGOTO='yes'
+      export USEGOTO
+      echo 'Using GOTO in place of MKL and ACML. For acedemic and experimental use only.';;
   c)  CONFIGOPTIONS=$OPTARG
       export CONFIGOPTIONS
       printf 'Global ./configure options set to %s\n' ${CONFIGOPTIONS};;
-  ?)  printf "Usage: %s: [-a] [-c configure_opts]\n" $0
+  ?)  printf "Usage: %s: [-a] [-g] [-c configure_opts]\n" $0
       exit 1;;
   esac
 done

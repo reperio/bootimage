@@ -25,18 +25,22 @@ fetch () {
     return 1
   fi
   
-  if [ ! -e ${SRCDIR}/${ACML} ]; then
-    echo "The AMD Core Math Library is missing. Due to dist. restrictions, you must obtain this tarball manually. Check out http://www.amd.com/acml -- this library is required to actually place AMD CPU's under a sufficient level of stress as to reveal any defects. File missing is ${SRCDIR}/${ACML}"
-    if [ ${DISABLEAMD} ]; then
-      echo "AMD disabled; ignoring."
-    else
+  if [ ! ${USEGOTO} ]; then
+    if [ ! -e ${SRCDIR}/${ACML} ]; then
+      echo "The AMD Core Math Library is missing. Due to dist. restrictions, you must obtain this tarball manually. Check out http://www.amd.com/acml -- this library is required to actually place AMD CPU's under a sufficient level of stress as to reveal any defects. File missing is ${SRCDIR}/${ACML}"
+      if [ ${DISABLEAMD} ]; then
+        echo "AMD disabled; ignoring."
+      else
+        return 1
+      fi
+    fi
+    
+    if [ ! -d ${SRCDIR}/${MKL} ]; then
+      echo "The Intel MKL is missing. Due to dist. restrictions, you must obtain this tarball manually. Check out http://www.intel.com/products/software -- this library is required to actually place Intel CPU's under a sufficient level of stress as to reveal any defects. When running their installer (install.sh), set the prefix to ${SRCDIR}/mkl. File missing is ${SRCDIR}/${MKL}"
       return 1
     fi
-  fi
-  
-  if [ ! -d ${SRCDIR}/${MKL} ]; then
-    echo "The Intel MKL is missing. Due to dist. restrictions, you must obtain this tarball manually. Check out http://www.intel.com/products/software -- this library is required to actually place Intel CPU's under a sufficient level of stress as to reveal any defects. When running their installer (install.sh), set the prefix to ${SRCDIR}/mkl. File missing is ${SRCDIR}/${MKL}"
-    return 1
+  else
+    echo "Goto Enabled"
   fi
 }
 
@@ -54,21 +58,23 @@ unpack () {
     return 1
   fi
   
-  untar ${ACML} ACML-EULA.txt
-  if [ $? != 0 ]; then
-    if [ ${DISABLEAMD} ]; then
-      echo "AMD disabled; ignoring."
-    else
-      return 1
+  if [ ! ${USEGOTO} ]; then
+    untar ${ACML} ACML-EULA.txt
+    if [ $? != 0 ]; then
+      if [ ${DISABLEAMD} ]; then
+        echo "AMD disabled; ignoring."
+      else
+        return 1
+      fi
     fi
-  fi
-  
-  untar ${ACMLSUB} ReleaseNotes
-  if [ $? != 0 ]; then
-    if [ ${DISABLEAMD} ]; then
-      echo "AMD disabled; ignoring."
-    else
-      return 1
+    
+    untar ${ACMLSUB} ReleaseNotes
+    if [ $? != 0 ]; then
+      if [ ${DISABLEAMD} ]; then
+        echo "AMD disabled; ignoring."
+      else
+        return 1
+      fi
     fi
   fi
 }
@@ -101,8 +107,13 @@ build () {
   cp -v ${TOPDIR}/patches/Make.Linux* ./
   
   if [ ${ARCH} = "x86" ]; then
-    # Build AMD against ACML
-    make arch=Linux_AMD_32
+    if [ ! ${USEGOTO} ]; then
+      # Build AMD against ACML
+      make arch=Linux_AMD_32
+    else
+      # Build AMD against Goto
+      make arch=Linux_AMD_32_Goto
+    fi
     if [ $? != 0 ]; then
       if [ ${DISABLEAMD} ]; then
         echo "AMD disabled; ignoring."
@@ -111,14 +122,24 @@ build () {
       fi
     fi
     
-    # Build Intel against MKL
-    make arch=Linux_Intel_32
+    if [ ! ${USEGOTO} ]; then
+      # Build Intel against MKL
+      make arch=Linux_Intel_32
+    else
+      # Build Intel against Goto
+      make arch=Linux_Intel_32_Goto
+    fi
     if [ $? != 0 ]; then
       return 1
     fi
   else
-    # Build AMD against ACML
-    make arch=Linux_AMD_64
+    if [ ! ${USEGOTO} ]; then
+      # Build AMD against ACML
+      make arch=Linux_AMD_64
+    else
+      # Build AMD against Goto
+      make arch=Linux_AMD_64_Goto
+    fi
     if [ $? != 0 ]; then
       if [ ${DISABLEAMD} ]; then
         echo "AMD disabled; ignoring."
@@ -127,8 +148,13 @@ build () {
       fi
     fi
     
-    # Build Intel against MKL
-    make arch=Linux_Intel_64
+    if [ ! ${USEGOTO} ]; then
+      # Build Intel against MKL
+      make arch=Linux_Intel_64
+    else
+      # Build Intel against Goto
+      make arch=Linux_Intel_64_Goto
+    fi
     if [ $? != 0 ]; then
       return 1
     fi
