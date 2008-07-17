@@ -45,6 +45,7 @@ the following specific libraries and tools installed:
   * nasm (for syslinux)
   * flex (for lm-sensors)
   * libsysfs-dev (for edac-utils)
+  * libuuid-dev (for parted)
   * libdevmapper-dev (for LVM)
   * gfortran-4.2 (required to build AMD ACML-4.1-based HPL)
   * mkisofs
