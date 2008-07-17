@@ -1,47 +1,71 @@
+What this is
+------------
+
+This source tree is a set of control files that allows you to build a bootable
+OS that contains "break-in" testing facilities.
+
+The purpose is to put a system under the absolutely highest amount of load we
+can possibly muster. This is required because modern hardware uses highly-
+aggressive power-saving features. With the proper BLAS libraries loaded, a
+system that previously appeared to be at 100% CPU utilization will suddenly
+consume 25% more power--all because the BLAS libraries keep the power-saving
+features from turning on.
+
 How this works
-----------------------------------------------
-!! Do not change any initrd directly, nor change the initrd-XXXX directly !!
+--------------
 
-Edit the initrd.template which is a symlink to the current version of the
-initrd you are working on.  
+build.sh is the top level control script; you should do everything through it.
 
-initrd.template/
---------------------
- *  This directory should contain the directory structure, scripts, and config 
-    files.
- *  Binaries should not be stored in this directory
+We generate a kernel, initrd and an ISO and drop them in dist/
 
-src/
---------------------
- *  All the source code for all binaries that will be stored in the initrd
- *  These should be built on jupiter directly
- *  Just run make on them, but not make install
- *  There is no need to build them as static 
+src/ is used as the building directory and stage/ is used to assemble the root
+file system that is used by the initramfs.
 
-kernel/
---------------------
- *  Each kernel should be stored here in a directory named linux-<VER>
- *  The kernel needs to be pre-configured built, and modules built too
+All of the building done in src/ is controlled by srcctrl/ scripts. Each of
+these scripts is called with fetch, unpack, build and install successively from
+build.sh
 
-make_new_initrd
---------------------
- *  Takes 2 arguments, the version# and the kernel version number. 
-    * the initrd will be named bootimage-<VERSION#>.gz
-    * kernel modules will be installed in the initrd from kernel/<KERNELVER>
-      * make sure all modules are already built, as it will just run
-        a make modules_install in the directory
- *  Copies everything from the current template into a staging directory 
- *  This script should have the details of copying stuff from the src directory
-    into the initrd, all binaries that are not busybox should be stored in
-    /usr/local/bin or /usr/local/sbin
- *  When executed the script will attempt to find all the .so files needed by
-    binaries in /usr/local/bin and /usr/local/sbin and copy them into the 
-    appropriate lib directories on the initrd
- *  a file is created, bootimage-<VERSION#>.gz the kernel will be copied as well
-    and named kernel-<VERSION#>
- *  These files are copied to /tftpboot/bootimage/ as well
+build.sh currently takes three parameters:
 
-initrd.template/etc/startup.sh
+  -a will disable the building of AMD HPL (this is here because ACML is very,
+     very pickey about which GCC versions it will build with)
+  -g will disabled ACML and MKL in favor of the highly restrictive GotoBLAS
+     implementation. If you opt to go this route, you will have to build your
+     own copies of this library and place them in src/ as libgoto_intel32.a,
+     libgoto_intel64.a, libgoto_amd32.a and libgoto_amd64.a
+  -c [parms] will pass these parameters to any ./configure scripts used to make
+     initramfs binaries
+
+Dependencies
+------------
+
+In addition the general developer utilities used to build FOSS, you will need
+the following specific libraries and tools installed:
+
+  * nasm (for syslinux)
+  * flex (for lm-sensors)
+  * libsysfs-dev (for edac-utils)
+  * libdevmapper-dev (for LVM)
+  * gfortran-4.2 (required to build AMD ACML-4.1-based HPL)
+  * mkisofs
+
+We have confirmed that this tree builds on CentOS/RHEL 5.2 (with GCC-4.2 
+installed from source), Ubuntu Hardy (with mapper-foo from Intrepid), and Debian
+Lenny.
+
+On RH-based distro's you'll want to install the giant "Development" yum task.
+On Debian-based, install "build-essential".
+
+src/linux*/
+-----------
+We pull the latest snapshot of the edac patches from SVN and quilt them in to
+the kernel source tree so that the AMD and latest Intel motherboards have error
+reporting facilities in the breakin UI.
+
+Note that EDAC only works with ECC and FB-DIMM memory.
+
+
+src/bootimage-initfs/etc/startup.sh
 ----------------------------------
  *  This script handles the dispatching of the various features the 
     startup=<NAME> kernel argument will cause the script to execute 
@@ -50,5 +74,3 @@ initrd.template/etc/startup.sh
     the file /tmp/cmdline.dat - to prevent namespace clobbering all variables
     are name _variable (i.e. _image).
     
-
-
