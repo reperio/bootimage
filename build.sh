@@ -58,7 +58,7 @@ simple_runparts () {
 
       _LOGFILE="${LOGDIR}/`basename ${file}`-${VERSION}.log"
 
-      echo -n "Running ${_OPERAND} on ${ANSI_BLUE}`basename ${file}`${ANSI_DONE}"
+      echo -en "Running ${_OPERAND} on ${ANSI_BLUE}`basename ${file}`${ANSI_DONE}"
 
       if [ "${_OPERAND}" = "fetch" ]
       then
@@ -68,15 +68,15 @@ simple_runparts () {
       fi
       if [ $? != 0 ]
       then
-        echo "${ANSI_LEFT}${ANSI_RED}[ FAIL ]${ANSI_DONE}"
+        echo -e "${ANSI_LEFT}${ANSI_RED}[ FAIL ]${ANSI_DONE}"
         echo ""
         tail -20 ${_LOGFILE}
-        echo "Log file from stdout available here ${_LOGFILE}"
+        echo -e "Log file from stdout available here ${_LOGFILE}"
         return 1
       fi
-      echo "${ANSI_LEFT}${ANSI_GREEN}[ OK ]${ANSI_DONE}"
+      echo -e "${ANSI_LEFT}${ANSI_GREEN}[ OK ]${ANSI_DONE}"
     else
-      echo "${ANSI_RED}Skipping `basename ${file}` execute bit not set ${ANSI_DONE}"
+      echo -e "${ANSI_RED}Skipping `basename ${file}` execute bit not set ${ANSI_DONE}"
     fi
   done
 }
