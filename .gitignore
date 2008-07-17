@@ -2,5 +2,6 @@
 *.[oa]
 stage/
 src/
+log/
 dist/
 *.iso
