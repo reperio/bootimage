@@ -151,7 +151,9 @@ done
 LD_LIBRARY_PATH=/usr/local/lib:/usr/local/lib64
 export LD_LIBRARY_PATH
 
+echo -en "Finding shared libraries for all binaries"
 perl ${TOPDIR}/findso.pl ${STAGEDIR}
+echo -e "${ANSI_LEFT}${ANSI_GREEN}[ OK ]${ANSI_DONE}"
 
 # add a few additional manually
 
@@ -166,27 +168,33 @@ libuuid.so.1 \
 libnuma.so \
 libparted-1.8.so.2"
 
+echo -en "Adding extra shared libraries"
 for file in $ADDLLIBS; do
   uri=$(/sbin/ldconfig -p | awk -F'> ' '{print $2}' | grep -m1 ${file})
   if [ $uri ]; then
-    cp -pv --parents ${uri} ${STAGEDIR}
+    cp -p --parents ${uri} ${STAGEDIR}
   fi
 done
+echo -e "${ANSI_LEFT}${ANSI_GREEN}[ OK ]${ANSI_DONE}"
 
 # create the ld library cache
 
+echo -en "Creating ld.so.conf and ld.so.cache in initramfs"
 ldconfig -r ${STAGEDIR} -f /etc/ld.so.conf -C /etc/ld.so.cache
+echo -e "${ANSI_LEFT}${ANSI_GREEN}[ OK ]${ANSI_DONE}"
 
 ##
 # COMPRESS INITRD FOR FOSS EDITION
 #
 
+echo -en "Compressing initramfs to dist/initrd-v${VERSION}.cpio.gz"
 cd ${STAGEDIR}
 find . | cpio -o -H newc | gzip > ${TOPDIR}/dist/initrd-v${VERSION}.cpio.gz
 if [ $? != 0 ]; then
-  echo "Make initramfs failed."
+  echo -e "${ANSI_LEFT}${ANSI_RED}[ FAIL ]${ANSI_DONE}"
   exit 1
 fi
+echo -e "${ANSI_LEFT}${ANSI_GREEN}[ OK ]${ANSI_DONE}"
 
 ##
 # INSTALL TFTP
@@ -202,15 +210,17 @@ fi
 # MAKE ISO FOR FOSS EDITION
 #
 
+echo -en "Creating ISO dist/cdrom-v${VERSION}.iso"
 cd ${TOPDIR}
-cp -v dist/kernel-${VERSION} ${CDSTAGEDIR}/isolinux/kernel
-cp -v dist/initrd-v${VERSION}.cpio.gz ${CDSTAGEDIR}/isolinux/initrd.img
+cp -v dist/kernel-${VERSION} ${CDSTAGEDIR}/isolinux/kernel > /dev/null
+cp -v dist/initrd-v${VERSION}.cpio.gz ${CDSTAGEDIR}/isolinux/initrd.img > /dev/null
 mkisofs -o dist/cdrom-${VERSION}.iso -b isolinux/isolinux.bin -c isolinux/boot.cat \
 	-no-emul-boot -boot-load-size 4 -boot-info-table ${CDSTAGEDIR}
 if [ $? != 0 ]; then
-  echo "Make ISO failed."
+  echo -e "${ANSI_LEFT}${ANSI_RED}[ FAIL ]${ANSI_DONE}"
   exit 1
 fi
+echo -e "${ANSI_LEFT}${ANSI_GREEN}[ OK ]${ANSI_DONE}"
 
 ##
 # OPTIONAL PROPRIETARY OVERLAY
@@ -240,7 +250,7 @@ fi
 # SUCCESS
 #
 
-echo "BUILD COMPLETED SUCESSFULLY"
+echo -e "${ANSI_GREEN}BUILD COMPLETED SUCESSFULLY${ANSI_DONE}"
 exit 0
 
 # vim:ts=2:sw=2:expandtab
