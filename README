@@ -47,6 +47,7 @@ the following specific libraries and tools installed:
   * libsysfs-dev (for edac-utils)
   * libuuid-dev (for parted)
   * libdevmapper-dev (for LVM)
+  * libblkid-dev (for util-linux)
   * gfortran-4.2 (required to build AMD ACML-4.1-based HPL)
   * mkisofs
 
