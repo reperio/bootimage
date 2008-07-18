@@ -147,12 +147,14 @@ done
 # GATHER THE SHARED OBJECTS
 #
 
+echo -en "Finding shared libraries for all binaries"
+perl ${TOPDIR}/findso.pl ${STAGEDIR}
+
 # all locally install support libs
 LD_LIBRARY_PATH=/usr/local/lib:/usr/local/lib64
 export LD_LIBRARY_PATH
-
-echo -en "Finding shared libraries for all binaries"
 perl ${TOPDIR}/findso.pl ${STAGEDIR}
+
 echo -e "${ANSI_LEFT}${ANSI_GREEN}[ OK ]${ANSI_DONE}"
 
 # add a few additional manually
