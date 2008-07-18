@@ -236,7 +236,7 @@ if [ -d ../bootimage.private ]; then
     exit 1
   fi
   cd ${TOPDIR}
-  cp dist/initrd-v${VERSION}.cpio.gz ${CDSTAGEDIR}/isolinux/initrd.img
+  cp dist/initrd-v${VERSION}-nonfree.cpio.gz ${CDSTAGEDIR}/isolinux/initrd.img
   mkisofs -o dist/cdrom-${VERSION}-nonfree.iso -b isolinux/isolinux.bin -c isolinux/boot.cat \
     -no-emul-boot -boot-load-size 4 -boot-info-table ${CDSTAGEDIR}
   if [ $? != 0 ]; then
