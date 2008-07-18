@@ -4,12 +4,10 @@
 # 
 
 if [ ${ARCH} = "x86" ]; then
-  ACML=acml-4-1-0-gfortran-32bit.tgz
-  ACMLSUB=contents-acml-4-1-0-gfortran-32bit.tgz
+  ACML=gfortran32_mp
   MKL=mkl/lib/32
 else
-  ACML=acml-4-1-0-gfortran-64bit.tgz
-  ACMLSUB=contents-acml-4-1-0-gfortran-64bit.tgz
+  ACML=gfortran64_mp
   MKL=mkl/lib/em64t
 fi
 
@@ -60,26 +58,6 @@ unpack () {
   untar hpl.tgz hpl
   if [ $? != 0 ]; then
     return 1
-  fi
-  
-  if [ ! ${USEGOTO} ]; then
-    untar ${ACML} ACML-EULA.txt
-    if [ $? != 0 ]; then
-      if [ ${DISABLEAMD} ]; then
-        echo "AMD disabled; ignoring."
-      else
-        return 1
-      fi
-    fi
-    
-    untar ${ACMLSUB} ReleaseNotes
-    if [ $? != 0 ]; then
-      if [ ${DISABLEAMD} ]; then
-        echo "AMD disabled; ignoring."
-      else
-        return 1
-      fi
-    fi
   fi
 }
 
