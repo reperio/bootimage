@@ -9,8 +9,18 @@ FILENAME='hddtemp-0.3-beta15.tar.bz2'
 URL='http://download.savannah.gnu.org/releases/hddtemp/hddtemp-0.3-beta15.tar.bz2'
 DIRNAME='hddtemp-0.3-beta15'
 
-BINARIES="\
-src/hddtemp"
+fetch () {
+  get ${URL}
+  cd ${SRCDIR}
+  wget -c http://www.guzu.net/linux/hddtemp.db
+}
+
+install () {
+  cd ${SRCDIR}/${DIRNAME}
+  make install prefix=${STAGEDIR}/usr exec_prefix=${STAGEDIR}/usr
+  mkdir -p ${STAGEDIR}/usr/share/misc
+  cp -pv ${SRCDIR}/hddtemp.db ${STAGEDIR}/usr/share/misc/
+}
 
 
 $1 $2
