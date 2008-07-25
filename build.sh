@@ -179,6 +179,12 @@ for file in $ADDLLIBS; do
 done
 echo -e "${ANSI_LEFT}${ANSI_GREEN}[ OK ]${ANSI_DONE}"
 
+# remove locale data
+
+echo -en "Removing locale data to save space"
+rm -rf ${STAGEDIR}/usr/share/locale/*
+echo -e "${ANSI_LEFT}${ANSI_GREEN}[ OK ]${ANSI_DONE}"
+
 # create the ld library cache
 
 echo -en "Creating ld.so.conf and ld.so.cache in initramfs"
