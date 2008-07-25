@@ -9,18 +9,20 @@ FILENAME='pciutils-3.0.0.tar.gz'
 URL='ftp://atrey.karlin.mff.cuni.cz/pub/linux/pci/pciutils-3.0.0.tar.gz'
 DIRNAME='pciutils-3.0.0'
 
-BINARIES="\
-lspci"
-
 build () {
   checkdone
   cd ${SRCDIR}/${DIRNAME}
   make clean
-  make
+  make PREFIX=/usr
   if [ $? != 0 ]; then
     return 1
   fi
   markdone
+}
+
+install () {
+  cd ${SRCDIR}/${DIRNAME}
+  make install PREFIX=${STAGEDIR}/usr
 }
 
 $1 $2
