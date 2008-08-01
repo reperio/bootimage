@@ -9,6 +9,11 @@ FILENAME='pciutils-3.0.0.tar.gz'
 URL='ftp://atrey.karlin.mff.cuni.cz/pub/linux/pci/pciutils-3.0.0.tar.gz'
 DIRNAME='pciutils-3.0.0'
 
+fetch () {
+  get $URL
+  get http://pciids.sourceforge.net/v2.2/pci.ids.bz2
+}
+
 build () {
   checkdone
   cd ${SRCDIR}/${DIRNAME}
@@ -23,6 +28,11 @@ build () {
 install () {
   cd ${SRCDIR}/${DIRNAME}
   make install PREFIX=${STAGEDIR}/usr
+  cd ${STAGEDIR}/usr/share
+  mkdir -p misc
+  cd misc
+  cp ${SRCDIR}/pci.ids.bz2 .
+  bunzip2 pci.ids.bz2
 }
 
 $1 $2
