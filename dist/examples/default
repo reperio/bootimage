@@ -1,0 +1,27 @@
+# -----------------------------------------------------------
+#  By default load the new simple menuing system
+# -----------------------------------------------------------
+DEFAULT menu.c32
+TIMEOUT 300
+PROMPT 0
+
+MENU TITLE Breakin PXE boot menu
+
+# -----------------------------------------------------------
+#  BREAKIN TEST ENTRIES
+# -----------------------------------------------------------
+
+LABEL local
+	MENU LABEL Boot from local disk
+	localBOOT 0
+
+LABEL breakin
+	MENU LABEL Breakin
+	KERNEL bootimage/kernel
+	APPEND initrd=bootimage/bootimage.gz sshpasswd=breakin startup=breakin
+
+LABEL rescue
+	MENU LABEL Rescue
+	KERNEL bootimage/kernel
+	APPEND initrd=bootimage/bootimage.gz sshpasswd=breakin startup=rescue 
+
