@@ -215,6 +215,20 @@ if [ -d /tftpboot/bootimage ]; then
 fi
 
 ##
+# MAKE TARBALL FOR FOSS EDITION
+#
+
+echo -en "Creating tarball dist/bootimage-v${VERSION}.tbz2"
+cd ${TOPDIR}/dist
+tar -cvjf bootimage-v${VERSION}.tbz2 README kernel-${VERSION} initrd-v${VERSION}.cpio.gz examples
+if [ $? != 0 ]; then
+  echo -e "${ANSI_LEFT}${ANSI_RED}[ FAIL ]${ANSI_DONE}"
+  exit 1
+fi
+echo -e "${ANSI_LEFT}${ANSI_GREEN}[ OK ]${ANSI_DONE}"
+
+
+##
 # MAKE ISO FOR FOSS EDITION
 #
 
