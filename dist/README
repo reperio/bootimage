@@ -1,0 +1,20 @@
+This tarball contains a kernel and initrd suitable for use for netbooting
+Breakin. On a netboot-configured server, you can copy these files to your
+tftpboot directory and modify your server to serve these files.
+
+To configure a netboot server, follow the following outline.
+
+In examples/ you'll find a few example config files:
+
+file            install path            purpose
+------------------------------------------------------------------------------
+default         /tftpboot/pxelinux.cfg  Provide a boot menu to network clients
+tftpboot        /etc/xinetd.d           Enable the tftp server
+dhcpd.conf      /etc                    Simple configuration of DHCPv3 server
+
+You'll need to install a tftpserver, ISC's DHCPv3 server, and an inetd service
+provider (like xinetd).
+
+If you install syslinux, you'll obtain the needed pxelinux.0 and menu.c32 files
+that need to be installed to /tftpboot--typically these can be found in
+/usr/share/syslinux.
