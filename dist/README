@@ -9,7 +9,7 @@ In examples/ you'll find a few example config files:
 file            install path            purpose
 ------------------------------------------------------------------------------
 default         /tftpboot/pxelinux.cfg  Provide a boot menu to network clients
-tftpboot        /etc/xinetd.d           Enable the tftp server
+tftp            /etc/xinetd.d           Enable the tftp server
 dhcpd.conf      /etc                    Simple configuration of DHCPv3 server
 
 You'll need to install a tftpserver, ISC's DHCPv3 server, and an inetd service
