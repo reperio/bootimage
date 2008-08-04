@@ -232,11 +232,11 @@ echo -e "${ANSI_LEFT}${ANSI_GREEN}[ OK ]${ANSI_DONE}"
 # MAKE ISO FOR FOSS EDITION
 #
 
-echo -en "Creating ISO dist/cdrom-v${VERSION}.iso"
+echo -en "Creating ISO dist/bootimage-v${VERSION}.iso"
 cd ${TOPDIR}
 cp -v dist/kernel-${VERSION} ${CDSTAGEDIR}/isolinux/kernel > /dev/null
 cp -v dist/initrd-v${VERSION}.cpio.gz ${CDSTAGEDIR}/isolinux/initrd.img > /dev/null
-mkisofs -o dist/cdrom-${VERSION}.iso -b isolinux/isolinux.bin -c isolinux/boot.cat \
+mkisofs -o dist/bootimage-${VERSION}.iso -b isolinux/isolinux.bin -c isolinux/boot.cat \
 	-no-emul-boot -boot-load-size 4 -boot-info-table ${CDSTAGEDIR}
 if [ $? != 0 ]; then
   echo -e "${ANSI_LEFT}${ANSI_RED}[ FAIL ]${ANSI_DONE}"
@@ -259,7 +259,7 @@ if [ -d ../bootimage.private ]; then
   fi
   cd ${TOPDIR}
   cp dist/initrd-v${VERSION}-nonfree.cpio.gz ${CDSTAGEDIR}/isolinux/initrd.img
-  mkisofs -o dist/cdrom-${VERSION}-nonfree.iso -b isolinux/isolinux.bin -c isolinux/boot.cat \
+  mkisofs -o dist/bootimage-${VERSION}-nonfree.iso -b isolinux/isolinux.bin -c isolinux/boot.cat \
     -no-emul-boot -boot-load-size 4 -boot-info-table ${CDSTAGEDIR}
   if [ $? != 0 ]; then
     echo "Make nonfree ISO failed."
