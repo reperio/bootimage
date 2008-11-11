@@ -48,6 +48,9 @@ build () {
     cd ${SRCDIR}/${DIRNAME}
 
     quilt push -af
+    rm -rf ${SRCDIR}/${DIRNAME}/.pc/*patch
+    rm -f ${SRCDIR}/${DIRNAME}/.pc/*patch\~refresh
+    quilt push -af
     make clean
 
     make oldconfig
