@@ -64,7 +64,7 @@ build () {
       return 1
     fi
     
-    make modules
+    make -j2 modules
     if [ $? != 0 ]
     then
       echo "Building modules failed."
