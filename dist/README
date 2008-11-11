@@ -24,8 +24,8 @@ So, after you have installed the three (3) provided config. files, found and
 installed syslinux's pxelinux.0 and menu.c32, and installed the kernel and
 initrd our filesystem will have new files in:
 
-/tftpboot/bootimage/kernel-3.0
-/tftpboot/bootimage/initrd-v3.0.cpio.gz
+/tftpboot/bootimage/kernel-3.1
+/tftpboot/bootimage/initrd-v3.1.cpio.gz
 /tftpboot/pxelinux.cfg/default
 /tftpboot/pxelinux.0
 /tftpboot/menu.c32

@@ -17,11 +17,11 @@ LABEL local
 
 LABEL breakin
 	MENU LABEL Breakin
-	KERNEL bootimage/kernel-3.0
-	APPEND initrd=bootimage/initrd-v3.0.cpio.gz sshpasswd=breakin startup=breakin
+	KERNEL bootimage/kernel-3.1
+	APPEND initrd=bootimage/initrd-v3.1.cpio.gz sshpasswd=breakin startup=breakin
 
 LABEL rescue
 	MENU LABEL Rescue
-	KERNEL bootimage/kernel-3.0
-	APPEND initrd=bootimage/initrd-v3.0.cpio.gz sshpasswd=breakin startup=rescue 
+	KERNEL bootimage/kernel-3.1
+	APPEND initrd=bootimage/initrd-v3.1.cpio.gz sshpasswd=breakin startup=rescue 
 
