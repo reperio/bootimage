@@ -17,6 +17,7 @@ build () {
 
 install () {
   mkdir ${STAGEDIR}/dev
+  mkdir ${STAGEDIR}/dev/pts
   mknod -m 0600 ${STAGEDIR}/dev/console c 5 1
   mknod ${STAGEDIR}/dev/null c 1 3
 }
