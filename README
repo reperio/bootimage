@@ -49,6 +49,7 @@ the following specific libraries and tools installed:
   * libdevmapper-dev (for LVM)
   * libblkid-dev (for util-linux)
   * gfortran-4.2 (required to build AMD ACML-4.1-based HPL)
+  * quilt (for applying EDAC kernel patches)
   * fakeroot (to build the cpio images)
   * mkisofs
 
