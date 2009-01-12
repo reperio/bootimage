@@ -188,7 +188,7 @@ echo -e "${ANSI_LEFT}${ANSI_GREEN}[ OK ]${ANSI_DONE}"
 # create the ld library cache
 
 echo -en "Creating ld.so.conf and ld.so.cache in initramfs"
-ldconfig -r ${STAGEDIR} -f /etc/ld.so.conf -C /etc/ld.so.cache
+/sbin/ldconfig -r ${STAGEDIR} -f /etc/ld.so.conf -C /etc/ld.so.cache
 echo -e "${ANSI_LEFT}${ANSI_GREEN}[ OK ]${ANSI_DONE}"
 
 # Create the cpio image under a fakeroot so that special files can be made
