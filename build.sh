@@ -191,18 +191,11 @@ echo -en "Creating ld.so.conf and ld.so.cache in initramfs"
 ldconfig -r ${STAGEDIR} -f /etc/ld.so.conf -C /etc/ld.so.cache
 echo -e "${ANSI_LEFT}${ANSI_GREEN}[ OK ]${ANSI_DONE}"
 
-##
-# COMPRESS INITRD FOR FOSS EDITION
-#
-
-echo -en "Compressing initramfs to dist/initrd-v${VERSION}.cpio.gz"
-cd ${STAGEDIR}
-find . | cpio -o -H newc | gzip > ${TOPDIR}/dist/initrd-v${VERSION}.cpio.gz
+# Create the cpio image under a fakeroot so that special files can be made
+fakeroot ${TOPDIR}/build-img.sh
 if [ $? != 0 ]; then
-  echo -e "${ANSI_LEFT}${ANSI_RED}[ FAIL ]${ANSI_DONE}"
   exit 1
 fi
-echo -e "${ANSI_LEFT}${ANSI_GREEN}[ OK ]${ANSI_DONE}"
 
 ##
 # INSTALL TFTP
