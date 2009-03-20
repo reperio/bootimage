@@ -1,0 +1,40 @@
+##
+# Get a known-good copy of:
+# smartctl
+# 
+
+. ./functions
+
+FILENAME='v1.82_81103.zip'
+URL='ftp://ftp.areca.com.tw/RaidCards/AP_Drivers/Linux/CLI/v1.82_81103.zip'
+DIRNAME='V1.82_81103'
+
+fetch () {
+  get ${URL}
+  cd ${SRCDIR}
+}
+
+unpack () {
+	unzip -d ${SRCDIR} -o ${SRCDIR}/${FILENAME}
+}
+
+
+build () {
+	echo ""
+}
+
+install () {
+  cd ${SRCDIR}/${DIRNAME}
+  #mkdir -p ${STAGEDIR}/usr/share/misc
+  cp -pv ${SRCDIR}/${DIRNAME}/x86-64/cli64 ${STAGEDIR}/usr/local/bin/arecacli
+  chmod a+x ${STAGEDIR}/usr/local/bin/arecacli
+}
+
+
+$1 $2
+
+if [ $? != 0 ]; then
+  printf 'Source control script %s failed on function %s' $0 $1
+  exit 1
+fi
+
