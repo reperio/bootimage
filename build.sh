@@ -191,8 +191,8 @@ echo -en "Creating ld.so.conf and ld.so.cache in initramfs"
 /sbin/ldconfig -r ${STAGEDIR} -f /etc/ld.so.conf -C /etc/ld.so.cache
 echo -e "${ANSI_LEFT}${ANSI_GREEN}[ OK ]${ANSI_DONE}"
 
-# Create the cpio image under a fakeroot so that special files can be made
-fakeroot ${TOPDIR}/build-img.sh
+# Create the cpio image under root so that special files can be made
+${TOPDIR}/build-img.sh
 if [ $? != 0 ]; then
   exit 1
 fi
