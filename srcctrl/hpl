@@ -12,7 +12,8 @@ else
 fi
 
 if [ ${USEGOTO} ]; then
-  SRCSUFFIX='_Goto'
+  SRCSUFFIXAMD='_Goto'
+  SRCSUFFIXINTEL=''
 fi
 
 . ./functions
@@ -135,7 +136,8 @@ build () {
       make arch=Linux_Intel_64
     else
       # Build Intel against Goto
-      make arch=Linux_Intel_64_Goto
+      #make arch=Linux_Intel_64_Goto
+      make arch=Linux_Intel_64
     fi
     if [ $? != 0 ]; then
       return 1
@@ -152,10 +154,10 @@ install () {
   fi
   
   if [ ${ARCH} = "x86" ]; then
-    cp -av ${SRCDIR}/hpl/bin/Linux_AMD_32${SRCSUFFIX}/xhpl ${STAGEDIR}/usr/local/bin/xhpl.amd
+    cp -av ${SRCDIR}/hpl/bin/Linux_AMD_32${SRCSUFFIXAMD}/xhpl ${STAGEDIR}/usr/local/bin/xhpl.amd
     cp -av ${SRCDIR}/hpl/bin/Linux_Intel_32${SRCSUFFIX}/xhpl ${STAGEDIR}/usr/local/bin/xhpl.intel
   else
-    cp -av ${SRCDIR}/hpl/bin/Linux_AMD_64${SRCSUFFIX}/xhpl ${STAGEDIR}/usr/local/bin/xhpl.amd
+    cp -av ${SRCDIR}/hpl/bin/Linux_AMD_64${SRCSUFFIXAMD}/xhpl ${STAGEDIR}/usr/local/bin/xhpl.amd
     cp -av ${SRCDIR}/hpl/bin/Linux_Intel_64${SRCSUFFIX}/xhpl ${STAGEDIR}/usr/local/bin/xhpl.intel
   fi
 }
