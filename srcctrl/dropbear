@@ -16,7 +16,9 @@ build () {
   ./configure  --disable-syslog --disable-shadow --disable-lastlog \
       --disable-utmp --disable-utmpx --disable-wtmp --disable-wtmpx \
       --disable-pututline --disable-pututxline
-  make
+
+  make PROGRAMS="dbclient dropbear scp"
+
   if [ $? != 0 ]; then
     return 1
   fi
