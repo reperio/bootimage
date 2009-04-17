@@ -41,10 +41,10 @@ git_fetch () {
   if [ -e ${SRCDIR}/${_DIRNAME}/.git ]
   then
      cd ${SRCDIR}/${_DIRNAME}
-     git-pull -q
+     git pull -q
   else
      cd ${SRCDIR}
-     git-clone -q ${_URL}
+     git clone -q ${_URL}
   fi
 }
 
