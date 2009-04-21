@@ -15,13 +15,17 @@ LABEL local
 	MENU LABEL Boot from local disk
 	localBOOT 0
 
+LABEL cloner
+	MENU LABEL Cloner
+	KERNEL bootimage/kernel-3.05-MKL_ACML
+	APPEND initrd=bootimage/initrd-v3.05-MKL_ACML.cpio.gz sshpasswd=breakin startup=cloner video=vesa:ywrap vga=792 server= image=
+
 LABEL breakin
 	MENU LABEL Breakin
-	KERNEL bootimage/kernel-3.1
-	APPEND initrd=bootimage/initrd-v3.1.cpio.gz sshpasswd=breakin startup=breakin vga=2
+	KERNEL bootimage/kernel-3.05-MKL_ACML
+	APPEND initrd=bootimage/initrd-v3.05-MKL_ACML.cpio.gz sshpasswd=breakin startup=breakin video=vesa:ywrap vga=792
 
 LABEL rescue
 	MENU LABEL Rescue
-	KERNEL bootimage/kernel-3.1
-	APPEND initrd=bootimage/initrd-v3.1.cpio.gz sshpasswd=breakin startup=rescue  vga=2
-
+	KERNEL bootimage/kernel-3.05-MKL_ACML
+	APPEND initrd=bootimage/initrd-v3.05-MKL_ACML.cpio.gz sshpasswd=breakin startup=rescue video=vesa:ywrap vga=792
