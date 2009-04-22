@@ -12,7 +12,7 @@ KERNELVER='2.6.28'
 
 fetch () { 
   get ${URL}
-  svn checkout https://bluesmoke.svn.sourceforge.net/svnroot/bluesmoke/trunk/edac ${SRCDIR}/edac
+  svn checkout -r 177 https://bluesmoke.svn.sourceforge.net/svnroot/bluesmoke/trunk/edac ${SRCDIR}/edac
 }
 
 unpack () {
@@ -22,9 +22,8 @@ unpack () {
     echo "Unpacking kernel tarball failed."
     return 1
   fi  
-  cp ${SRCDIR}/edac/patches/*.patch ${SRCDIR}/edac/patches/retired-patches
-  ln -s ${SRCDIR}/edac/patches/retired-patches/series.${KERNELVER} ${SRCDIR}/${DIRNAME}/series
-  ln -s ${SRCDIR}/edac/patches/retired-patches ${SRCDIR}/${DIRNAME}/patches
+  ln -s ${SRCDIR}/edac/patches/series.${KERNELVER} ${SRCDIR}/${DIRNAME}/series
+  ln -s ${SRCDIR}/edac/patches ${SRCDIR}/${DIRNAME}/patches
   return 0
 }
 
