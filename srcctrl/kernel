@@ -22,6 +22,7 @@ unpack () {
     echo "Unpacking kernel tarball failed."
     return 1
   fi  
+  cp ${SRCDIR}/edac/patches/*.patch ${SRCDIR}/edac/patches/retired-patches
   ln -s ${SRCDIR}/edac/patches/retired-patches/series.${KERNELVER} ${SRCDIR}/${DIRNAME}/series
   ln -s ${SRCDIR}/edac/patches/retired-patches ${SRCDIR}/${DIRNAME}/patches
   return 0
