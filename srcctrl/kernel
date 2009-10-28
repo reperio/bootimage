@@ -5,14 +5,14 @@
 
 . ./functions
 
-FILENAME='linux-2.6.28.9.tar.bz2'
-URL='http://www.kernel.org/pub/linux/kernel/v2.6/linux-2.6.28.9.tar.bz2'
-DIRNAME='linux-2.6.28.9'
-KERNELVER='2.6.28'
+FILENAME='linux-2.6.31.5.tar.bz2'
+URL='http://www.kernel.org/pub/linux/kernel/v2.6/linux-2.6.31.5.tar.bz2'
+DIRNAME='linux-2.6.31.5'
+KERNELVER='2.6.31'
 
 fetch () { 
   get ${URL}
-  svn checkout -r 177 https://bluesmoke.svn.sourceforge.net/svnroot/bluesmoke/trunk/edac ${SRCDIR}/edac
+  svn checkout -r 203 https://bluesmoke.svn.sourceforge.net/svnroot/bluesmoke/trunk/edac ${SRCDIR}/edac
 }
 
 unpack () {
