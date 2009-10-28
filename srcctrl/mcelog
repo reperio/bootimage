@@ -5,12 +5,20 @@
 
 . ./functions
 
-FILENAME='mcelog-0.8pre.tar.gz'
-URL='ftp://ftp.x86-64.org/pub/linux/tools/mcelog/mcelog-0.8pre.tar.gz'
-DIRNAME='mcelog-0.8pre'
+GITURL="git://git.kernel.org/pub/scm/utils/cpu/mce/mcelog.git"
+DIRNAME='mcelog'
 
 BINARIES="\
 mcelog"
+
+fetch () {
+  git_fetch ${GITURL} ${DIRNAME}
+}
+
+unpack () {
+  # nothing to do here..
+  return
+}
 
 build () {
   checkdone
