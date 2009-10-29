@@ -21,9 +21,9 @@ mknod ${STAGEDIR}/dev/null c 1 3
 # COMPRESS INITRD FOR FOSS EDITION
 #
 
-echo -en "Compressing initramfs to dist/initrd-v${VERSION}.cpio.gz"
+echo -en "Compressing initramfs to dist/initrd-v${VERSION}.cpio.lzma"
 cd ${STAGEDIR}
-find . | cpio -o -H newc | gzip > ${TOPDIR}/dist/initrd-v${VERSION}.cpio.gz
+find . | cpio -o -H newc | lzma > ${TOPDIR}/dist/initrd-v${VERSION}.cpio.lzma
 if [ $? != 0 ]; then
   echo -e "${ANSI_LEFT}${ANSI_RED}[ FAIL ]${ANSI_DONE}"
   exit 1
