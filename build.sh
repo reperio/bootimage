@@ -204,7 +204,7 @@ fi
 cd ${TOPDIR}
 if [ -d /tftpboot/bootimage ]; then
   cp -v dist/kernel-${VERSION} /tftpboot/bootimage/kernel-jason
-  cp -v dist/initrd-v${VERSION}.cpio.gz /tftpboot/bootimage/bootimage-jason.gz
+  cp -v dist/initrd-v${VERSION}.cpio.lzma /tftpboot/bootimage/bootimage-jason.lzma
 fi
 
 ##
@@ -213,7 +213,7 @@ fi
 
 echo -en "Creating tarball dist/bootimage-v${VERSION}.tbz2"
 cd ${TOPDIR}/dist
-tar -cvjf bootimage-v${VERSION}.tbz2 README kernel-${VERSION} initrd-v${VERSION}.cpio.gz examples
+tar -cvjf bootimage-v${VERSION}.tbz2 README kernel-${VERSION} initrd-v${VERSION}.cpio.lzma examples
 if [ $? != 0 ]; then
   echo -e "${ANSI_LEFT}${ANSI_RED}[ FAIL ]${ANSI_DONE}"
   exit 1
@@ -228,7 +228,7 @@ echo -e "${ANSI_LEFT}${ANSI_GREEN}[ OK ]${ANSI_DONE}"
 echo -en "Creating ISO dist/bootimage-v${VERSION}.iso"
 cd ${TOPDIR}
 cp -v dist/kernel-${VERSION} ${CDSTAGEDIR}/isolinux/kernel > /dev/null
-cp -v dist/initrd-v${VERSION}.cpio.gz ${CDSTAGEDIR}/isolinux/initrd.img > /dev/null
+cp -v dist/initrd-v${VERSION}.cpio.lzma ${CDSTAGEDIR}/isolinux/initrd.img > /dev/null
 mkisofs -o dist/bootimage-${VERSION}.iso -b isolinux/isolinux.bin -c isolinux/boot.cat \
 	-no-emul-boot -boot-load-size 4 -boot-info-table ${CDSTAGEDIR}
 if [ $? != 0 ]; then
