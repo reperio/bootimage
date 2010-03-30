@@ -10,20 +10,19 @@ URL='http://www.kernel.org/pub/linux/utils/kernel/hotplug/udev-151.tar.bz2'
 DIRNAME='udev-151'
 
 BINARIES="\
-udevadm \
-extras/volume_id/vol_id \
+udev/udevadm \
 extras/cdrom_id/cdrom_id \
 extras/scsi_id/scsi_id \
 extras/path_id/path_id \
-extras/firmware/firmware.sh"
+extras/firmware/firmware"
 
 SBINARIES="\
-udevd"
+udev/udevd"
 
 build () {
   checkdone
   cd ${SRCDIR}/${DIRNAME}
-  ./configure --disable-introspection --disable-extras
+  ./configure --disable-introspection
   make clean
   make
   if [ $? != 0 ]; then
