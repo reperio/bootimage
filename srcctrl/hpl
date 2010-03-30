@@ -19,7 +19,7 @@ fi
 . ./functions
 
 fetch () { 
-  get http://www-unix.mcs.anl.gov/mpi/mpich1/downloads/mpich.tar.gz
+  get ftp://ftp.mcs.anl.gov/pub/mpi/mpich.tar.gz
   if [ $? != 0 ]; then
     return 1
   fi
@@ -29,14 +29,14 @@ fetch () {
   fi
   
   if [ ! ${USEGOTO} ]; then
-    if [ ! -e ${SRCDIR}/${ACML} ]; then
-      echo "The AMD Core Math Library is missing. Due to dist. restrictions, you must obtain this tarball manually. Check out http://www.amd.com/acml -- this library is required to actually place AMD CPU's under a sufficient level of stress as to reveal any defects. File missing is ${SRCDIR}/${ACML}"
-      if [ ${DISABLEAMD} ]; then
-        echo "AMD disabled; ignoring."
-      else
-        return 1
-      fi
-    fi
+#    if [ ! -e ${SRCDIR}/${ACML} ]; then
+#      echo "The AMD Core Math Library is missing. Due to dist. restrictions, you must obtain this tarball manually. Check out http://www.amd.com/acml -- this library is required to actually place AMD CPU's under a sufficient level of stress as to reveal any defects. File missing is ${SRCDIR}/${ACML}"
+#      if [ ${DISABLEAMD} ]; then
+#        echo "AMD disabled; ignoring."
+#      else
+#        return 1
+#      fi
+#    fi
     
     if [ ! -d ${SRCDIR}/${MKL} ]; then
       echo "The Intel MKL is missing. Due to dist. restrictions, you must obtain this tarball manually. Check out http://www.intel.com/products/software -- this library is required to actually place Intel CPU's under a sufficient level of stress as to reveal any defects. When running their installer (install.sh), set the prefix to ${SRCDIR}/mkl. File missing is ${SRCDIR}/${MKL}"
@@ -116,20 +116,20 @@ build () {
       return 1
     fi
   else
-    if [ ! ${USEGOTO} ]; then
-      # Build AMD against ACML
-      make arch=Linux_AMD_64
-    else
-      # Build AMD against Goto
-      make arch=Linux_AMD_64_Goto
-    fi
-    if [ $? != 0 ]; then
-      if [ ${DISABLEAMD} ]; then
-        echo "AMD disabled; ignoring."
-      else
-        return 1
-      fi
-    fi
+#    if [ ! ${USEGOTO} ]; then
+#      # Build AMD against ACML
+#      make arch=Linux_AMD_64
+#    else
+#      # Build AMD against Goto
+#      make arch=Linux_AMD_64_Goto
+#    fi
+#    if [ $? != 0 ]; then
+#      if [ ${DISABLEAMD} ]; then
+#        echo "AMD disabled; ignoring."
+#      else
+#        return 1
+#      fi
+#    fi
     
     if [ ! ${USEGOTO} ]; then
       # Build Intel against MKL
