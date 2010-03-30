@@ -19,7 +19,7 @@ fi
 . ./functions
 
 fetch () { 
-  get http://www-unix.mcs.anl.gov/mpi/mpich1/downloads/mpich.tar.gz
+  get ftp://ftp.mcs.anl.gov/pub/mpi/mpich.tar.gz
   if [ $? != 0 ]; then
     return 1
   fi
