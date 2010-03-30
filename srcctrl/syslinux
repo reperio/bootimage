@@ -5,9 +5,9 @@
 
 . ./functions
 
-FILENAME='syslinux-3.75.tar.bz2'
-URL='http://www.kernel.org/pub/linux/utils/boot/syslinux/syslinux-3.75.tar.bz2'
-DIRNAME='syslinux-3.75'
+FILENAME='syslinux-3.85.tar.bz2'
+URL='http://www.kernel.org/pub/linux/utils/boot/syslinux/syslinux-3.85.tar.bz2'
+DIRNAME='syslinux-3.85'
 BINARIES=''
 SBINARIES=''
 
