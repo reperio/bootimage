@@ -5,14 +5,15 @@
 
 . ./functions
 
-FILENAME='linux-2.6.31.5.tar.bz2'
-URL='http://www.kernel.org/pub/linux/kernel/v2.6/linux-2.6.31.5.tar.bz2'
-DIRNAME='linux-2.6.31.5'
-KERNELVER='2.6.31'
+FILENAME='linux-2.6.33.1.tar.bz2'
+URL='http://www.kernel.org/pub/linux/kernel/v2.6/linux-2.6.33.1.tar.bz2'
+DIRNAME='linux-2.6.33.1'
+KERNELVER='2.6.33'
 
 fetch () { 
   get ${URL}
-  svn checkout -r 203 https://bluesmoke.svn.sourceforge.net/svnroot/bluesmoke/trunk/edac ${SRCDIR}/edac
+  #Bluesmoke has no 2.6.33 patches
+  #svn checkout -r 203 https://bluesmoke.svn.sourceforge.net/svnroot/bluesmoke/trunk/edac ${SRCDIR}/edac
 }
 
 unpack () {
@@ -22,19 +23,19 @@ unpack () {
     echo "Unpacking kernel tarball failed."
     return 1
   fi  
-  ln -s ${SRCDIR}/edac/patches/series.${KERNELVER} ${SRCDIR}/${DIRNAME}/series
-  ln -s ${SRCDIR}/edac/patches ${SRCDIR}/${DIRNAME}/patches
+  #ln -s ${SRCDIR}/edac/patches/series.${KERNELVER} ${SRCDIR}/${DIRNAME}/series
+  #ln -s ${SRCDIR}/edac/patches ${SRCDIR}/${DIRNAME}/patches
   return 0
 }
 
 build () {
 
-  which quilt > /dev/null 2>&1
-  if [ $? != 0 ]
-  then
-     echo "Can't find the 'quilt' command - can't patch kernel w/ EDAC support."
-     return 1
-  fi
+  #which quilt > /dev/null 2>&1
+  #if [ $? != 0 ]
+  #then
+  #   echo "Can't find the 'quilt' command - can't patch kernel w/ EDAC support."
+  #   return 1
+  #fi
 
   if [ ! -f ${SRCDIR}/${DIRNAME}/.config ]
   then
@@ -47,10 +48,10 @@ build () {
     cp ${PATCHDIR}/kernel.${ARCH}.config ${SRCDIR}/${DIRNAME}/.config
     cd ${SRCDIR}/${DIRNAME}
 
-    quilt push -af
-    rm -rf ${SRCDIR}/${DIRNAME}/.pc/*patch
-    rm -f ${SRCDIR}/${DIRNAME}/.pc/*patch\~refresh
-    quilt push -af
+    #quilt push -af
+    #rm -rf ${SRCDIR}/${DIRNAME}/.pc/*patch
+    #rm -f ${SRCDIR}/${DIRNAME}/.pc/*patch\~refresh
+    #quilt push -af
     make clean
 
     make oldconfig

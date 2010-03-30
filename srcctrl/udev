@@ -5,9 +5,9 @@
 
 . ./functions
 
-FILENAME='udev-124.tar.gz'
-URL='http://www.us.kernel.org/pub/linux/utils/kernel/hotplug/udev-124.tar.gz'
-DIRNAME='udev-124'
+FILENAME='udev-151.tar.bz2'
+URL='http://www.kernel.org/pub/linux/utils/kernel/hotplug/udev-151.tar.bz2'
+DIRNAME='udev-151'
 
 BINARIES="\
 udevadm \
@@ -23,6 +23,7 @@ udevd"
 build () {
   checkdone
   cd ${SRCDIR}/${DIRNAME}
+  ./configure --disable-introspection --disable-extras
   make clean
   make
   if [ $? != 0 ]; then

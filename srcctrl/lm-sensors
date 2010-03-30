@@ -5,9 +5,9 @@
 
 . ./functions
 
-FILENAME='lm_sensors-3.0.2.tar.bz2'
-URL='http://dl.lm-sensors.org/lm-sensors/releases/lm_sensors-3.0.2.tar.bz2'
-DIRNAME='lm_sensors-3.0.2'
+FILENAME='lm_sensors-3.1.2.tar.bz2'
+URL='http://dl.lm-sensors.org/lm-sensors/releases/lm_sensors-3.1.2.tar.bz2'
+DIRNAME='lm_sensors-3.1.2'
 
 BINARIES="\
 prog/sensors/sensors"
