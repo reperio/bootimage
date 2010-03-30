@@ -5,9 +5,9 @@
 
 . ./functions
 
-FILENAME='ipmitool-1.8.10.tar.bz2'
-URL='http://superb-east.dl.sourceforge.net/sourceforge/ipmitool/ipmitool-1.8.10.tar.bz2'
-DIRNAME='ipmitool-1.8.10'
+FILENAME='ipmitool-1.8.11.tar.bz2'
+URL='http://downloads.sourceforge.net/project/ipmitool/ipmitool/1.8.11/ipmitool-1.8.11.tar.bz2?use_mirror=hivelocity'
+DIRNAME='ipmitool-1.8.11'
 
 BINARIES="\
 src/ipmitool \
