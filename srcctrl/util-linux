@@ -5,9 +5,9 @@
 
 . ./functions
 
-FILENAME='util-linux-ng-2.14.tar.bz2'
-URL='http://www.kernel.org/pub/linux/utils/util-linux-ng/v2.14/util-linux-ng-2.14.tar.bz2'
-DIRNAME='util-linux-ng-2.14'
+FILENAME='util-linux-ng-2.17.2.tar.bz2'
+URL='http://www.kernel.org/pub/linux/utils/util-linux-ng/v2.17/util-linux-ng-2.17.2.tar.bz2'
+DIRNAME='util-linux-ng-2.17.2'
 
 BINARIES="\
 fdisk/cfdisk \
