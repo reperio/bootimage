@@ -11,9 +11,9 @@ DIRNAME='util-linux-ng-2.17.2'
 
 BINARIES="\
 fdisk/cfdisk \
-fdisk/fdisk \
+fdisk/.libs/fdisk \
 fdisk/sfdisk \
-disk-utils/mkswap"
+disk-utils/.libs/mkswap"
 
 $1 $2
 
