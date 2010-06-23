@@ -5,12 +5,28 @@
 
 . ./functions
 
-FILENAME='screen-4.0.2.tar.gz'
-URL='ftp://mirrors.kernel.org/gnu/screen/screen-4.0.2.tar.gz'
-DIRNAME='screen-4.0.2'
+FILENAME='screen-4.0.3.tar.gz'
+URL='ftp://mirrors.kernel.org/gnu/screen/screen-4.0.3.tar.gz'
+DIRNAME='screen-4.0.3'
 
 BINARIES="\
 screen"
+
+build () {
+  checkdone
+  cd ${SRCDIR}/${DIRNAME}
+  patch -p1 -N < ${TOPDIR}/patches/screen-4.0.3-stropts.patch
+  ./configure ${CONFIGOPTIONS}
+  if [ $? != 0 ]; then
+    return 1
+  fi
+  make clean
+  make
+  if [ $? != 0 ]; then
+    return 1
+  fi
+  markdone
+}
 
 $1 $2
 
