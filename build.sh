@@ -230,7 +230,7 @@ fi
 
 echo -en "Creating tarball dist/bootimage-${VERSION}.tbz2"
 cp -v ${TOPDIR}/dist/kernel-${VERSION} ${TARSTAGEDIR} > ${LOGDIR}/tar-cp.log.${VERSION}
-cp -v ${TOPDIR}/disk/initrd-${VERSION}.cpio.lzma ${TARSTAGEDIR} > ${LOGDIR}/tar-cp.log.${VERSION}
+cp -v ${TOPDIR}/dist/initrd-${VERSION}.cpio.lzma ${TARSTAGEDIR} > ${LOGDIR}/tar-cp.log.${VERSION}
 cd ${TOPDIR}/stage
 tar -cvjf bootimage-${VERSION}.tbz2 bootimage-${VERSION}
 mv -v bootimage-${VERSION}.tbz2 ${TOPDIR}/dist/
