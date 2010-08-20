@@ -245,9 +245,13 @@ echo -e "${ANSI_LEFT}${ANSI_GREEN}[ OK ]${ANSI_DONE}"
 #
 
 echo -en "Creating RPM dist/bootimage-${VERSION}.rpm"
-cd ${TOPDIR}/stage
-rpmbuild -bb bootimage.spec
-
+cd ${TOPDIR}/dist
+rpmbuild -bb --define "_rpmdir ${TOPDIR}/dist" bootimage.spec
+if [ $? != 0 ]; then
+  echo -e "${ANSI_LEFT}${ANSI_RED}[ FAIL ]${ANSI_DONE}"
+  exit 1
+fi
+echo -e "${ANSI_LEFT}${ANSI_GREEN}[ OK ]${ANSI_DONE}"
 
 ##
 # MAKE ISO FOR FOSS EDITION
