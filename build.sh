@@ -36,6 +36,8 @@ STAGEDIR=${PWD}/stage/initrd-${VERSION}
 export STAGEDIR
 CDSTAGEDIR=${PWD}/stage/iso-${VERSION}
 export CDSTAGEDIR
+TARSTAGEDIR=${PWD}/stage/bootimage-${VERSION}
+export TARSTAGEDIR
 PATCHDIR=${PWD}/patches
 export PATCHDIR
 KERNELDIR=${PWD}/kernel/linux-${KERNELVER}
@@ -116,18 +118,33 @@ if [ ! -d ${CDSTAGEDIR} ]; then
 else
   rm -rf ${CDSTAGEDIR}/*
 fi
-
 if [ $? != 0 ]; then
   echo 'Failed to create the ISO stage directory.'
   exit 1
 fi
 
 cp -av ${TOPDIR}/iso.template/* ${CDSTAGEDIR} > ${LOGDIR}/iso-cp.log.${VERSION}
-
 if [ $? != 0 ]; then
   echo 'Failed to create the ISO stage directory.'
   exit 1
 fi
+
+if [ ! -d ${TARSTAGEDIR} ]; then
+  mkdir ${TARSTAGEDIR}
+else
+  rm -rf ${TARSTAGEDIR}/*
+fi
+if [ $? != 0 ]; then
+  echo 'Failed to create the TAR stage directory.'
+  exit 1
+fi
+
+cp -av ${TOPDIR}/dist/examples ${TOPDIR}/dist/README ${TARSTAGEDIR} > ${LOGDIR}/tar-cp.log.${VERSION}
+if [ $? != 0 ]; then
+  echo 'Failed to create the TAR stage directory.'
+  exit 1
+fi
+
 
 ##
 # Fetch, unpack, build and install
@@ -204,31 +221,42 @@ fi
 cd ${TOPDIR}
 if [ -d /tftpboot/bootimage ]; then
   cp -v dist/kernel-${VERSION} /tftpboot/bootimage/kernel-jason
-  cp -v dist/initrd-v${VERSION}.cpio.lzma /tftpboot/bootimage/bootimage-jason.lzma
+  cp -v dist/initrd-${VERSION}.cpio.lzma /tftpboot/bootimage/bootimage-jason.lzma
 fi
 
 ##
 # MAKE TARBALL FOR FOSS EDITION
 #
 
-echo -en "Creating tarball dist/bootimage-v${VERSION}.tbz2"
-cd ${TOPDIR}/dist
-tar -cvjf bootimage-v${VERSION}.tbz2 README kernel-${VERSION} initrd-v${VERSION}.cpio.lzma examples
+echo -en "Creating tarball dist/bootimage-${VERSION}.tbz2"
+cp -v ${TOPDIR}/dist/kernel-${VERSION} ${TARSTAGEDIR} > ${LOGDIR}/tar-cp.log.${VERSION}
+cp -v ${TOPDIR}/disk/initrd-${VERSION}.cpio.lzma ${TARSTAGEDIR} > ${LOGDIR}/tar-cp.log.${VERSION}
+cd ${TOPDIR}/stage
+tar -cvjf bootimage-${VERSION}.tbz2 bootimage-${VERSION}
+mv -v bootimage-${VERSION}.tbz2 ${TOPDIR}/dist/
 if [ $? != 0 ]; then
   echo -e "${ANSI_LEFT}${ANSI_RED}[ FAIL ]${ANSI_DONE}"
   exit 1
 fi
 echo -e "${ANSI_LEFT}${ANSI_GREEN}[ OK ]${ANSI_DONE}"
 
+##
+# MAKE RPM FOR FOSS EDITION
+#
+
+echo -en "Creating RPM dist/bootimage-${VERSION}.rpm"
+cd ${TOPDIR}/stage
+rpmbuild -bb bootimage.spec
+
 
 ##
 # MAKE ISO FOR FOSS EDITION
 #
 
-echo -en "Creating ISO dist/bootimage-v${VERSION}.iso"
+echo -en "Creating ISO dist/bootimage-${VERSION}.iso"
 cd ${TOPDIR}
 cp -v dist/kernel-${VERSION} ${CDSTAGEDIR}/isolinux/kernel > /dev/null
-cp -v dist/initrd-v${VERSION}.cpio.lzma ${CDSTAGEDIR}/isolinux/initrd.img > /dev/null
+cp -v dist/initrd-${VERSION}.cpio.lzma ${CDSTAGEDIR}/isolinux/initrd.img > /dev/null
 mkisofs -o dist/bootimage-${VERSION}.iso -b isolinux/isolinux.bin -c isolinux/boot.cat \
 	-no-emul-boot -boot-load-size 4 -boot-info-table ${CDSTAGEDIR}
 if [ $? != 0 ]; then
@@ -245,13 +273,13 @@ if [ -d ../bootimage.private ]; then
   cp -av ../bootimage.private/* ${STAGEDIR}
   perl findso.pl ${STAGEDIR}
   cd ${STAGEDIR}
-  find . | cpio -o -H newc | gzip > ${TOPDIR}/dist/initrd-v${VERSION}-nonfree.cpio.gz
+  find . | cpio -o -H newc | gzip > ${TOPDIR}/dist/initrd-${VERSION}-nonfree.cpio.gz
   if [ $? != 0 ]; then
     echo "Make nonfree initramfs failed."
     exit 1
   fi
   cd ${TOPDIR}
-  cp dist/initrd-v${VERSION}-nonfree.cpio.gz ${CDSTAGEDIR}/isolinux/initrd.img
+  cp dist/initrd-${VERSION}-nonfree.cpio.gz ${CDSTAGEDIR}/isolinux/initrd.img
   mkisofs -o dist/bootimage-${VERSION}-nonfree.iso -b isolinux/isolinux.bin -c isolinux/boot.cat \
     -no-emul-boot -boot-load-size 4 -boot-info-table ${CDSTAGEDIR}
   if [ $? != 0 ]; then
