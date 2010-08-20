@@ -19,7 +19,7 @@ fi
 . ./functions
 
 fetch () { 
-  get ftp://ftp.mcs.anl.gov/pub/mpi/mpich.tar.gz
+  get http://www.open-mpi.org/software/ompi/v1.4/downloads/openmpi-1.4.2.tar.bz2
   if [ $? != 0 ]; then
     return 1
   fi
@@ -51,7 +51,7 @@ fetch () {
 unpack () {
   cd ${SRCDIR}
   
-  untar mpich.tar.gz mpich-1.2.7p1
+  untar openmpi-1.4.2.tar.bz2 openmpi-1.4.2
   if [ $? != 0 ]; then
     return 1
   fi
@@ -63,9 +63,9 @@ unpack () {
 }
 
 build () {
-  cd ${SRCDIR}/mpich-1.2.7p1
+  cd ${SRCDIR}/openmpi-1.4.2
   if [ ! -e config.log ]; then
-    ./configure --with-device=ch_shmem --prefix=/usr/local/bootimage-mpich
+    ./configure --prefix=/usr/local/bootimage-openmpi
     if [ $? != 0 ]; then
       return 1
     fi
@@ -76,14 +76,14 @@ build () {
     fi
   fi
   
-  cd ${SRCDIR}/mpich-1.2.7p1  
+  cd ${SRCDIR}/openmpi-1.4.2
   make install
   if [ $? != 0 ]; then
     return 1
   fi
   # these two add about 10MB to the uncompressed ramfs
-  rm -rf /usr/local/bootimage-mpich/doc
-  rm -rf /usr/local/bootimage-mpich/man
+  rm -rf /usr/local/bootimage-openmpi/doc
+  rm -rf /usr/local/bootimage-openmpi/man
   
   cd ${SRCDIR}/hpl
   
@@ -148,7 +148,8 @@ build () {
 install () {
   # this is insanely stupid but required because mpiinstall hard-codes
   # the paths to everything inside the supporting MPI scripts
-  mv -v /usr/local/bootimage-mpich ${STAGEDIR}/usr/local
+  mv -v /usr/local/bootimage-openmpi ${STAGEDIR}/usr/local
+  ln -s /bin/false ${STAGEDIR}/bin/ssh
   if [ $? != 0 ]; then
     return 1
   fi
