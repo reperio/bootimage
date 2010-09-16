@@ -133,5 +133,13 @@ install () {
       return 1
     fi
   done
+
+  for file in ${LIBRARIES}; do
+    cp -vp ${file} ${STAGEDIR}/usr/lib
+    if [ $? != 0 ]; then
+      echo "Copying a required library ${file} failed. Please check $0"
+      return 1
+    fi
+  done
 }
 
