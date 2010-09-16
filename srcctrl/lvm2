@@ -12,6 +12,9 @@ DIRNAME='LVM2.2.02.67'
 BINARIES="\
 tools/lvm"
 
+LIBRARIES="\
+libdm/ioctl/libdevmapper.so.1.02"
+
 $1 $2
 
 if [ $? != 0 ]; then
