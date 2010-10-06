@@ -5,17 +5,18 @@
 
 . ./functions
 
-FILENAME='v1.82_81103.zip'
-URL='ftp://ftp.areca.com.tw/RaidCards/AP_Drivers/Linux/CLI/v1.82_81103.zip'
-DIRNAME='V1.82_81103'
+FILENAME='cli64.zip'
+URL='http://www.areca.us/support/s_linux/cli/x86_64/cli64.zip'
+DIRNAME='cli64'
 
 fetch () {
-  get ${URL}
-  cd ${SRCDIR}
+	cd ${SRCDIR}
+	get ${URL}
 }
 
 unpack () {
-	unzip -d ${SRCDIR} -o ${SRCDIR}/${FILENAME}
+	cd ${SRCDIR}
+	unzip -d ${DIRNAME} -o ${FILENAME}
 }
 
 
@@ -24,9 +25,7 @@ build () {
 }
 
 install () {
-  cd ${SRCDIR}/${DIRNAME}
-  #mkdir -p ${STAGEDIR}/usr/share/misc
-  cp -pv ${SRCDIR}/${DIRNAME}/x86-64/cli64 ${STAGEDIR}/usr/local/bin/arecacli
+  cp -pv ${SRCDIR}/${DIRNAME}/cli64 ${STAGEDIR}/usr/local/bin/arecacli
   chmod a+x ${STAGEDIR}/usr/local/bin/arecacli
 }
 
