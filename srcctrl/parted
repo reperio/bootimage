@@ -5,9 +5,9 @@
 
 . ./functions
 
-FILENAME='parted-2.2.tar.gz'
-URL='http://ftp.gnu.org/gnu/parted/parted-2.2.tar.gz'
-DIRNAME='parted-2.2'
+FILENAME='parted-2.3.tar.xz'
+URL='http://ftp.gnu.org/gnu/parted/parted-2.3.tar.xz'
+DIRNAME='parted-2.3'
 
 BINARIES="\
 parted/parted"
@@ -15,8 +15,6 @@ parted/parted"
 build () {
   checkdone
   cd ${SRCDIR}/${DIRNAME}
-  ## make compatible with GCC 4.3
-  #CFLAGS='-fgnu89-inline' ./configure --without-readline
   ./configure --without-readline
   if [ $? != 0 ]; then
     return 1
