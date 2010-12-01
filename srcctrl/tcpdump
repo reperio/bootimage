@@ -5,9 +5,9 @@
 
 . ./functions
 
-FILENAME='tcpdump-4.0.0.tar.gz'
-URL='http://www.tcpdump.org/release/tcpdump-4.0.0.tar.gz'
-DIRNAME='tcpdump-4.0.0'
+FILENAME='tcpdump-4.1.1.tar.gz'
+URL='http://www.tcpdump.org/release/tcpdump-4.1.1.tar.gz'
+DIRNAME='tcpdump-4.1.1'
 
 BINARIES="\
 tcpdump"
