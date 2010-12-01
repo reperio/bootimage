@@ -6,7 +6,7 @@
 . ./functions
 
 FILENAME='ipmitool-1.8.11.tar.bz2'
-URL='http://downloads.sourceforge.net/project/ipmitool/ipmitool/1.8.11/ipmitool-1.8.11.tar.bz2?use_mirror=hivelocity'
+URL='http://prdownloads.sourceforge.net/ipmitool/ipmitool-1.8.11.tar.bz2'
 DIRNAME='ipmitool-1.8.11'
 
 BINARIES="\
