@@ -5,9 +5,9 @@
 
 . ./functions
 
-FILENAME='pciutils-3.0.0.tar.gz'
-URL='ftp://atrey.karlin.mff.cuni.cz/pub/linux/pci/pciutils-3.0.0.tar.gz'
-DIRNAME='pciutils-3.0.0'
+FILENAME='pciutils-3.1.5.tar.gz'
+URL='ftp://atrey.karlin.mff.cuni.cz/pub/linux/pci/pciutils-3.1.5.tar.gz'
+DIRNAME='pciutils-3.1.5'
 
 fetch () {
   get $URL
