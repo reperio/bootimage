@@ -5,9 +5,9 @@
 
 . ./functions
 
-FILENAME='udev-161.tar.bz2'
-URL='http://www.kernel.org/pub/linux/utils/kernel/hotplug/udev-161.tar.bz2'
-DIRNAME='udev-161'
+FILENAME='udev-164.tar.bz2'
+URL='http://www.kernel.org/pub/linux/utils/kernel/hotplug/udev-164.tar.bz2'
+DIRNAME='udev-164'
 
 BINARIES="\
 udev/udevadm \
