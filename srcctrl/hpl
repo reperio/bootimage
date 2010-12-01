@@ -19,7 +19,7 @@ fi
 . ./functions
 
 fetch () { 
-  get http://www.open-mpi.org/software/ompi/v1.4/downloads/openmpi-1.4.2.tar.bz2
+  get http://www.open-mpi.org/software/ompi/v1.4/downloads/openmpi-1.4.3.tar.bz2
   if [ $? != 0 ]; then
     return 1
   fi
@@ -51,7 +51,7 @@ fetch () {
 unpack () {
   cd ${SRCDIR}
   
-  untar openmpi-1.4.2.tar.bz2 openmpi-1.4.2
+  untar openmpi-1.4.3.tar.bz2 openmpi-1.4.3
   if [ $? != 0 ]; then
     return 1
   fi
@@ -63,7 +63,7 @@ unpack () {
 }
 
 build () {
-  cd ${SRCDIR}/openmpi-1.4.2
+  cd ${SRCDIR}/openmpi-1.4.3
   if [ ! -e config.log ]; then
     ./configure --prefix=/usr/local/bootimage-openmpi
     if [ $? != 0 ]; then
@@ -76,7 +76,7 @@ build () {
     fi
   fi
   
-  cd ${SRCDIR}/openmpi-1.4.2
+  cd ${SRCDIR}/openmpi-1.4.3
   make install
   if [ $? != 0 ]; then
     return 1
