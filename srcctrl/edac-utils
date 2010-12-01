@@ -5,9 +5,9 @@
 
 . ./functions
 
-FILENAME='edac-utils-0.12.tar.bz2'
-URL=''http://internap.dl.sourceforge.net/sourceforge/edac-utils/edac-utils-0.12.tar.bz2
-DIRNAME='edac-utils-0.12'
+FILENAME='edac-utils-0.16.tar.bz2'
+URL=''http://prdownloads.sourceforge.net/edac-utils/edac-utils-0.16.tar.bz2
+DIRNAME='edac-utils-0.16'
 
 BINARIES="\
 src/util/edac-util \
