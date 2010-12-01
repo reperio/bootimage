@@ -5,9 +5,9 @@
 
 . ./functions
 
-FILENAME='ethtool-6.tar.gz'
-URL='http://internap.dl.sourceforge.net/sourceforge/gkernel/ethtool-6.tar.gz'
-DIRNAME='ethtool-6'
+FILENAME='ethtool-2.6.36.tar.gz'
+URL='http://prdownloads.sourceforge.net/gkernel/ethtool-2.6.36.tar.gz'
+DIRNAME='ethtool-2.6.36'
 
 BINARIES="\
 ethtool"
