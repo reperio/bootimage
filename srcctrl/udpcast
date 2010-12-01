@@ -5,9 +5,9 @@
 
 . ./functions
 
-FILENAME='udpcast-20071228.tar.gz'
-URL='http://udpcast.linux.lu/download/udpcast-20071228.tar.gz'
-DIRNAME='udpcast-20071228'
+FILENAME='udpcast-20100130.tar.gz'
+URL='http://udpcast.linux.lu/download/udpcast-20100130.tar.gz'
+DIRNAME='udpcast-20100130'
 
 BINARIES="\
 udp-receiver \
