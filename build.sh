@@ -261,7 +261,7 @@ echo -en "Creating ISO dist/bootimage-${VERSION}.iso"
 cd ${TOPDIR}
 cp -v dist/kernel-${VERSION} ${CDSTAGEDIR}/isolinux/kernel > /dev/null
 cp -v dist/initrd-${VERSION}.cpio.lzma ${CDSTAGEDIR}/isolinux/initrd.img > /dev/null
-mkisofs -o dist/bootimage-${VERSION}.iso -b isolinux/isolinux.bin -c isolinux/boot.cat \
+genisoimage -o dist/bootimage-${VERSION}.iso -b isolinux/isolinux.bin -c isolinux/boot.cat \
 	-no-emul-boot -boot-load-size 4 -boot-info-table ${CDSTAGEDIR}
 if [ $? != 0 ]; then
   echo -e "${ANSI_LEFT}${ANSI_RED}[ FAIL ]${ANSI_DONE}"
