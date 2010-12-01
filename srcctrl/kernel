@@ -5,10 +5,10 @@
 
 . ./functions
 
-FILENAME='linux-2.6.35.3.tar.bz2'
-URL='http://www.kernel.org/pub/linux/kernel/v2.6/linux-2.6.35.3.tar.bz2'
-DIRNAME='linux-2.6.35.3'
-KERNELVER='2.6.25'
+FILENAME='linux-2.6.36.1.tar.bz2'
+URL='http://www.kernel.org/pub/linux/kernel/v2.6/linux-2.6.36.1.tar.bz2'
+DIRNAME='linux-2.6.36.1'
+KERNELVER='2.6.36'
 
 fetch () { 
   get ${URL}
