@@ -5,9 +5,9 @@
 
 . ./functions
 
-FILENAME='smartmontools-5.38.tar.gz'
-URL='http://internap.dl.sourceforge.net/sourceforge/smartmontools/smartmontools-5.38.tar.gz'
-DIRNAME='smartmontools-5.38'
+FILENAME='smartmontools-5.40.tar.gz'
+URL='http://prdownloads.sourceforge.net/smartmontools/smartmontools-5.40.tar.gz'
+DIRNAME='smartmontools-5.40'
 
 BINARIES="\
 smartctl"
