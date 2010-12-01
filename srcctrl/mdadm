@@ -5,9 +5,9 @@
 
 . ./functions
 
-FILENAME='mdadm-2.6.7.tar.bz2'
-URL='http://www.kernel.org/pub/linux/utils/raid/mdadm/mdadm-2.6.7.tar.bz2'
-DIRNAME='mdadm-2.6.7'
+FILENAME='mdadm-3.1.4.tar.bz2'
+URL='http://www.kernel.org/pub/linux/utils/raid/mdadm/mdadm-3.1.4.tar.bz2'
+DIRNAME='mdadm-3.1.4'
 
 BINARIES="\
 mdadm"
