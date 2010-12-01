@@ -60,17 +60,8 @@ untar () {
   fi
 
   cd ${SRCDIR}
-  if [ ${_FILENAME} = ${_FILENAME%bz2} ]; then
-    tar xvzf ${_FILENAME}
-    if [ $? != 0 ]; then
-      return 1
-    fi
-  else
-    tar xvjf ${_FILENAME}
-    if [ $? != 0 ]; then
-      return 1
-    fi
-  fi
+  tar xvf ${_FILENAME}
+  return ${?}
 }
 
 unpack () {
