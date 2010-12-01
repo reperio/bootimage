@@ -5,9 +5,9 @@
 
 . ./functions
 
-FILENAME='links-0.99pre6.tar.gz'
-URL='http://links.sourceforge.net/download/links-0.99pre6.tar.gz'
-DIRNAME='links-0.99pre6'
+FILENAME='links-1.00.tar.gz'
+URL='http://www.jikos.cz/~mikulas/links/download/links-1.00.tar.gz'
+DIRNAME='links-1.00'
 
 BINARIES="\
 links"
