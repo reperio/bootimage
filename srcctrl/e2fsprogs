@@ -5,9 +5,9 @@
 
 . ./functions
 
-FILENAME='e2fsprogs-1.41.11.tar.gz'
-URL='http://prdownloads.sourceforge.net/e2fsprogs/e2fsprogs-1.41.11.tar.gz'
-DIRNAME='e2fsprogs-1.41.11'
+FILENAME='e2fsprogs-1.41.12.tar.gz'
+URL='http://prdownloads.sourceforge.net/e2fsprogs/e2fsprogs-1.41.12.tar.gz'
+DIRNAME='e2fsprogs-1.41.12'
 
 BINARIES="\
 e2fsck/e2fsck \
