@@ -17,15 +17,15 @@ LABEL local
 
 LABEL cloner
 	MENU LABEL Cloner
-	KERNEL bootimage/kernel-3.17
-	APPEND initrd=bootimage/initrd-3.17.cpio.lzma sshpasswd=breakin startup=cloner vga=1 server= image=
+	KERNEL bootimage/kernel-3.18
+	APPEND initrd=bootimage/initrd-3.18.cpio.lzma sshpasswd=breakin startup=cloner vga=1 server= image=
 
 LABEL breakin
 	MENU LABEL Breakin
-	KERNEL bootimage/kernel-3.17
-	APPEND initrd=bootimage/initrd-3.17.cpio.lzma sshpasswd=breakin startup=breakin vga=1
+	KERNEL bootimage/kernel-3.18
+	APPEND initrd=bootimage/initrd-3.18.cpio.lzma sshpasswd=breakin startup=breakin vga=1
 
 LABEL rescue
 	MENU LABEL Rescue
-	KERNEL bootimage/kernel-3.17
-	APPEND initrd=bootimage/initrd-3.17.cpio.lzma sshpasswd=breakin startup=rescue vga=1
+	KERNEL bootimage/kernel-3.18
+	APPEND initrd=bootimage/initrd-3.18.cpio.lzma sshpasswd=breakin startup=rescue vga=1
