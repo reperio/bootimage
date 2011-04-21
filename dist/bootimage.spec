@@ -1,5 +1,5 @@
 %define name bootimage
-%define version 3.19
+%define version 3.20
 
 Summary: Advanced Clustering Technologies Network Boot Image
 Name: %{name}
