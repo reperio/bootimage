@@ -32,9 +32,7 @@ build () {
 install () {
   mkdir -p ${STAGEDIR}/usr/share/terminfo
   cp -LPr /lib/terminfo/* ${STAGEDIR}/lib/terminfo/
-  if [ $? != 0 ]; then
-    cp -av --parents /usr/share/terminfo ${STAGEDIR}/
-  fi
+  cp -av --parents /usr/share/terminfo ${STAGEDIR}/
 }
 
 $1 $2

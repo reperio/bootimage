@@ -5,9 +5,9 @@
 
 . ./functions
 
-FILENAME='syslinux-4.03.tar.bz2'
-URL='http://www.kernel.org/pub/linux/utils/boot/syslinux/syslinux-4.03.tar.bz2'
-DIRNAME='syslinux-4.03'
+FILENAME='syslinux-4.04.tar.bz2'
+URL='http://www.kernel.org/pub/linux/utils/boot/syslinux/syslinux-4.04.tar.bz2'
+DIRNAME='syslinux-4.04'
 BINARIES=''
 SBINARIES=''
 

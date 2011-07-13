@@ -5,9 +5,10 @@
 
 . ./functions
 
-FILENAME='LVM2.2.02.77.tgz'
-URL='ftp://sourceware.org/pub/lvm2/LVM2.2.02.77.tgz'
-DIRNAME='LVM2.2.02.77'
+#FILENAME='LVM2.2.02.77.tgz'
+FILENAME='LVM2.2.02.86.tgz'
+URL='ftp://sourceware.org/pub/lvm2/LVM2.2.02.86.tgz'
+DIRNAME='LVM2.2.02.86'
 
 BINARIES="\
 tools/lvm"

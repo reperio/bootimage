@@ -13,7 +13,8 @@ BINARIES="\
 fdisk/cfdisk \
 fdisk/.libs/fdisk \
 fdisk/sfdisk \
-disk-utils/.libs/mkswap"
+disk-utils/.libs/mkswap \
+disk-utils/blockdev"
 
 $1 $2
 

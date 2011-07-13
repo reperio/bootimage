@@ -1,0 +1,11 @@
+Install system with task "Development Workstation" on installation
+
+Additional packages:
+
+  libuuid-devel
+  device-mapper-devel
+  nasm
+  libpcap
+  libpcap-devel
+  gperf
+  libusb-devel
