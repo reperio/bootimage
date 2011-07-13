@@ -149,7 +149,7 @@ install () {
   # this is insanely stupid but required because mpiinstall hard-codes
   # the paths to everything inside the supporting MPI scripts
   mv -v /usr/local/bootimage-openmpi ${STAGEDIR}/usr/local
-  ln -s /bin/false ${STAGEDIR}/bin/ssh
+  #ln -s /bin/false ${STAGEDIR}/bin/ssh
   if [ $? != 0 ]; then
     return 1
   fi

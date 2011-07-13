@@ -1,5 +1,5 @@
 %define name bootimage
-%define version 3.90
+%define version 3.20
 
 Summary: Advanced Clustering Technologies Network Boot Image
 Name: %{name}
@@ -14,7 +14,7 @@ Provides: bootimage
 URL: http://www.advancedclustering.com/software/breakin.html
 BuildArch: noarch
 Vendor: Advanced Clustering Technologies, Inc.
-Packager: Jason Clinton <jclinton@advancedclustering.com>
+Packager: Kyle Sheumaker <ksheumaker@advancedclustering.com>
 
 %description
 Advanced Clustering Technologies' network boot image. This include Breakin 

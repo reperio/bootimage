@@ -8,7 +8,9 @@
 FILENAME='dropbear-0.52.tar.bz2'
 URL='http://matt.ucc.asn.au/dropbear/releases/dropbear-0.52.tar.bz2'
 DIRNAME='dropbear-0.52'
+
 SBINARIES='dropbear'
+BINARIES='dbclient scp'
 
 build () {
   checkdone
@@ -23,6 +25,37 @@ build () {
     return 1
   fi
   markdone
+}
+
+install() {
+  cd ${SRCDIR}/${DIRNAME}
+  for file in ${BINARIES}; do
+    cp -vp ${file} ${STAGEDIR}/usr/bin
+    if [ $? != 0 ]; then
+      echo "Copying a required binary ${file} failed. Please check $0"
+      return 1
+    fi
+  done
+
+
+  for file in ${SBINARIES}; do
+    cp -vp ${file} ${STAGEDIR}/usr/sbin
+    if [ $? != 0 ]; then
+      echo "Copying a required sbin binary ${file} failed. Please check $0"
+      return 1
+    fi
+  done
+
+  for file in ${LIBRARIES}; do
+    cp -vp ${file} ${STAGEDIR}/usr/lib
+    if [ $? != 0 ]; then
+      echo "Copying a required library ${file} failed. Please check $0"
+      return 1
+    fi
+  done
+
+  cd ${STAGEDIR}/usr/bin
+  ln -s dbclient ssh
 }
 
 $1 $2
