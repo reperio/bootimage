@@ -1,5 +1,5 @@
 # current version 3.20
-VERSION='3.20'
+VERSION='3.22'
 export VERSION
 ARCH='x86_64'
 export ARCH

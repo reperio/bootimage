@@ -152,6 +152,7 @@ fi
 
 cd ${TOPDIR}
 for operand in fetch unpack build install; do
+#for operand in fetch unpack build install; do
   simple_runparts ${TOPDIR}/srcctrl ${operand}
   if [ $? != 0 ]
   then

@@ -12,7 +12,8 @@ BINARIES="\
 mcelog"
 
 fetch () {
-  git_fetch ${GITURL} ${DIRNAME}
+  #git_fetch ${GITURL} ${DIRNAME}
+  return
 }
 
 unpack () {
