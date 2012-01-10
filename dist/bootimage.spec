@@ -1,5 +1,5 @@
 %define name bootimage
-%define version 3.22
+%define version 3.23
 
 Summary: Advanced Clustering Technologies Network Boot Image
 Name: %{name}
@@ -32,8 +32,8 @@ cp ${TOPDIR}/dist/act_netboot_templates/*.cfg $RPM_BUILD_ROOT/tftpboot/act_netbo
 cp ${TOPDIR}/dist/kernel-%{version} $RPM_BUILD_ROOT/tftpboot/bootimage/
 cp ${TOPDIR}/dist/initrd-%{version}.cpio.lzma $RPM_BUILD_ROOT/tftpboot/bootimage/
 # Create handy symlinks for initrd and kernel
-ln -s kernel-%{version} $RPM_BUILD_ROOT/tftpboot/bootimage/kernel
-ln -s initrd-%{version}.cpio.lzma $RPM_BUILD_ROOT/tftpboot/bootimage/initrd
+ln -fs kernel-%{version} $RPM_BUILD_ROOT/tftpboot/bootimage/kernel
+ln -fs initrd-%{version}.cpio.lzma $RPM_BUILD_ROOT/tftpboot/bootimage/initrd
 
 %clean
 rm -rf $RPM_BUILD_ROOT
