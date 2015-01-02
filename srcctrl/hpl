@@ -8,7 +8,7 @@ if [ ${ARCH} = "x86" ]; then
   MKL=mkl/lib/32
 else
   ACML=gfortran64_mp
-  MKL=mkl/lib/em64t
+  MKL=mkl/lib/intel64
 fi
 
 if [ ${USEGOTO} ]; then
@@ -19,7 +19,7 @@ fi
 . ./functions
 
 fetch () { 
-  get http://www.open-mpi.org/software/ompi/v1.4/downloads/openmpi-1.4.3.tar.bz2
+  get http://www.open-mpi.org/software/ompi/v1.4/downloads/openmpi-1.4.5.tar.bz2
   if [ $? != 0 ]; then
     return 1
   fi
@@ -51,7 +51,7 @@ fetch () {
 unpack () {
   cd ${SRCDIR}
   
-  untar openmpi-1.4.3.tar.bz2 openmpi-1.4.3
+  untar openmpi-1.4.5.tar.bz2 openmpi-1.4.5
   if [ $? != 0 ]; then
     return 1
   fi
@@ -63,9 +63,9 @@ unpack () {
 }
 
 build () {
-  cd ${SRCDIR}/openmpi-1.4.3
+  cd ${SRCDIR}/openmpi-1.4.5
   if [ ! -e config.log ]; then
-    ./configure --prefix=/usr/local/bootimage-openmpi
+    CC=${HPL_CC} FC=${HPL_FC} F90=${HPL_F90} CXX=${HPL_CXX} ./configure --prefix=/usr/local/bootimage-openmpi
     if [ $? != 0 ]; then
       return 1
     fi
@@ -76,7 +76,7 @@ build () {
     fi
   fi
   
-  cd ${SRCDIR}/openmpi-1.4.3
+  cd ${SRCDIR}/openmpi-1.4.5
   make install
   if [ $? != 0 ]; then
     return 1
@@ -160,6 +160,11 @@ install () {
   else
     cp -av ${SRCDIR}/hpl/bin/Linux_AMD_64${SRCSUFFIXAMD}/xhpl ${STAGEDIR}/usr/local/bin/xhpl.amd
     cp -av ${SRCDIR}/hpl/bin/Linux_Intel_64${SRCSUFFIX}/xhpl ${STAGEDIR}/usr/local/bin/xhpl.intel
+  fi
+
+  if [ "${HPL_LD_LIBRARY_PATH}" != "" ]
+  then
+     echo "HPL_LD_LIBRARY_PATH=${HPL_LD_LIBRARY_PATH}" > ${STAGEDIR}/usr/local/bin/xhpl.library
   fi
 }
 

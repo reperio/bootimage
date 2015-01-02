@@ -92,7 +92,7 @@ MPlib        = -lmpi -L$(MPdir)/lib
 # header files,  LAlib  is defined  to be the name of  the library to be
 # used. The variable LAdir is only used for defining LAinc and LAlib.
 #
-LAdir        = $(shell echo $$SRCDIR)/mkl/lib/em64t
+LAdir        = $(shell echo $$SRCDIR)/mkl/lib/intel64
 LAinc        = 
 LAlib        = -Wl,--start-group $(LAdir)/libmkl_intel_lp64.a $(LAdir)/libmkl_sequential.a $(LAdir)/libmkl_core.a -Wl,--end-group -lpthread
 #
@@ -166,14 +166,14 @@ HPL_DEFS     = $(F2CDEFS) $(HPL_OPTS) $(HPL_INCLUDES)
 # - Compilers / linkers - Optimization flags ---------------------------
 # ----------------------------------------------------------------------
 #
-CC           = /usr/bin/gcc
+CC           = $(HPL_CC)
 CCNOOPT      = $(HPL_DEFS)
 CCFLAGS      = $(HPL_DEFS) -fomit-frame-pointer -O3 -funroll-loops -W -Wall
 #
 # On some platforms,  it is necessary  to use the Fortran linker to find
 # the Fortran internals used in the BLAS library.
 #
-LINKER       = /usr/bin/gcc
+LINKER       = $(HPL_CC)
 LINKFLAGS    = $(CCFLAGS)
 #
 ARCHIVER     = ar

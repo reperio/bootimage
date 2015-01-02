@@ -1,0 +1,37 @@
+##
+# Get a known-good copy of:
+# xfsprogs
+# 
+
+. ./functions
+
+GITURL="git://oss.sgi.com/xfs/cmds/xfsprogs"
+DIRNAME='xfsprogs'
+BINARIES='mkfs/mkfs.xfs'
+
+fetch () { 
+  git_fetch ${GITURL} ${DIRNAME}
+}
+
+unpack () {
+  # nothing to do here..
+  return  
+}
+
+build () {
+  checkdone
+  cd ${SRCDIR}/${DIRNAME}
+  make
+  if [ $? != 0 ]; then
+    return 1
+  fi
+  markdone
+}
+
+$1 $2
+
+if [ $? != 0 ]; then
+  printf 'Source control script %s failed on function %s' $0 $1
+  exit 1
+fi
+

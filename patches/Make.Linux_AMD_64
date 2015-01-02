@@ -168,11 +168,11 @@ HPL_DEFS     = $(F2CDEFS) $(HPL_OPTS) $(HPL_INCLUDES)
 # - Compilers / linkers - Optimization flags ---------------------------
 # ----------------------------------------------------------------------
 #
-CC           = gcc
+CC           = $(HPL_CC)
 CCNOOPT      = $(HPL_DEFS)
 CCFLAGS      = $(HPL_DEFS) -fomit-frame-pointer -O2 -funroll-loops
 #
-LINKER       = gfortran
+LINKER       = $(HPL_FC)
 LINKFLAGS    = $(CCFLAGS) -lgomp
 #
 ARCHIVER     = ar

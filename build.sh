@@ -151,8 +151,8 @@ fi
 #
 
 cd ${TOPDIR}
+#for operand in install; do
 for operand in fetch unpack build install; do
-#for operand in fetch unpack build install; do
   simple_runparts ${TOPDIR}/srcctrl ${operand}
   if [ $? != 0 ]
   then
@@ -206,6 +206,8 @@ echo -e "${ANSI_LEFT}${ANSI_GREEN}[ OK ]${ANSI_DONE}"
 # create the ld library cache
 
 echo -en "Creating ld.so.conf and ld.so.cache in initramfs"
+echo "/act/gcc-4.6.2/lib64" >> ${STAGEDIR}/etc/ld.so.conf
+echo "/act/gcc-4.7.2/lib64" >> ${STAGEDIR}/etc/ld.so.conf
 /sbin/ldconfig -r ${STAGEDIR} -f /etc/ld.so.conf -C /etc/ld.so.cache
 echo -e "${ANSI_LEFT}${ANSI_GREEN}[ OK ]${ANSI_DONE}"
 

@@ -1,0 +1,53 @@
+##
+# Get a known-good copy of:
+# actdmi
+# 
+
+. ./functions
+
+#GITURL="http://git.advancedclustering.com/git/actdmi.git"
+DIRNAME="amiflashdrv"
+KERNEL_DIR="linux-3.16.2"
+KERNEL_VER="3.16.2"
+
+fetch () { 
+ # git_fetch ${GITURL} ${DIRNAME}
+ return
+}
+
+unpack () {
+  # nothing to do here..
+  return  
+}
+
+build () {
+  checkdone
+
+
+  cd ${SRCDIR}/${DIRNAME}
+
+  rm -f ${SRCDIR}/${DIRNAME}/amifldrv_mod.o
+
+  # tell the binary to make the source code
+  ./SCELNX_64 /MAKEDRV KERNEL=${SRCDIR}/${KERNEL_DIR}
+
+  if [ ! -e ${SRCDIR}/${DIRNAME}/amifldrv_mod.o ]
+  then
+	echo 'Failed to build amifldrv_mod.o'
+	return 1
+  fi
+
+}
+
+install() {
+	mkdir -p ${STAGEDIR}/lib/modules/${KERNEL_VER}/
+	cp ${SRCDIR}/${DIRNAME}/amifldrv_mod.o ${STAGEDIR}/lib/modules/${KERNEL_VER}/amifldrv_mod.o
+}
+
+$1 $2
+
+if [ $? != 0 ]; then
+  printf 'Source control script %s failed on function %s' $0 $1
+  exit 1
+fi
+

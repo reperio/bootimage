@@ -46,8 +46,10 @@ for my $i (@exefiles) {
 foreach my $library (sort keys %libs) {
 
 	my $lib_basename = `basename $library`;
+	my $lib_dirname = `dirname $library`;
 	chomp $lib_basename;
-	my @results = `find $PATH -name $lib_basename -print`;
+	chomp $lib_dirname;
+	my @results = `find $PATH/$lib_dirname -name $lib_basename -print`;
 	my $result_count = @results;
 
 	if ($result_count >= 1) {
@@ -55,5 +57,6 @@ foreach my $library (sort keys %libs) {
 	}
 	else {
 		system("cp -v --parents $library $PATH");
+		#print("cp -v --parents $library $PATH\n");
 	}
 }

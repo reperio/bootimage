@@ -1,5 +1,5 @@
 %define name bootimage
-%define version 3.23
+%define version 4.02
 
 Summary: Advanced Clustering Technologies Network Boot Image
 Name: %{name}
@@ -43,6 +43,8 @@ rm -rf $RPM_BUILD_ROOT
 %config(noreplace) /tftpboot/act_netboot_templates/rescue.cfg
 %config(noreplace) /tftpboot/act_netboot_templates/cloner.cfg
 %config(noreplace) /tftpboot/act_netboot_templates/cloner-multicast.cfg
+%config(noreplace) /tftpboot/act_netboot_templates/cloner3.cfg
+%config(noreplace) /tftpboot/act_netboot_templates/cloner3-multicast.cfg
 /tftpboot/bootimage/kernel-%{version}
 /tftpboot/bootimage/initrd-%{version}.cpio.lzma
 /tftpboot/bootimage/kernel
