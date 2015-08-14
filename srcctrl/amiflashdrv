@@ -7,8 +7,8 @@
 
 #GITURL="http://git.advancedclustering.com/git/actdmi.git"
 DIRNAME="amiflashdrv"
-KERNEL_DIR="linux-3.16.2"
-KERNEL_VER="3.16.2"
+KERNEL_DIR="linux-3.19"
+KERNEL_VER="3.19.0"
 
 fetch () { 
  # git_fetch ${GITURL} ${DIRNAME}

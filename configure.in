@@ -1,4 +1,4 @@
-VERSION='4.05'
+VERSION='4.26'
 export VERSION
 ARCH='x86_64'
 export ARCH

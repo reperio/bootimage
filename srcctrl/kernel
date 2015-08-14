@@ -5,10 +5,10 @@
 
 . ./functions
 
-FILENAME='linux-3.16.2.tar.gz'
-URL='https://www.kernel.org/pub/linux/kernel/v3.x/linux-3.16.2.tar.gz'
-DIRNAME='linux-3.16.2'
-KERNELVER='3.16.2'
+FILENAME='linux-3.19.tar.gz'
+URL='https://www.kernel.org/pub/linux/kernel/v3.x/linux-3.19.tar.gz'
+DIRNAME='linux-3.19'
+KERNELVER='3.19'
 
 fetch () { 
   get ${URL}

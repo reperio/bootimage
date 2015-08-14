@@ -19,7 +19,8 @@ fi
 . ./functions
 
 fetch () { 
-  get http://www.open-mpi.org/software/ompi/v1.4/downloads/openmpi-1.4.5.tar.bz2
+  get http://www.open-mpi.org/software/ompi/v1.8/downloads/openmpi-1.8.4.tar.bz2
+  # get http://www.open-mpi.org/software/ompi/v1.4/downloads/openmpi-1.4.5.tar.bz2
   if [ $? != 0 ]; then
     return 1
   fi
@@ -51,7 +52,7 @@ fetch () {
 unpack () {
   cd ${SRCDIR}
   
-  untar openmpi-1.4.5.tar.bz2 openmpi-1.4.5
+  untar openmpi-1.8.4.tar.bz2 openmpi-1.8.4
   if [ $? != 0 ]; then
     return 1
   fi
@@ -63,8 +64,11 @@ unpack () {
 }
 
 build () {
-  cd ${SRCDIR}/openmpi-1.4.5
+  cd ${SRCDIR}/openmpi-1.8.4
+  export LD_LIBRARY_PATH="${LD_LIBRARY_PATH}:${HPL_LD_LIBRARY_PATH}"
+
   if [ ! -e config.log ]; then
+
     CC=${HPL_CC} FC=${HPL_FC} F90=${HPL_F90} CXX=${HPL_CXX} ./configure --prefix=/usr/local/bootimage-openmpi
     if [ $? != 0 ]; then
       return 1
@@ -76,7 +80,7 @@ build () {
     fi
   fi
   
-  cd ${SRCDIR}/openmpi-1.4.5
+  cd ${SRCDIR}/openmpi-1.8.4
   make install
   if [ $? != 0 ]; then
     return 1
