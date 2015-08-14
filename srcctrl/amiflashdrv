@@ -5,7 +5,6 @@
 
 . ./functions
 
-#GITURL="http://git.advancedclustering.com/git/actdmi.git"
 DIRNAME="amiflashdrv"
 KERNEL_DIR="linux-3.19"
 KERNEL_VER="3.19.0"
