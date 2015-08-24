@@ -69,6 +69,9 @@ build () {
 
   if [ ! -e config.log ]; then
 
+# TODO: Change the prefix out of /usr/local/bootimage-openmpi so that regular users can
+# build.  This has to be set this way, because the path is hardcoded into the OMPI
+# internals.  It would be better to build right into $STAGEDIR.
     CC=${HPL_CC} FC=${HPL_FC} F90=${HPL_F90} CXX=${HPL_CXX} ./configure --prefix=/usr/local/bootimage-openmpi
     if [ $? != 0 ]; then
       return 1

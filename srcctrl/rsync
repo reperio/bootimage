@@ -5,9 +5,10 @@
 
 . ./functions
 
-FILENAME='rsync-3.0.7.tar.gz'
-URL='http://samba.anu.edu.au/ftp/rsync/src/rsync-3.0.7.tar.gz'
-DIRNAME='rsync-3.0.7'
+FILENAME='rsync-3.1.1.tar.gz'
+URL='https://download.samba.org/pub/rsync/src/rsync-3.1.1.tar.gz'
+#URL='http://samba.anu.edu.au/ftp/rsync/src/rsync-3.0.7.tar.gz'
+DIRNAME='rsync-3.1.1'
 
 BINARIES="\
 rsync"

@@ -8,6 +8,7 @@
 GITURL="git://git.kernel.org/pub/scm/linux/kernel/git/kdave/btrfs-progs.git"
 DIRNAME='btrfs-progs'
 BINARIES='mkfs.btrfs btrfs'
+#BINARIES='mkfs.btrfs btrfs'
 
 fetch () { 
   git_fetch ${GITURL} ${DIRNAME}
@@ -21,10 +22,12 @@ unpack () {
 build () {
   checkdone
   cd ${SRCDIR}/${DIRNAME}
+  git checkout v4.0
   make mkfs.btrfs btrfs
   if [ $? != 0 ]; then
     return 1
   fi
+  #mv mkfs mkfs.btrfs
   markdone
 }
 

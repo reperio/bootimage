@@ -5,9 +5,9 @@
 
 . ./functions
 
-FILENAME='mdadm-3.2.1.tar.bz2'
-URL='http://www.us.kernel.org/pub/linux/utils/raid/mdadm/mdadm-3.2.1.tar.bz2'
-DIRNAME='mdadm-3.2.1'
+FILENAME='mdadm-3.3.4.tar.gz'
+URL='http://www.kernel.org/pub/linux/utils/raid/mdadm/mdadm-3.3.4.tar.gz'
+DIRNAME='mdadm-3.3.4'
 
 BINARIES="\
 mdadm"
@@ -16,7 +16,7 @@ build () {
   checkdone
   cd ${SRCDIR}/${DIRNAME}
   make clean
-  make
+  make RUN_DIR=/var
   if [ $? != 0 ]; then
     return 1
   fi
