@@ -247,6 +247,9 @@ echo -e "${ANSI_LEFT}${ANSI_GREEN}[ OK ]${ANSI_DONE}"
 # MAKE RPM FOR FOSS EDITION
 #
 
+# Update spec file, so it has the current version number.
+sed "1s/.*/\%define version ${VERSION}/" dist/bootimage.spec
+
 echo -en "Creating RPM dist/bootimage-${VERSION}.rpm"
 cd ${TOPDIR}/dist
 rpmbuild -bb --define "_rpmdir ${TOPDIR}/dist" bootimage.spec

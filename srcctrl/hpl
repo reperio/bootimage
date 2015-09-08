@@ -3,6 +3,9 @@
 # hpl
 # 
 
+UNTAR_HPLDIR=hpl-2.1
+HPLDIR=hpl
+
 if [ ${ARCH} = "x86" ]; then
   ACML=gfortran32_mp
   MKL=mkl/lib/32
@@ -57,10 +60,11 @@ unpack () {
     return 1
   fi
   
-  untar hpl.tgz hpl
+  untar hpl.tgz ${HPLDIR}
   if [ $? != 0 ]; then
     return 1
   fi
+  ln -s ${UNTAR_HPLDIR} ${HPLDIR}  # Workaround - untarred to hpl-2.1 instead of hpl, which breaks everything
 }
 
 build () {
@@ -92,7 +96,7 @@ build () {
   rm -rf /usr/local/bootimage-openmpi/doc
   rm -rf /usr/local/bootimage-openmpi/man
   
-  cd ${SRCDIR}/hpl
+  cd ${SRCDIR}/${HPLDIR}
   
   cp -v ${TOPDIR}/patches/Make.Linux* ./
   
@@ -162,11 +166,11 @@ install () {
   fi
   
   if [ ${ARCH} = "x86" ]; then
-    cp -av ${SRCDIR}/hpl/bin/Linux_AMD_32${SRCSUFFIXAMD}/xhpl ${STAGEDIR}/usr/local/bin/xhpl.amd
-    cp -av ${SRCDIR}/hpl/bin/Linux_Intel_32${SRCSUFFIX}/xhpl ${STAGEDIR}/usr/local/bin/xhpl.intel
+    cp -av ${SRCDIR}/${HPLDIR}/bin/Linux_AMD_32${SRCSUFFIXAMD}/xhpl ${STAGEDIR}/usr/local/bin/xhpl.amd
+    cp -av ${SRCDIR}/${HPLDIR}/bin/Linux_Intel_32${SRCSUFFIX}/xhpl ${STAGEDIR}/usr/local/bin/xhpl.intel
   else
-    cp -av ${SRCDIR}/hpl/bin/Linux_AMD_64${SRCSUFFIXAMD}/xhpl ${STAGEDIR}/usr/local/bin/xhpl.amd
-    cp -av ${SRCDIR}/hpl/bin/Linux_Intel_64${SRCSUFFIX}/xhpl ${STAGEDIR}/usr/local/bin/xhpl.intel
+    cp -av ${SRCDIR}/${HPLDIR}/bin/Linux_AMD_64${SRCSUFFIXAMD}/xhpl ${STAGEDIR}/usr/local/bin/xhpl.amd
+    cp -av ${SRCDIR}/${HPLDIR}/bin/Linux_Intel_64${SRCSUFFIX}/xhpl ${STAGEDIR}/usr/local/bin/xhpl.intel
   fi
 
   if [ "${HPL_LD_LIBRARY_PATH}" != "" ]
