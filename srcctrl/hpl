@@ -64,10 +64,11 @@ unpack () {
   if [ $? != 0 ]; then
     return 1
   fi
-  ln -s ${UNTAR_HPLDIR} ${HPLDIR}  # Workaround - untarred to hpl-2.1 instead of hpl, which breaks everything
+  ln -sf ${UNTAR_HPLDIR} ${HPLDIR}  # Workaround - untarred to hpl-2.1 instead of hpl, which breaks everything
 }
 
 build () {
+  echo "Building OpenMPI..."
   cd ${SRCDIR}/openmpi-1.8.4
   export LD_LIBRARY_PATH="${LD_LIBRARY_PATH}:${HPL_LD_LIBRARY_PATH}"
 
@@ -96,6 +97,7 @@ build () {
   rm -rf /usr/local/bootimage-openmpi/doc
   rm -rf /usr/local/bootimage-openmpi/man
   
+  echo "Building HPL..."
   cd ${SRCDIR}/${HPLDIR}
   
   cp -v ${TOPDIR}/patches/Make.Linux* ./
@@ -144,6 +146,7 @@ build () {
     
     if [ ! ${USEGOTO} ]; then
       # Build Intel against MKL
+      make clean arch=Linux_Intel_64  # Will this work?
       make arch=Linux_Intel_64
     else
       # Build Intel against Goto

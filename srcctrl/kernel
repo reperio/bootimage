@@ -8,7 +8,7 @@
 FILENAME='linux-3.19.tar.gz'
 URL='https://www.kernel.org/pub/linux/kernel/v3.x/linux-3.19.tar.gz'
 DIRNAME='linux-3.19'
-KERNELVER='3.19'
+KERNELVER='3.19.0'
 
 fetch () { 
   get ${URL}
@@ -85,8 +85,10 @@ install () {
     echo "Installing compiled modules to stage failed."
     return 1
   fi
-  rm ${STAGEDIR}/lib/modules/${KERNELVER}-${ARCH}/build
-  rm ${STAGEDIR}/lib/modules/${KERNELVER}-${ARCH}/source
+  #rm ${STAGEDIR}/lib/modules/${KERNELVER}-${ARCH}/build
+  #rm ${STAGEDIR}/lib/modules/${KERNELVER}-${ARCH}/source
+  rm ${STAGEDIR}/lib/modules/${KERNELVER}/build
+  rm ${STAGEDIR}/lib/modules/${KERNELVER}/source
   cp arch/${ARCH}/boot/bzImage ${TOPDIR}/dist/kernel-${VERSION}
 }
 
