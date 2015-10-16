@@ -252,7 +252,7 @@ sed "1s/.*/\%define version ${VERSION}/" dist/bootimage.spec
 
 echo -en "Creating RPM dist/bootimage-${VERSION}.rpm"
 cd ${TOPDIR}/dist
-rpmbuild -bb --define "_rpmdir ${TOPDIR}/dist" bootimage.spec
+rpmbuild -bb --define "_rpmdir ${TOPDIR}/dist" --define "version ${VERSION}" bootimage.spec
 if [ $? != 0 ]; then
   echo -e "${ANSI_LEFT}${ANSI_RED}[ FAIL ]${ANSI_DONE}"
   exit 1
