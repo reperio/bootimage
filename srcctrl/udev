@@ -37,7 +37,7 @@ build () {
   #  will not build with gcc 4.4.7 from centos 4.7 internal compiler errors
   #  using 4.9 compiler now form HPL_CC (hack!)
   # -----------------
-  CFLAGS="-DBTN_TRIGGER_HAPPY 0x2c0" CC=${HPL_CC} ./configure --disable-introspection
+  CFLAGS="-DBTN_TRIGGER_HAPPY=0x2c0" CC=${HPL_CC} ./configure --disable-introspection
   make clean
   make
   if [ $? != 0 ]; then
