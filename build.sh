@@ -94,7 +94,7 @@ else
 fi
 
 if [ $? != 0 ]; then
-  echo 'Failed to create the stage directory.'
+  echo 'Failed to create and clean the stage directory.'
   exit 1
 fi
 
@@ -212,7 +212,7 @@ echo "/act/gcc-4.7.2/lib64" >> ${STAGEDIR}/etc/ld.so.conf
 echo -e "${ANSI_LEFT}${ANSI_GREEN}[ OK ]${ANSI_DONE}"
 
 # Create the cpio image under root so that special files can be made
-${TOPDIR}/build-img.sh
+fakeroot ${TOPDIR}/build-img.sh
 if [ $? != 0 ]; then
   exit 1
 fi
@@ -281,7 +281,7 @@ echo -e "${ANSI_LEFT}${ANSI_GREEN}[ OK ]${ANSI_DONE}"
 cd ${TOPDIR}
 if [ -d ../bootimage.private ]; then
   cp -av ../bootimage.private/* ${STAGEDIR}
-  perl findso.pl ${STAGEDIR}
+  fakeroot perl findso.pl ${STAGEDIR}
   cd ${STAGEDIR}
   find . | cpio -o -H newc | gzip > ${TOPDIR}/dist/initrd-${VERSION}-nonfree.cpio.gz
   if [ $? != 0 ]; then
