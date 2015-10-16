@@ -32,7 +32,7 @@ udev/udevd"
 build () {
   checkdone
   cd ${SRCDIR}/${DIRNAME}
-  ./configure --disable-introspection
+  CFLAGS="-DBTN_TRIGGER_HAPPY=0x2c0" ./configure --disable-introspection
   make clean
   make
   if [ $? != 0 ]; then
