@@ -189,6 +189,8 @@ echo -e "${ANSI_LEFT}${ANSI_GREEN}[ OK ]${ANSI_DONE}"
 # add a few additional manually
 
 ADDLLIBS="\
+/usr/lib64/libstdc++.so.6 \
+/usr/lib64/libgomp.so.1 \
 ld-linux-x86-64.so.2 \
 libnss_compat.so.2 \
 libnss_dns.so.2 \
