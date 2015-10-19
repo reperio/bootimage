@@ -3,14 +3,13 @@
 # Import VERSION
 . ./configure.in
 
-. ./functions
 
 ##
 # This script will enter srcctrl/ and run every script there with:
 # 'fetch', 'unpack', 'build', and 'install' successively
 #
 
-while getopts agc: name
+while getopts pagc: name
 do
   case ${name} in
   a)  DISABLEAMD='yes'
@@ -22,11 +21,15 @@ do
   c)  CONFIGOPTIONS=$OPTARG
       export CONFIGOPTIONS
       printf 'Global ./configure options set to %s\n' ${CONFIGOPTIONS};;
+  p)  NO_ANSI=1
+      export NO_ANSI ;;
   ?)  printf "Usage: %s: [-a] [-g] [-c configure_opts]\n" $0
       exit 1;;
   esac
 done
 shift $(($OPTIND -1))
+
+. ./functions
 
 TOPDIR=${PWD}
 export TOPDIR
@@ -99,7 +102,7 @@ if [ $? != 0 ]; then
 fi
 
 cd ${STAGEDIR}
-SKEL='usr usr/bin usr/local usr/local/bin usr/lib usr/share usr/src tmp lib lib/terminfo var var/lib var/log etc'
+SKEL='usr usr/bin usr/local usr/local/bin usr/lib usr/share usr/src tmp lib lib/terminfo var var/lib var/log etc lib64 usr/lib64'
 for dir in $SKEL; do
   mkdir ${dir}
   if [ $? != 0 ]; then
@@ -252,7 +255,7 @@ sed "1s/.*/\%define version ${VERSION}/" dist/bootimage.spec
 
 echo -en "Creating RPM dist/bootimage-${VERSION}.rpm"
 cd ${TOPDIR}/dist
-rpmbuild -bb --define "_rpmdir ${TOPDIR}/dist" --define "version ${VERSION}" bootimage.spec
+rpmbuild -bb --define "_topdir ${TOPDIR}/rpmbuild" --define "_rpmdir ${TOPDIR}/dist" --define "version ${VERSION}" bootimage.spec
 if [ $? != 0 ]; then
   echo -e "${ANSI_LEFT}${ANSI_RED}[ FAIL ]${ANSI_DONE}"
   exit 1
