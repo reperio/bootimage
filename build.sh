@@ -329,10 +329,10 @@ fi
 ##
 #  Copy the goods into the latest directory
 #
-cp dist/initrd-${VERSION}.cpio.lzma ${TOPDIR}/dist/latest
-cp dist/kernel-${VERSION} ${TOPDIR}/dist/latest
-cp dist/bootimage-${VERSION}.tbz2 ${TOPDIR}/dist/latest
-cp dist/bootimage-${VERSION}.iso ${TOPDIR}/dist/latest
+cp dist/initrd-${VERSION}.cpio.lzma ${TOPDIR}/dist/latest/initrd-${LATEST}-${RELEASE}.cpio.lzma
+cp dist/kernel-${VERSION} ${TOPDIR}/dist/latest/kernel-${LATEST}-${RELEASE}
+cp dist/bootimage-${VERSION}.tbz2 ${TOPDIR}/dist/latest/bootimage-${VERSION}-${RELEASE}.tbz2
+cp dist/bootimage-${VERSION}.iso ${TOPDIR}/dist/latest/bootimage-${VERSION}-${RELEASE}.iso
 cp dist/${ARCH}/bootimage-${VERSION}-${RELEASE}*.rpm ${TOPDIR}/dist/latest
 
 
