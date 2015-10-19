@@ -3,7 +3,7 @@
 Summary: Advanced Clustering Technologies Network Boot Image
 Name: %{name}
 Version: %{version}
-Release: 1
+Release: %{release}
 Source: %{name}-%{version}.tbz2
 License: no
 Group: System Environment/Utilities

@@ -101,6 +101,17 @@ if [ $? != 0 ]; then
   exit 1
 fi
 
+##
+# Cleanup the latest directory
+#
+
+if [ -d "${TOPDIR}/dist/latest" ]
+then
+	rm -f ${TOPDIR}/dist/latest/*
+fi
+
+
+
 cd ${STAGEDIR}
 SKEL='usr usr/bin usr/local usr/local/bin usr/lib usr/share usr/src tmp lib lib/terminfo var var/lib var/log etc lib64 usr/lib64'
 for dir in $SKEL; do
@@ -191,7 +202,7 @@ echo -e "${ANSI_LEFT}${ANSI_GREEN}[ OK ]${ANSI_DONE}"
 ADDLLIBS="\
 /usr/lib64/libstdc++.so.6 \
 /usr/lib64/libgomp.so.1 \
-/lib64/libgcc_s.so.1 \
+^/lib64/libgcc_s.so.1 \
 ld-linux-x86-64.so.2 \
 libnss_compat.so.2 \
 libnss_dns.so.2 \
@@ -261,10 +272,15 @@ echo -e "${ANSI_LEFT}${ANSI_GREEN}[ OK ]${ANSI_DONE}"
 # MAKE RPM FOR FOSS EDITION
 #
 
+RELEASE=1
+if [ "${BUILD_NUMBER}" != "" ]
+then
+	RELEASE="${BUILD_NUMBER}"
+fi
 
 echo -en "Creating RPM dist/bootimage-${VERSION}.rpm"
 cd ${TOPDIR}/dist
-rpmbuild -bb --define "_topdir ${TOPDIR}/rpmbuild" --define "_rpmdir ${TOPDIR}/dist" --define "version ${VERSION}" bootimage.spec
+rpmbuild -bb --define "_topdir ${TOPDIR}/rpmbuild" --define "_rpmdir ${TOPDIR}/dist" --define "version ${VERSION}" --define "release ${BUILD_NUMBER}" bootimage.spec
 if [ $? != 0 ]; then
   echo -e "${ANSI_LEFT}${ANSI_RED}[ FAIL ]${ANSI_DONE}"
   exit 1
@@ -309,6 +325,14 @@ if [ -d ../bootimage.private ]; then
     exit 1
   fi
 fi
+
+##
+#  Copy the goods into the latest directory
+#
+cp dist/initrd-${VERSION}.cpio.lzma ${TOPDIR}/dist/latest
+cp dist/kernel-${VERSION} ${TOPDIR}/dist/latest
+cp dist/bootimage-${VERSION}.iso ${TOPDIR}/dist/latest
+cp dist/${ARCH}/bootimage-${VERSION}*rpm ${TOPDIR}/dist/latest
 
 
 ##
