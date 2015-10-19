@@ -331,7 +331,7 @@ fi
 #
 cp dist/initrd-${VERSION}.cpio.lzma ${TOPDIR}/dist/latest
 cp dist/kernel-${VERSION} ${TOPDIR}/dist/latest
-cp dist/${ARCH}/bootimage-${VERSION}.tbz2 ${TOPDIR}/dist/latest
+cp dist/bootimage-${VERSION}.tbz2 ${TOPDIR}/dist/latest
 cp dist/bootimage-${VERSION}.iso ${TOPDIR}/dist/latest
 cp dist/${ARCH}/bootimage-${VERSION}*rpm ${TOPDIR}/dist/latest
 
