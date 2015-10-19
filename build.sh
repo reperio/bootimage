@@ -110,6 +110,14 @@ for dir in $SKEL; do
     exit 1
   fi
 done
+
+
+# drop a version file in stage directory
+echo "VERSION=${VERSION}" > ${STAGEDIR}/etc/breakin-release
+echo "BUILD_VERSION=${BUILD_VERSION}" >> ${STAGEDIR}/etc/breakin-release
+echo "BUILD_HOST=`hostname`" >> ${STAGEDIR}/etc/breakin-release
+echo "GIT_COMMIT=`git log -n 1 --pretty=format:"%H"`" >> ${STAGEDIR}/etc/breakin-release
+
 chmod +t tmp
 if [ $? != 0 ]; then
   echo "Failed to sticky bit on tmp.\n"
@@ -250,8 +258,6 @@ echo -e "${ANSI_LEFT}${ANSI_GREEN}[ OK ]${ANSI_DONE}"
 # MAKE RPM FOR FOSS EDITION
 #
 
-# Update spec file, so it has the current version number.
-sed "1s/.*/\%define version ${VERSION}/" dist/bootimage.spec
 
 echo -en "Creating RPM dist/bootimage-${VERSION}.rpm"
 cd ${TOPDIR}/dist
