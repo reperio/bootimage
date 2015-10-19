@@ -114,7 +114,7 @@ done
 
 # drop a version file in stage directory
 echo "VERSION=${VERSION}" > ${STAGEDIR}/etc/breakin-release
-echo "BUILD_VERSION=${BUILD_VERSION}" >> ${STAGEDIR}/etc/breakin-release
+echo "BUILD_NUMBER=${BUILD_NUMBER}" >> ${STAGEDIR}/etc/breakin-release
 echo "BUILD_HOST=`hostname`" >> ${STAGEDIR}/etc/breakin-release
 echo "GIT_COMMIT=`git log -n 1 --pretty=format:"%H"`" >> ${STAGEDIR}/etc/breakin-release
 
