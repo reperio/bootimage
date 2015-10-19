@@ -146,7 +146,7 @@ build () {
     
     if [ ! ${USEGOTO} ]; then
       # Build Intel against MKL
-      make clean arch=Linux_Intel_64  # Will this work?
+      # make clean arch=Linux_Intel_64  # Will this work? - KS: it won't will cause an infinite loop
       make arch=Linux_Intel_64
     else
       # Build Intel against Goto
