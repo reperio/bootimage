@@ -3,14 +3,13 @@
 # Import VERSION
 . ./configure.in
 
-. ./functions
 
 ##
 # This script will enter srcctrl/ and run every script there with:
 # 'fetch', 'unpack', 'build', and 'install' successively
 #
 
-while getopts agc: name
+while getopts pagc: name
 do
   case ${name} in
   a)  DISABLEAMD='yes'
@@ -22,11 +21,15 @@ do
   c)  CONFIGOPTIONS=$OPTARG
       export CONFIGOPTIONS
       printf 'Global ./configure options set to %s\n' ${CONFIGOPTIONS};;
+  p)  NO_ANSI=1
+      export NO_ANSI ;;
   ?)  printf "Usage: %s: [-a] [-g] [-c configure_opts]\n" $0
       exit 1;;
   esac
 done
 shift $(($OPTIND -1))
+
+. ./functions
 
 TOPDIR=${PWD}
 export TOPDIR
@@ -94,12 +97,23 @@ else
 fi
 
 if [ $? != 0 ]; then
-  echo 'Failed to create the stage directory.'
+  echo 'Failed to create and clean the stage directory.'
   exit 1
 fi
 
+##
+# Cleanup the latest directory
+#
+
+if [ -d "${TOPDIR}/dist/latest" ]
+then
+	rm -f ${TOPDIR}/dist/latest/*
+fi
+
+
+
 cd ${STAGEDIR}
-SKEL='usr usr/bin usr/local usr/local/bin usr/lib usr/share usr/src tmp lib lib/terminfo var var/lib var/log etc'
+SKEL='usr usr/bin usr/local usr/local/bin usr/lib usr/share usr/src tmp lib lib/terminfo var var/lib var/log etc lib64 usr/lib64'
 for dir in $SKEL; do
   mkdir ${dir}
   if [ $? != 0 ]; then
@@ -107,6 +121,14 @@ for dir in $SKEL; do
     exit 1
   fi
 done
+
+
+# drop a version file in stage directory
+echo "VERSION=${VERSION}" > ${STAGEDIR}/etc/breakin-release
+echo "BUILD_NUMBER=${BUILD_NUMBER}" >> ${STAGEDIR}/etc/breakin-release
+echo "BUILD_HOST=`hostname`" >> ${STAGEDIR}/etc/breakin-release
+echo "GIT_COMMIT=`git log -n 1 --pretty=format:"%H"`" >> ${STAGEDIR}/etc/breakin-release
+
 chmod +t tmp
 if [ $? != 0 ]; then
   echo "Failed to sticky bit on tmp.\n"
@@ -178,6 +200,9 @@ echo -e "${ANSI_LEFT}${ANSI_GREEN}[ OK ]${ANSI_DONE}"
 # add a few additional manually
 
 ADDLLIBS="\
+/usr/lib64/libstdc++.so.6 \
+/usr/lib64/libgomp.so.1 \
+^/lib64/libgcc_s.so.1 \
 ld-linux-x86-64.so.2 \
 libnss_compat.so.2 \
 libnss_dns.so.2 \
@@ -212,7 +237,7 @@ echo "/act/gcc-4.7.2/lib64" >> ${STAGEDIR}/etc/ld.so.conf
 echo -e "${ANSI_LEFT}${ANSI_GREEN}[ OK ]${ANSI_DONE}"
 
 # Create the cpio image under root so that special files can be made
-${TOPDIR}/build-img.sh
+fakeroot ${TOPDIR}/build-img.sh
 if [ $? != 0 ]; then
   exit 1
 fi
@@ -247,9 +272,15 @@ echo -e "${ANSI_LEFT}${ANSI_GREEN}[ OK ]${ANSI_DONE}"
 # MAKE RPM FOR FOSS EDITION
 #
 
+RELEASE=1
+if [ "${BUILD_NUMBER}" != "" ]
+then
+	RELEASE="${BUILD_NUMBER}"
+fi
+
 echo -en "Creating RPM dist/bootimage-${VERSION}.rpm"
 cd ${TOPDIR}/dist
-rpmbuild -bb --define "_rpmdir ${TOPDIR}/dist" bootimage.spec
+rpmbuild -bb --define "_topdir ${TOPDIR}/rpmbuild" --define "_rpmdir ${TOPDIR}/dist" --define "version ${VERSION}" --define "release ${BUILD_NUMBER}" bootimage.spec
 if [ $? != 0 ]; then
   echo -e "${ANSI_LEFT}${ANSI_RED}[ FAIL ]${ANSI_DONE}"
   exit 1
@@ -278,7 +309,7 @@ echo -e "${ANSI_LEFT}${ANSI_GREEN}[ OK ]${ANSI_DONE}"
 cd ${TOPDIR}
 if [ -d ../bootimage.private ]; then
   cp -av ../bootimage.private/* ${STAGEDIR}
-  perl findso.pl ${STAGEDIR}
+  fakeroot perl findso.pl ${STAGEDIR}
   cd ${STAGEDIR}
   find . | cpio -o -H newc | gzip > ${TOPDIR}/dist/initrd-${VERSION}-nonfree.cpio.gz
   if [ $? != 0 ]; then
@@ -294,6 +325,15 @@ if [ -d ../bootimage.private ]; then
     exit 1
   fi
 fi
+
+##
+#  Copy the goods into the latest directory
+#
+cp dist/initrd-${VERSION}.cpio.lzma ${TOPDIR}/dist/latest/initrd-${VERSION}-${RELEASE}.cpio.lzma
+cp dist/kernel-${VERSION} ${TOPDIR}/dist/latest/kernel-${VERSION}-${RELEASE}
+cp dist/bootimage-${VERSION}.tbz2 ${TOPDIR}/dist/latest/bootimage-${VERSION}-${RELEASE}.tbz2
+cp dist/bootimage-${VERSION}.iso ${TOPDIR}/dist/latest/bootimage-${VERSION}-${RELEASE}.iso
+cp dist/${ARCH}/bootimage-${VERSION}-${RELEASE}*.rpm ${TOPDIR}/dist/latest
 
 
 ##

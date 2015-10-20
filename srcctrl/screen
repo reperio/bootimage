@@ -5,9 +5,10 @@
 
 . ./functions
 
-FILENAME='screen-4.0.3.tar.gz'
-URL='ftp://mirrors.kernel.org/gnu/screen/screen-4.0.3.tar.gz'
-DIRNAME='screen-4.0.3'
+FILENAME='screen-4.3.1.tar.gz'
+URL='http://ftp.gnu.org/gnu/screen/screen-4.3.1.tar.gz'
+#URL='ftp://mirrors.kernel.org/gnu/screen/screen-4.0.3.tar.gz'
+DIRNAME='screen-4.3.1'
 
 BINARIES="\
 screen"

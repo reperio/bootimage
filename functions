@@ -4,12 +4,22 @@
 
 eval `stty size 2>/dev/null | (read L C; echo LINES=${L:-24} COLUMNS=${C:-80})`
 
-ANSI_GREEN="\033[1;32m"
-ANSI_RED="\033[1;31m"
-ANSI_BLUE="\033[1;34m"
-ANSI_PURPLE="\033[1;35m"
-ANSI_LEFT="\033[${COLUMNS}G\033[10D"
-ANSI_DONE="\033[0m"
+if [ "${NO_ANSI}" == "1" ];
+then
+	ANSI_GREEN=""
+	ANSI_RED=""
+	ANSI_BLUE=""
+	ANSI_PURPLE=""
+	ANSI_LEFT=" - "
+	ANSI_DONE=""
+else
+	ANSI_GREEN="\033[1;32m"
+	ANSI_RED="\033[1;31m"
+	ANSI_BLUE="\033[1;34m"
+	ANSI_PURPLE="\033[1;35m"
+	ANSI_LEFT="\033[${COLUMNS}G\033[10D"
+	ANSI_DONE="\033[0m"
+fi
 
 get () {
   _URL=$1

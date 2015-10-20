@@ -5,16 +5,26 @@
 
 . ./functions
 
-FILENAME='udev-166.tar.bz2'
-URL='http://www.kernel.org/pub/linux/utils/kernel/hotplug/udev-166.tar.bz2'
-DIRNAME='udev-166'
+# ver udev-181/182 requres blkid >= 2.20
+# local version of blkid is 2.17.0
+#
+# udev-174 will require this line in include/linux/input.h:
+# #define BTN_TRIGGER_HAPPY         0x2c0
+# add it to src/udev-174/udev/udev-builtin-input_id.c
+FILENAME='udev-174.tar.bz2'
+URL='https://www.kernel.org/pub/linux/utils/kernel/hotplug/udev-174.tar.bz2'
+DIRNAME='udev-174'
 
 BINARIES="\
 udev/udevadm \
 extras/cdrom_id/cdrom_id \
 extras/scsi_id/scsi_id \
-extras/path_id/path_id \
 extras/firmware/firmware"
+
+# Removed the binary from above, as they're removed as of 174:
+# The path_id, usb_id, input_id tools are built-in commands now and
+# the stand-alone tools do not exist anymore.
+#extras/path_id/path_id
 
 SBINARIES="\
 udev/udevd"
@@ -22,7 +32,12 @@ udev/udevd"
 build () {
   checkdone
   cd ${SRCDIR}/${DIRNAME}
-  ./configure --disable-introspection
+
+  # -----------------
+  #  will not build with gcc 4.4.7 from centos 4.7 internal compiler errors
+  #  using 4.9 compiler now form HPL_CC (hack!)
+  # -----------------
+  CFLAGS="-DBTN_TRIGGER_HAPPY=0x2c0" CC=${HPL_CC} ./configure --disable-introspection
   make clean
   make
   if [ $? != 0 ]; then

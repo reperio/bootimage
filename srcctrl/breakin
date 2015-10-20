@@ -20,7 +20,14 @@ unpack () {
 build () {
   checkdone
   cd ${SRCDIR}/${DIRNAME}
-  make VERSION=${VERSION}
+
+  if [ "${BUILD_NUMBER}" != "" ]
+  then
+     make VERSION=${VERSION}-b${BUILD_NUMBER} clean all
+  else
+     make VERSION=${VERSION} clean all
+  fi
+
   if [ $? != 0 ]; then
     return 1
   fi

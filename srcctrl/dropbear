@@ -6,7 +6,8 @@
 . ./functions
 
 FILENAME='dropbear-0.52.tar.bz2'
-URL='http://matt.ucc.asn.au/dropbear/releases/dropbear-0.52.tar.bz2'
+# URL='http://matt.ucc.asn.au/dropbear/releases/dropbear-0.52.tar.bz2'
+URL='https://dropbear.nl/mirror/releases/dropbear-0.52.tar.bz2'
 DIRNAME='dropbear-0.52'
 
 SBINARIES='dropbear'

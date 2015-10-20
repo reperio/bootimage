@@ -3,6 +3,9 @@
 # hpl
 # 
 
+UNTAR_HPLDIR=hpl-2.1
+HPLDIR=hpl
+
 if [ ${ARCH} = "x86" ]; then
   ACML=gfortran32_mp
   MKL=mkl/lib/32
@@ -57,18 +60,23 @@ unpack () {
     return 1
   fi
   
-  untar hpl.tgz hpl
+  untar hpl.tgz ${HPLDIR}
   if [ $? != 0 ]; then
     return 1
   fi
+  ln -sf ${UNTAR_HPLDIR} ${HPLDIR}  # Workaround - untarred to hpl-2.1 instead of hpl, which breaks everything
 }
 
 build () {
+  echo "Building OpenMPI..."
   cd ${SRCDIR}/openmpi-1.8.4
   export LD_LIBRARY_PATH="${LD_LIBRARY_PATH}:${HPL_LD_LIBRARY_PATH}"
 
   if [ ! -e config.log ]; then
 
+# TODO: Change the prefix out of /usr/local/bootimage-openmpi so that regular users can
+# build.  This has to be set this way, because the path is hardcoded into the OMPI
+# internals.  It would be better to build right into $STAGEDIR.
     CC=${HPL_CC} FC=${HPL_FC} F90=${HPL_F90} CXX=${HPL_CXX} ./configure --prefix=/usr/local/bootimage-openmpi
     if [ $? != 0 ]; then
       return 1
@@ -89,7 +97,8 @@ build () {
   rm -rf /usr/local/bootimage-openmpi/doc
   rm -rf /usr/local/bootimage-openmpi/man
   
-  cd ${SRCDIR}/hpl
+  echo "Building HPL..."
+  cd ${SRCDIR}/${HPLDIR}
   
   cp -v ${TOPDIR}/patches/Make.Linux* ./
   
@@ -137,6 +146,7 @@ build () {
     
     if [ ! ${USEGOTO} ]; then
       # Build Intel against MKL
+      # make clean arch=Linux_Intel_64  # Will this work? - KS: it won't will cause an infinite loop
       make arch=Linux_Intel_64
     else
       # Build Intel against Goto
@@ -159,11 +169,11 @@ install () {
   fi
   
   if [ ${ARCH} = "x86" ]; then
-    cp -av ${SRCDIR}/hpl/bin/Linux_AMD_32${SRCSUFFIXAMD}/xhpl ${STAGEDIR}/usr/local/bin/xhpl.amd
-    cp -av ${SRCDIR}/hpl/bin/Linux_Intel_32${SRCSUFFIX}/xhpl ${STAGEDIR}/usr/local/bin/xhpl.intel
+    cp -av ${SRCDIR}/${HPLDIR}/bin/Linux_AMD_32${SRCSUFFIXAMD}/xhpl ${STAGEDIR}/usr/local/bin/xhpl.amd
+    cp -av ${SRCDIR}/${HPLDIR}/bin/Linux_Intel_32${SRCSUFFIX}/xhpl ${STAGEDIR}/usr/local/bin/xhpl.intel
   else
-    cp -av ${SRCDIR}/hpl/bin/Linux_AMD_64${SRCSUFFIXAMD}/xhpl ${STAGEDIR}/usr/local/bin/xhpl.amd
-    cp -av ${SRCDIR}/hpl/bin/Linux_Intel_64${SRCSUFFIX}/xhpl ${STAGEDIR}/usr/local/bin/xhpl.intel
+    cp -av ${SRCDIR}/${HPLDIR}/bin/Linux_AMD_64${SRCSUFFIXAMD}/xhpl ${STAGEDIR}/usr/local/bin/xhpl.amd
+    cp -av ${SRCDIR}/${HPLDIR}/bin/Linux_Intel_64${SRCSUFFIX}/xhpl ${STAGEDIR}/usr/local/bin/xhpl.intel
   fi
 
   if [ "${HPL_LD_LIBRARY_PATH}" != "" ]

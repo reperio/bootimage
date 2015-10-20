@@ -23,6 +23,7 @@ build () {
   if [ $? != 0 ]; then
     return 1
   fi
+  libtool --finish /usr/local/lib  # Suggested by the build
   markdone
 }
 

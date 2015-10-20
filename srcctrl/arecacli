@@ -5,9 +5,10 @@
 
 . ./functions
 
-FILENAME='cli64.zip'
+FILENAME='linuxcli_V1.14.7_150519.zip'
 URL='http://www.areca.us/support/s_linux/cli/x86_64/cli64.zip'
-DIRNAME='cli64'
+URL='http://www.areca.us/support/s_linux/cli/linuxcli_V1.14.7_150519.zip'
+DIRNAME='linuxcli_V1.14.7_150519/x86_64/'
 
 fetch () {
 	cd ${SRCDIR}
@@ -16,7 +17,7 @@ fetch () {
 
 unpack () {
 	cd ${SRCDIR}
-	unzip -d ${DIRNAME} -o ${FILENAME}
+	unzip -o ${FILENAME}
 }
 
 
