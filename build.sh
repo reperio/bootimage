@@ -211,7 +211,7 @@ libresolv.so.2 \
 librt.so.1 \
 libuuid.so.1 \
 libnuma.so \
-libparted-1.8.so.2"
+libparted-2.1.so.0"
 
 echo -en "Adding extra shared libraries"
 for file in $ADDLLIBS; do
