@@ -15,7 +15,7 @@ parted/parted"
 build () {
   checkdone
   cd ${SRCDIR}/${DIRNAME}
-  ./configure --without-readline --libdir=/lib64
+  ./configure --without-readline --libdir=/lib64 --enable-part-static 
   if [ $? != 0 ]; then
     return 1
   fi
