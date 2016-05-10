@@ -29,7 +29,6 @@ for my $i (@exefiles) {
 			$libpath =~ s/\s+$//g;
 
 			if ($short =~ /^\s*\//) {
-				#print "SHORT = $short\n";
 				$libs{$short} = 1;
 			}
 			elsif ($libpath =~ /^\//) {
