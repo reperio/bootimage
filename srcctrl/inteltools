@@ -7,7 +7,7 @@
 
 DIRNAME="inteltools"
 BINARIES="\
-flashupdt\
+flashupdt \
 syscfg"
 
 fetch () { 
