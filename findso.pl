@@ -48,14 +48,14 @@ foreach my $library (sort keys %libs) {
 	my $lib_dirname = `dirname $library`;
 	chomp $lib_basename;
 	chomp $lib_dirname;
-	my @results = `find $PATH/$lib_dirname -name $lib_basename -print`;
-	my $result_count = @results;
+	#my @results = `find $PATH/$lib_dirname -name $lib_basename -print`;
+	#my $result_count = @results;
 
-	if ($result_count >= 1) {
-		print "Found $lib_basename already in initrd skipping.\n";
-	}
-	else {
+	#if ($result_count >= 1) {
+		#print "Found $lib_basename already in initrd skipping.\n";
+	#}
+	#else {
 		system("cp -v --parents $library $PATH");
 		#print("cp -v --parents $library $PATH\n");
-	}
+	#}
 }
