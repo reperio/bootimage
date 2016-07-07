@@ -7,7 +7,7 @@
 
 FILENAME='linux-4.4.14.tar.xz'
 URL='https://cdn.kernel.org/pub/linux/kernel/v4.x/linux-4.4.14.tar.xz'
-DIRNAME='linux-4.4'
+DIRNAME='linux-4.4.14'
 KERNELVER='4.4.14'
 
 fetch () { 
