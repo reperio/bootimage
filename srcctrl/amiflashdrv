@@ -29,6 +29,7 @@ build () {
   rm -f ${SRCDIR}/${DIRNAME}/amifldrv_mod.o
 
   # tell the binary to make the source code
+  echo ./SCELNX_64 /MAKEDRV KERNEL=${SRCDIR}/${KERNEL_DIR}
   ./SCELNX_64 /MAKEDRV KERNEL=${SRCDIR}/${KERNEL_DIR}
 
   if [ ! -e ${SRCDIR}/${DIRNAME}/amifldrv_mod.o ]
