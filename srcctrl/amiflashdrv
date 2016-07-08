@@ -6,8 +6,9 @@
 . ./functions
 
 DIRNAME="amiflashdrv"
-KERNEL_DIR="linux-3.19"
-KERNEL_VER="3.19.0"
+# KERNELVER is set globally in configure.in 
+#KERNEL_VER="3.19.0"
+KERNEL_DIR="linux-${KERNELVER}"
 
 fetch () { 
  # git_fetch ${GITURL} ${DIRNAME}
@@ -39,8 +40,8 @@ build () {
 }
 
 install() {
-	mkdir -p ${STAGEDIR}/lib/modules/${KERNEL_VER}/
-	cp ${SRCDIR}/${DIRNAME}/amifldrv_mod.o ${STAGEDIR}/lib/modules/${KERNEL_VER}/amifldrv_mod.o
+	mkdir -p ${STAGEDIR}/lib/modules/${KERNELVER}/
+	cp ${SRCDIR}/${DIRNAME}/amifldrv_mod.o ${STAGEDIR}/lib/modules/${KERNELVER}/amifldrv_mod.o
 }
 
 $1 $2

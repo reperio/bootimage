@@ -5,10 +5,11 @@
 
 . ./functions
 
-FILENAME='linux-4.4.14.tar.xz'
-URL='https://cdn.kernel.org/pub/linux/kernel/v4.x/linux-4.4.14.tar.xz'
-DIRNAME='linux-4.4.14'
-KERNELVER='4.4.14'
+# Set KERNELVER in configure.in so it is globally available.
+#KERNELVER='4.4.14'
+FILENAME='linux-${KERNELVER}.tar.xz'
+URL='https://cdn.kernel.org/pub/linux/kernel/v4.x/linux-${KERNELVER}.tar.xz'
+DIRNAME='linux-${KERNELVER}'
 
 fetch () { 
   get ${URL}
