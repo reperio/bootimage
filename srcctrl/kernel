@@ -23,7 +23,7 @@ unpack () {
   untar ${FILENAME} ${DIRNAME}
   if [ $? != 0 ]
   then
-    echo "Unpacking kernel tarball failed."
+    echo -e "Unpacking kernel tarball failed."
     return 1
   fi  
   #ln -s ${SRCDIR}/edac/patches/series.${KERNELVER} ${SRCDIR}/${DIRNAME}/series
@@ -37,12 +37,12 @@ unpack () {
     cd ${DIRNAME}
     for i in ${PATCHDIR}/*.kernel-${KERNEL_MINOR}.patch
     do
-      echo "Patching $i..."
+      echo -e "Patching $i..."
       patch -p1 $i
     done
-    echo "Kernel patches complete."
+    echo -e "Kernel patches complete."
   else
-    echo "No kernel patches found in ${PATCHDIR}/*.kernel-${KERNEL_MINOR}.patch"
+    echo -e "No kernel patches found in ${PATCHDIR}/*.kernel-${KERNEL_MINOR}.patch"
   fi
     
   
