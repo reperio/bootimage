@@ -40,6 +40,8 @@ unpack () {
       patch -p1 $i
     done
     echo "Kernel patches complete."
+  else
+    echo "No kernel patches found in ${PATCHDIR}/*.kernel-${KERNEL_MINOR}.patch"
   fi
     
   
