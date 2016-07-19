@@ -34,6 +34,7 @@ unpack () {
   # Files in the format ioremap.kernel-3.18.patch
   if [ -f ${PATCHDIR}/*.kernel-${KERNEL_MINOR}.patch ]
   then
+    cd ${DIRNAME}
     for i in ${PATCHDIR}/*.kernel-${KERNEL_MINOR}.patch
     do
       echo "Patching $i..."
