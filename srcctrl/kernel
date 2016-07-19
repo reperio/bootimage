@@ -7,6 +7,7 @@
 
 # Set KERNELVER in configure.in so it is globally available.
 #KERNELVER='4.4.14'
+KERNEL_MINOR=`echo $KERNELVER | awk -F '.' '{print $1 "." $2}'` 
 FILENAME="linux-${KERNELVER}.tar.xz"
 URL="https://cdn.kernel.org/pub/linux/kernel/v4.x/linux-${KERNELVER}.tar.xz"
 DIRNAME="linux-${KERNELVER}"
@@ -26,6 +27,19 @@ unpack () {
   fi  
   #ln -s ${SRCDIR}/edac/patches/series.${KERNELVER} ${SRCDIR}/${DIRNAME}/series
   #ln -s ${SRCDIR}/edac/patches ${SRCDIR}/${DIRNAME}/patches
+
+  
+  # Patch the kernel, if required
+  # Files in the format ioremap.kernel-3.18.patch
+  if [ -f ${PATCHDIR}/*.kernel-${KERNEL_MINOR}.patch ]
+  then
+    for i in ${PATCHDIR}/*.kernel-${KERNEL_MINOR}.patch
+    do
+      patch -p1 $i
+    done
+  fi
+    
+  
   return 0
 }
 
