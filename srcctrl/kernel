@@ -32,6 +32,7 @@ unpack () {
   
   # Patch the kernel, if required
   # Files in the format ioremap.kernel-3.18.patch
+  echo -e "Looking for ${PATCHDIR}/*.kernel-${KERNEL_MINOR}.patch"
   if [ -f ${PATCHDIR}/*.kernel-${KERNEL_MINOR}.patch ]
   then
     cd ${DIRNAME}
