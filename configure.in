@@ -24,6 +24,6 @@ HPL_CXX=/act/gcc-4.9.2/bin/g++
 # Set the kernel globally, so dependent utilities (like amiflash) can reference
 # it without having to remember to change a bunch of files
 
-KERNELVER=4.1.27
+KERNELVER=3.18.37
 
 export HPL_CC HPL_F90 HPL_F77 HPL_FC HPL_CXX HPL_LD_LIBRARY_PATH KERNELVER
