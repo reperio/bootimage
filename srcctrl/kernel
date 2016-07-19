@@ -36,8 +36,10 @@ unpack () {
   then
     for i in ${PATCHDIR}/*.kernel-${KERNEL_MINOR}.patch
     do
+      echo "Patching $i..."
       patch -p1 $i
     done
+    echo "Kernel patches complete."
   fi
     
   
