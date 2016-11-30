@@ -1,4 +1,4 @@
-VERSION='4.26.16'
+VERSION='4.28.0'
 export VERSION
 ARCH='x86_64'
 export ARCH
@@ -24,6 +24,6 @@ HPL_CXX=/act/gcc-4.9.2/bin/g++
 # Set the kernel globally, so dependent utilities (like amiflash) can reference
 # it without having to remember to change a bunch of files
 
-KERNELVER=3.18.44
+KERNELVER=4.8.11
 
 export HPL_CC HPL_F90 HPL_F77 HPL_FC HPL_CXX HPL_LD_LIBRARY_PATH KERNELVER
