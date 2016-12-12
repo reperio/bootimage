@@ -5,9 +5,9 @@
 
 . ./functions
 
-FILENAME='busybox-1.17.4.tar.bz2'
-URL='http://www.busybox.net/downloads/busybox-1.17.4.tar.bz2'
-DIRNAME='busybox-1.17.4'
+FILENAME='busybox-1.25.1.tar.bz2'
+URL='http://www.busybox.net/downloads/busybox-1.25.1.tar.bz2'
+DIRNAME='busybox-1.25.1'
 
 build () {
   checkdone
