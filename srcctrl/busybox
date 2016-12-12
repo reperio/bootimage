@@ -13,6 +13,7 @@ build () {
   checkdone
   cd ${SRCDIR}/${DIRNAME}
   cp ${TOPDIR}/patches/busybox.config ./.config
+  make oldconfig
   make
   if [ $? != 0 ]; then
     echo "Building busybox failed."
