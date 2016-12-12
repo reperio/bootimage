@@ -7,14 +7,15 @@
 
 # Set KERNELVER in configure.in so it is globally available.
 #KERNELVER='4.4.14'
-KERNEL_MAJOR=`echo $KERNELVER | awk -F '.' '{print $1}'` 
-KERNEL_MINOR=`echo $KERNELVER | awk -F '.' '{print $1 "." $2}'` 
+#KERNEL_MAJOR=`echo $KERNELVER | awk -F '.' '{print $1}'` 
+#KERNEL_MINOR=`echo $KERNELVER | awk -F '.' '{print $1 "." $2}'` 
 FILENAME="linux-${KERNELVER}.tar.xz"
-URL="https://cdn.kernel.org/pub/linux/kernel/v${KERNEL_MAJOR}.x/linux-${KERNELVER}.tar.xz"
+#URL="https://cdn.kernel.org/pub/linux/kernel/v${KERNEL_MAJOR}.x/linux-${KERNELVER}.tar.xz"
 DIRNAME="linux-${KERNELVER}"
 
 fetch () { 
-  get ${URL}
+  cp ${SRCDIR}/patches/linux-${KERNELVER}.tar.xz
+  #get ${URL}
   #Bluesmoke has no 2.6.33 patches
   #svn checkout -r 203 https://bluesmoke.svn.sourceforge.net/svnroot/bluesmoke/trunk/edac ${SRCDIR}/edac
 }
@@ -61,13 +62,13 @@ build () {
 
   if [ ! -f ${SRCDIR}/${DIRNAME}/.config ]
   then
-    if [ ! -e ${PATCHDIR}/kernel.${ARCH}.config ]
+    if [ ! -e ${PATCHDIR}/config-${KERNELVER}.${ARCH} ]
     then
       echo "No kernel config file found: ${PATCHDIR}/kernel.${ARCH}.config"
       return 1
     fi
 
-    cp ${PATCHDIR}/kernel.${ARCH}.config ${SRCDIR}/${DIRNAME}/.config
+    cp ${PATCHDIR}/config-${KERNELVER}.${ARCH} ${SRCDIR}/${DIRNAME}/.config
     cd ${SRCDIR}/${DIRNAME}
 
     #quilt push -af
