@@ -5,10 +5,10 @@
 
 . ./functions
 
-FILENAME='dropbear-0.52.tar.bz2'
+FILENAME='dropbear-2016.74.tar.bz2'
 # URL='http://matt.ucc.asn.au/dropbear/releases/dropbear-0.52.tar.bz2'
-URL='https://dropbear.nl/mirror/releases/dropbear-0.52.tar.bz2'
-DIRNAME='dropbear-0.52'
+URL='https://matt.ucc.asn.au/dropbear/dropbear-2016.74.tar.bz2'
+DIRNAME='dropbear-2016.74'
 
 SBINARIES='dropbear'
 BINARIES='dbclient scp'
