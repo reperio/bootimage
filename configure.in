@@ -14,12 +14,12 @@ export ARCH
 # HPL_FC=gfortran
 # HPL_LD_LIBRARY_PATH=
 
-HPL_LD_LIBRARY_PATH=/act/gcc-4.9.2/lib64
-HPL_CC=/act/gcc-4.9.2/bin/gcc
-HPL_FC=/act/gcc-4.9.2/bin/gfortran
-HPL_F77=/act/gcc-4.9.2/bin/gfortran
-HPL_F90=/act/gcc-4.9.2/bin/gfortran
-HPL_CXX=/act/gcc-4.9.2/bin/g++
+HPL_LD_LIBRARY_PATH=""
+HPL_CC=gcc
+HPL_FC=gfortran
+HPL_F77=gfortran
+HPL_F90=gfortran
+HPL_CXX=g++
 
 # Set the kernel globally, so dependent utilities (like amiflash) can reference
 # it without having to remember to change a bunch of files
