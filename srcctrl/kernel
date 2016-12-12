@@ -14,7 +14,7 @@ FILENAME="linux-${KERNELVER}.tar.xz"
 DIRNAME="linux-${KERNELVER}"
 
 fetch () { 
-  cp ${SRCDIR}/patches/linux-${KERNELVER}.tar.xz
+  cp ${PATCHDIR}/linux-${KERNELVER}.tar.xz
   #get ${URL}
   #Bluesmoke has no 2.6.33 patches
   #svn checkout -r 203 https://bluesmoke.svn.sourceforge.net/svnroot/bluesmoke/trunk/edac ${SRCDIR}/edac
