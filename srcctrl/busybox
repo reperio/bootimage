@@ -30,6 +30,7 @@ install () {
     return 1
   fi
   chmod -v u+s ${STAGEDIR}/bin/busybox
+  ln -s ${STAGEIDR}/sbin/ip ${STAGEDIR}/bin/ip
 }
 
 $1 $2

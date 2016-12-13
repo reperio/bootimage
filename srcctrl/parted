@@ -5,9 +5,9 @@
 
 . ./functions
 
-FILENAME='parted-2.3.tar.xz'
-URL='http://ftp.gnu.org/gnu/parted/parted-2.3.tar.xz'
-DIRNAME='parted-2.3'
+FILENAME='parted-3.2.tar.xz'
+URL='http://ftp.gnu.org/gnu/parted/parted-3.2.tar.xz'
+DIRNAME='parted-3.2'
 
 BINARIES="\
 parted/parted"

@@ -38,7 +38,7 @@ fetch () {
       if [ ${DISABLEAMD} ]; then
         echo "AMD disabled; ignoring."
       else
-        return 1
+        return 0
       fi
     fi
     
@@ -84,6 +84,7 @@ build () {
     
     make
     if [ $? != 0 ]; then
+	echo "Open MPI didn't compile!"
       return 1
     fi
   fi
@@ -91,6 +92,7 @@ build () {
   cd ${SRCDIR}/openmpi-1.8.4
   make install
   if [ $? != 0 ]; then
+	echo "Open MPI didn't install!"
     return 1
   fi
   # these two add about 10MB to the uncompressed ramfs
@@ -143,6 +145,10 @@ build () {
         return 1
       fi
     fi
+
+	echo "*************************"
+	echo "*************************"
+	echo "*************************"
     
     if [ ! ${USEGOTO} ]; then
       # Build Intel against MKL
