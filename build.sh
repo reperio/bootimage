@@ -200,6 +200,17 @@ echo -e "${ANSI_LEFT}${ANSI_GREEN}[ OK ]${ANSI_DONE}"
 # add a few additional manually
 
 ADDLLIBS="\
+/usr/lib/libncurses.so.5 \
+/usr/lib/librt.so.1 \
+/lib/ld-linux.so.2 \
+/lib/libc.so.6 \
+/lib/libdl.so.2 \
+/lib/libgcc_s.so.1 \
+/lib/libm.so.6 \
+/lib/libncurses.so.5 \
+/lib/libpthread.so.0 \
+/lib/libstdc++.so.6 \
+/lib/libtinfo.so.5 \
 /usr/lib64/libstdc++.so.6 \
 /usr/lib64/libgomp.so.1 \
 ^/lib64/libgcc_s.so.1 \

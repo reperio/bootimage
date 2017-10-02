@@ -1,0 +1,30 @@
+##
+# Get a known-good copy of:
+# dmidecode
+# 
+
+. ./functions
+
+FILENAME="dmidecode-3.1.tar.gz"
+URL="http://download.savannah.gnu.org/releases/dmidecode/dmidecode-3.1.tar.gz"
+DIRNAME='dmidecode-3.1'
+BINARIES='dmidecode'
+
+build () {
+  checkdone
+  cd ${SRCDIR}/${DIRNAME}
+  make clean
+  make
+  if [ $? != 0 ]; then
+    return 1
+  fi
+  markdone
+}
+
+$1 $2
+
+if [ $? != 0 ]; then
+  printf 'Source control script %s failed on function %s' $0 $1
+  exit 1
+fi
+
