@@ -201,7 +201,7 @@ echo -e "${ANSI_LEFT}${ANSI_GREEN}[ OK ]${ANSI_DONE}"
 
 ADDLLIBS="\
 /usr/lib/libncurses.so.5 \
-/usr/lib/librt.so.1 \
+/lib/librt.so.1 \
 /lib/ld-linux.so.2 \
 /lib/libc.so.6 \
 /lib/libdl.so.2 \
