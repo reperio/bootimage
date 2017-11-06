@@ -5,7 +5,7 @@
 
 . ./functions
 
-GITURL="git://oss.sgi.com/xfs/cmds/xfsprogs"
+GITURL="git://git.kernel.org/pub/scm/fs/xfs/xfsprogs-dev.git"
 DIRNAME='xfsprogs'
 BINARIES='mkfs/mkfs.xfs'
 
