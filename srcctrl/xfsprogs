@@ -6,7 +6,7 @@
 . ./functions
 
 GITURL="git://git.kernel.org/pub/scm/fs/xfs/xfsprogs-dev.git"
-DIRNAME='xfsprogs'
+DIRNAME='xfsprogs-dev'
 BINARIES='mkfs/mkfs.xfs'
 
 fetch () { 
