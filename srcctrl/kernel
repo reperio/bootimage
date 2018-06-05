@@ -45,6 +45,7 @@ install () {
   for i in ${MODULE_REMOVE}
   do
 	rm -rf ${STAGEDIR}/lib/modules/${KERNELVER}/kernel/drivers/$i
+	rm -rf ${STAGEDIR}/lib/modules/${KERNELVER}/kernel/drivers/$i.xz
   done
 }
 
