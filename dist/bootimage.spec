@@ -27,7 +27,9 @@ system.
 %install
 mkdir -p $RPM_BUILD_ROOT/tftpboot/bootimage
 mkdir -p $RPM_BUILD_ROOT/tftpboot/act_netboot_templates
+mkdir -p $RPM_BUILD_ROOT/tftpboot/act_netboot_ipxe_templates
 cp ${TOPDIR}/dist/act_netboot_templates/*.cfg $RPM_BUILD_ROOT/tftpboot/act_netboot_templates/
+cp ${TOPDIR}/dist/act_netboot_ipxe_templates/*.cfg $RPM_BUILD_ROOT/tftpboot/act_netboot_ipxe_templates/
 cp ${TOPDIR}/dist/kernel-%{version} $RPM_BUILD_ROOT/tftpboot/bootimage/
 cp ${TOPDIR}/dist/initrd-%{version}.cpio.lzma $RPM_BUILD_ROOT/tftpboot/bootimage/
 # Create handy symlinks for initrd and kernel
@@ -44,6 +46,11 @@ rm -rf $RPM_BUILD_ROOT
 %config(noreplace) /tftpboot/act_netboot_templates/cloner-multicast.cfg
 %config(noreplace) /tftpboot/act_netboot_templates/cloner3.cfg
 %config(noreplace) /tftpboot/act_netboot_templates/cloner3-multicast.cfg
+%config(noreplace) /tftpboot/act_netboot_ipxe_templates/breakin.ipxe
+%config(noreplace) /tftpboot/act_netboot_ipxe_templates/rescue.ipxe
+%config(noreplace) /tftpboot/act_netboot_ipxe_templates/cloner3.ipxe
+%config(noreplace) /tftpboot/act_netboot_ipxe_templates/cloner3-multicast.ipxe
+
 /tftpboot/bootimage/kernel-%{version}
 /tftpboot/bootimage/initrd-%{version}.cpio.lzma
 /tftpboot/bootimage/kernel
