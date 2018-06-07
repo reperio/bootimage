@@ -1,0 +1,33 @@
+##
+# Get a known-good copy of:
+# SYSLINUX
+# 
+
+. ./functions
+
+FILENAME='hdparm-9.52.tar.gz'
+URL='https://downloads.sourceforge.net/project/hdparm/hdparm/hdparm-9.52.tar.gz'
+DIRNAME='hdparm-9.52'
+BINARIES='hdparm'
+SBINARIES=''
+
+build () {
+  checkdone
+  cd ${SRCDIR}/${DIRNAME}
+  make clean
+  make
+  if [ $? != 0 ]; then
+    return 1
+  fi
+  markdone
+}
+
+
+$1 $2
+
+if [ $? != 0 ]
+then
+  printf 'Source control script %s failed on function %s' $0 $1
+  exit 1
+fi
+

@@ -7,7 +7,7 @@
 
 #FILENAME='LVM2.2.02.77.tgz'
 FILENAME='LVM2.2.02.86.tgz'
-URL='ftp://sourceware.org/pub/lvm2/LVM2.2.02.86.tgz'
+URL='http://mirrors.kernel.org/sourceware/lvm2/LVM2.2.02.86.tgz'
 DIRNAME='LVM2.2.02.86'
 
 BINARIES="\

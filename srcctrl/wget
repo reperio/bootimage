@@ -5,9 +5,9 @@
 
 . ./functions
 
-FILENAME='wget-1.12.tar.lzma'
-URL='http://ftp.gnu.org/gnu/wget/wget-1.12.tar.lzma'
-DIRNAME='wget-1.12'
+FILENAME='wget-1.18.tar.xz'
+URL='http://ftp.gnu.org/gnu/wget/wget-1.18.tar.xz'
+DIRNAME='wget-1.18'
 
 BINARIES="\
 src/wget"

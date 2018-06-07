@@ -5,9 +5,9 @@
 
 . ./functions
 
-FILENAME='syslinux-4.04.tar.bz2'
-URL='http://www.kernel.org/pub/linux/utils/boot/syslinux/syslinux-4.04.tar.bz2'
-DIRNAME='syslinux-4.04'
+FILENAME='syslinux-6.03.tar.xz'
+URL='https://www.kernel.org/pub/linux/utils/boot/syslinux/syslinux-6.03.tar.xz'
+DIRNAME='syslinux-6.03'
 BINARIES=''
 SBINARIES=''
 
@@ -24,11 +24,11 @@ build () {
 
 install () {
   cd ${SRCDIR}/${DIRNAME}
-  cp -pv com32/menu/vesamenu.c32 ${CDSTAGEDIR}/isolinux/vesamenu.c32
+  cp -pv bios/com32/menu/vesamenu.c32 ${CDSTAGEDIR}/isolinux/vesamenu.c32
   if [ ${?} != 0 ]; then
     return 1
   fi
-  cp -pv core/isolinux.bin ${CDSTAGEDIR}/isolinux/isolinux.bin
+  cp -pv bios/core/isolinux.bin ${CDSTAGEDIR}/isolinux/isolinux.bin
 }
 
 $1 $2

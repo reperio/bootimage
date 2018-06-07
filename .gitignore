@@ -4,5 +4,5 @@ stage/
 src/
 log/
 !dist/latest/.keep
-dist/
 *.iso
+srcctrl/amiflashdrv

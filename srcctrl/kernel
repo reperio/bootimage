@@ -5,91 +5,48 @@
 
 . ./functions
 
-FILENAME='linux-3.19.tar.gz'
-URL='https://www.kernel.org/pub/linux/kernel/v3.x/linux-3.19.tar.gz'
-DIRNAME='linux-3.19'
-KERNELVER='3.19.0'
+# Set KERNELVER in configure.in so it is globally available.
+#KERNELVER='4.4.14'
+#KERNEL_MAJOR=`echo $KERNELVER | awk -F '.' '{print $1}'` 
+#KERNEL_MINOR=`echo $KERNELVER | awk -F '.' '{print $1 "." $2}'` 
+#FILENAME="linux-${KERNELVER}.tar.xz"
+#URL="https://cdn.kernel.org/pub/linux/kernel/v${KERNEL_MAJOR}.x/linux-${KERNELVER}.tar.xz"
+#DIRNAME="linux-${KERNELVER}"
+
+MODULE_REMOVE="net/dummy.ko net/ifb.ko net/bonding/bonding.ko scsi/scsi_debug.ko net/ieee802154"
 
 fetch () { 
-  get ${URL}
-  #Bluesmoke has no 2.6.33 patches
-  #svn checkout -r 203 https://bluesmoke.svn.sourceforge.net/svnroot/bluesmoke/trunk/edac ${SRCDIR}/edac
+   if [ ! -e "/boot/vmlinuz-${KERNELVER}" ]
+   then
+	return 1
+   fi
+   if [ ! -d "/lib/modules/${KERNELVER}" ]
+   then
+	return 1
+   fi
+
+  return 0
 }
 
 unpack () {
-  untar ${FILENAME} ${DIRNAME}
-  if [ $? != 0 ]
-  then
-    echo "Unpacking kernel tarball failed."
-    return 1
-  fi  
-  #ln -s ${SRCDIR}/edac/patches/series.${KERNELVER} ${SRCDIR}/${DIRNAME}/series
-  #ln -s ${SRCDIR}/edac/patches ${SRCDIR}/${DIRNAME}/patches
   return 0
 }
 
 build () {
-
-  #which quilt > /dev/null 2>&1
-  #if [ $? != 0 ]
-  #then
-  #   echo "Can't find the 'quilt' command - can't patch kernel w/ EDAC support."
-  #   return 1
-  #fi
-
-  if [ ! -f ${SRCDIR}/${DIRNAME}/.config ]
-  then
-    if [ ! -e ${PATCHDIR}/kernel.${ARCH}.config ]
-    then
-      echo "No kernel config file found: ${PATCHDIR}/kernel.${ARCH}.config"
-      return 1
-    fi
-
-    cp ${PATCHDIR}/kernel.${ARCH}.config ${SRCDIR}/${DIRNAME}/.config
-    cd ${SRCDIR}/${DIRNAME}
-
-    #quilt push -af
-    #rm -rf ${SRCDIR}/${DIRNAME}/.pc/*patch
-    #rm -f ${SRCDIR}/${DIRNAME}/.pc/*patch\~refresh
-    #quilt push -af
-    make clean
-
-    make oldconfig
-    if [ $? != 0 ]
-    then
-      echo "Converting provided config file failed."
-      return 1
-    fi
-    
-    make bzImage
-    if [ $? != 0 ]
-    then
-      echo "Building kernel failed."
-      return 1
-    fi
-    
-    make -j2 modules
-    if [ $? != 0 ]
-    then
-      echo "Building modules failed."
-      return 1
-    fi
-  fi
+   return 0
 }
 
 install () {
-  cd ${SRCDIR}/${DIRNAME}
-  make modules_install INSTALL_MOD_PATH=${STAGEDIR}
-  if [ $? != 0 ]
-  then
-    echo "Installing compiled modules to stage failed."
-    return 1
-  fi
-  #rm ${STAGEDIR}/lib/modules/${KERNELVER}-${ARCH}/build
-  #rm ${STAGEDIR}/lib/modules/${KERNELVER}-${ARCH}/source
-  rm ${STAGEDIR}/lib/modules/${KERNELVER}/build
-  rm ${STAGEDIR}/lib/modules/${KERNELVER}/source
-  cp arch/${ARCH}/boot/bzImage ${TOPDIR}/dist/kernel-${VERSION}
+
+  cp /boot/vmlinuz-${KERNELVER} ${TOPDIR}/dist/kernel-${VERSION}
+  mkdir -p ${STAGEDIR}/lib/modules/${KERNELVER}/
+  cp -av /lib/modules/${KERNELVER} ${STAGEDIR}/lib/modules/
+
+  for i in ${MODULE_REMOVE}
+  do
+	rm -rf ${STAGEDIR}/lib/modules/${KERNELVER}/kernel/drivers/$i
+	rm -rf ${STAGEDIR}/lib/modules/${KERNELVER}/kernel/drivers/$i.xz
+  done
 }
 
 $1 $2

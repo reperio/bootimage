@@ -1,0 +1,8 @@
+#!ipxe
+# 
+# DESCRIPTION Advanced Clustering's Breakin 
+# 
+
+initrd tftp://${next-server}/bootimage/initrd || shell
+kernel tftp://${next-server}/bootimage/kernel initrd=initrd sshpassword=breakin startup=breakin vga=1 || shell
+boot || shell

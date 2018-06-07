@@ -1,0 +1,9 @@
+#!ipxe
+# 
+# DESCRIPTION Advanced Clustering's Rescue System
+# 
+
+initrd tftp://${next-server}/bootimage/initrd || shell
+kernel tftp://${next-server}/bootimage/kernel initrd=initrd sshpassword=breakin startup=rescue vga=1 || shell
+boot || shell
+

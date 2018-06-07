@@ -5,14 +5,15 @@
 
 . ./functions
 
-FILENAME='busybox-1.17.4.tar.bz2'
-URL='http://www.busybox.net/downloads/busybox-1.17.4.tar.bz2'
-DIRNAME='busybox-1.17.4'
+FILENAME='busybox-1.25.1.tar.bz2'
+URL='http://www.busybox.net/downloads/busybox-1.25.1.tar.bz2'
+DIRNAME='busybox-1.25.1'
 
 build () {
   checkdone
   cd ${SRCDIR}/${DIRNAME}
   cp ${TOPDIR}/patches/busybox.config ./.config
+  make oldconfig
   make
   if [ $? != 0 ]; then
     echo "Building busybox failed."
@@ -29,6 +30,7 @@ install () {
     return 1
   fi
   chmod -v u+s ${STAGEDIR}/bin/busybox
+  ln -s ${STAGEIDR}/sbin/ip ${STAGEDIR}/bin/ip
 }
 
 $1 $2

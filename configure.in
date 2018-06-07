@@ -1,7 +1,9 @@
-VERSION='4.26.15'
+VERSION='4.33.3.el7'
 export VERSION
 ARCH='x86_64'
 export ARCH
+DISABLEAMD=1
+export DISABLEAMD
 #USEGOTO="yes"
 #export USEGOTO
 
@@ -14,11 +16,17 @@ export ARCH
 # HPL_FC=gfortran
 # HPL_LD_LIBRARY_PATH=
 
-HPL_LD_LIBRARY_PATH=/act/gcc-4.9.2/lib64
-HPL_CC=/act/gcc-4.9.2/bin/gcc
-HPL_FC=/act/gcc-4.9.2/bin/gfortran
-HPL_F77=/act/gcc-4.9.2/bin/gfortran
-HPL_F90=/act/gcc-4.9.2/bin/gfortran
-HPL_CXX=/act/gcc-4.9.2/bin/g++
+HPL_LD_LIBRARY_PATH=""
+HPL_CC=gcc
+HPL_FC=gfortran
+HPL_F77=gfortran
+HPL_F90=gfortran
+HPL_CXX=g++
 
-export HPL_CC HPL_F90 HPL_F77 HPL_FC HPL_CXX HPL_LD_LIBRARY_PATH
+# Set the kernel globally, so dependent utilities (like amiflash) can reference
+# it without having to remember to change a bunch of files
+
+#KERNELVER=""
+KERNELVER=`uname -r`
+
+export HPL_CC HPL_F90 HPL_F77 HPL_FC HPL_CXX HPL_LD_LIBRARY_PATH KERNELVER
