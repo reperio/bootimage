@@ -4,6 +4,6 @@
 # 
 
 initrd tftp://${next-server}/bootimage/initrd || shell
-kernel tftp://${next-server}/bootimage/kernel initrd=initrd sshpassword=breakin startup=rescue vga=1 || shell
+kernel tftp://${next-server}/bootimage/kernel initrd=initrd sshpasswd=breakin startup=rescue vga=1 || shell
 boot || shell
 
