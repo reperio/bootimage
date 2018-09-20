@@ -1,0 +1,36 @@
+# Hacked up version of udev rules to correctly create the 
+# /dev/md/<name> and /dev/md/<name><partition> symlinks
+
+SUBSYSTEM!="block", GOTO="md_end"
+
+# handle md arrays
+ACTION!="add|change", GOTO="md_end"
+KERNEL!="md*", GOTO="md_end"
+
+# partitions have no md/{array_state,metadata_version}, but should not
+# for that reason be ignored.
+ENV{DEVTYPE}=="partition", GOTO="md_partition"
+
+# container devices have a metadata version of e.g. 'external:ddf' and
+# never leave state 'inactive'
+ATTR{md/metadata_version}=="external:[A-Za-z]*", ATTR{md/array_state}=="inactive", GOTO="md_ignore_state"
+TEST!="md/array_state", ENV{SYSTEMD_READY}="0", GOTO="md_end"
+ATTR{md/array_state}=="|clear|inactive", ENV{SYSTEMD_READY}="0", GOTO="md_end"
+
+LABEL="md_ignore_state"
+
+IMPORT{program}="/usr/bin/mdadm --detail --export /dev/%k"
+ENV{DEVTYPE}=="disk", ENV{MD_NAME}=="?*", SYMLINK+="disk/by-id/md-name-$env{MD_NAME}", OPTIONS+="string_escape=replace"
+ENV{DEVTYPE}=="disk", ENV{MD_UUID}=="?*", SYMLINK+="disk/by-id/md-uuid-$env{MD_UUID}"
+ENV{DEVTYPE}=="disk", ENV{MD_DEVNAME}=="?*", SYMLINK+="md/$env{MD_DEVNAME}"
+GOTO="md_end"
+
+LABEL="md_partition"
+
+IMPORT{program}="/usr/bin/mdadm --detail --export /dev/%P"
+ENV{DEVTYPE}=="partition", ENV{MD_NAME}=="?*", SYMLINK+="disk/by-id/md-name-$env{MD_NAME}-part%n", OPTIONS+="string_escape=replace"
+ENV{DEVTYPE}=="partition", ENV{MD_UUID}=="?*", SYMLINK+="disk/by-id/md-uuid-$env{MD_UUID}-part%n"
+ENV{DEVTYPE}=="partition", ENV{MD_DEVNAME}=="*[^0-9]", SYMLINK+="md/$env{MD_DEVNAME}%n"
+ENV{DEVTYPE}=="partition", ENV{MD_DEVNAME}=="*[0-9]", SYMLINK+="md/$env{MD_DEVNAME}p%n"
+
+LABEL="md_end"

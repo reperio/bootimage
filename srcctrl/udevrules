@@ -1,0 +1,31 @@
+##
+# 
+
+. ./functions
+
+DIRNAME="udevrules"
+
+build () {
+  return
+}
+
+unpack() {
+  return
+}
+
+fetch() {
+  return
+}
+
+install () {
+  mkdir -p ${STAGEDIR}/lib/etc/udev/rules.d/
+  cp ${PATCHDIR}/udev-md-device.rules  ${STAGEDIR}/lib/etc/udev/rules.d
+}
+
+$1 $2
+
+if [ $? != 0 ]; then
+  printf 'Source control script %s failed on function %s' $0 $1
+  exit 1
+fi
+
