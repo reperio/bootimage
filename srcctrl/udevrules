@@ -18,8 +18,11 @@ fetch() {
 }
 
 install () {
-  mkdir -p ${STAGEDIR}/lib/etc/udev/rules.d/
-  cp ${PATCHDIR}/udev-md-device.rules  ${STAGEDIR}/lib/etc/udev/rules.d
+  mkdir -p ${STAGEDIR}/etc/udev/rules.d/
+  cp ${PATCHDIR}/udev-md-device.rules  ${STAGEDIR}/etc/udev/rules.d
+
+  mkdir -p ${STAGEDIR}/usr/etc/udev
+  ln -s ${STAGEDIR}/etc/udev/rules.d ${STAGEDIR}/usr/etc/udev/rules.d
 }
 
 $1 $2
