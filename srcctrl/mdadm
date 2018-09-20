@@ -10,7 +10,7 @@ URL='http://www.kernel.org/pub/linux/utils/raid/mdadm/mdadm-3.3.4.tar.gz'
 DIRNAME='mdadm-3.3.4'
 
 BINARIES="\
-mdadm"
+mdadm mdmon"
 
 build () {
   checkdone

@@ -113,7 +113,7 @@ fi
 
 
 cd ${STAGEDIR}
-SKEL='usr usr/bin usr/local usr/local/bin usr/lib usr/share usr/src tmp lib lib/terminfo var var/lib var/log etc lib64 usr/lib64'
+SKEL='usr usr/bin usr/local usr/local/bin usr/lib usr/share usr/src tmp lib lib/terminfo var var/lib var/log etc lib64 usr/lib64 run'
 for dir in $SKEL; do
   mkdir ${dir}
   if [ $? != 0 ]; then
