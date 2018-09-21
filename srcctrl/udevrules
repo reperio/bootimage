@@ -22,7 +22,7 @@ install () {
   cp ${PATCHDIR}/udev-md-device.rules  ${STAGEDIR}/etc/udev/rules.d
 
   mkdir -p ${STAGEDIR}/usr/etc/udev
-  ln -s ${STAGEDIR}/etc/udev/rules.d /usr/etc/udev/rules.d
+  ln -s /etc/udev/rules.d ${STAGEDIR}/usr/etc/udev/rules.d
 }
 
 $1 $2
