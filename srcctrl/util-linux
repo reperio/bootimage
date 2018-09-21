@@ -15,7 +15,7 @@ fdisk/.libs/fdisk \
 fdisk/sfdisk \
 disk-utils/.libs/mkswap \
 disk-utils/blockdev
-misc-utils/blkid
+misc-utils/.libs/blkid
 "
 
 $1 $2
