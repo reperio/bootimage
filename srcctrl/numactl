@@ -5,9 +5,9 @@
 
 . ./functions
 
-FILENAME='numactl-2.0.7.tar.gz'
-URL="ftp://oss.sgi.com/www/projects/libnuma/download/${FILENAME}"
-DIRNAME='numactl-2.0.7'
+FILENAME='numactl-2.0.16.tar.gz'
+URL="https://codeload.github.com/numactl/numactl/tar.gz/refs/tags/v2.0.16"
+DIRNAME='numactl-2.0.16'
 
 BINARIES="\
 numastat \
