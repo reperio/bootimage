@@ -6,7 +6,7 @@
 . ./functions
 
 GITURL="https://github.com/grondo/edac-utils.git"
-DIRNAME='ecac-utils'
+DIRNAME='edac-utils'
 BINARIES="\
 src/util/edac-util \
 src/util/edac-ctl"
