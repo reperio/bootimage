@@ -1,5 +1,7 @@
 VERSION='4.36.0.el7'
 export VERSION
+NO_ANSI=0
+export NO_ANSI
 ARCH='x86_64'
 export ARCH
 DISABLEAMD=1
