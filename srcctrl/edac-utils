@@ -5,13 +5,20 @@
 
 . ./functions
 
-FILENAME='edac-utils-0.16.tar.bz2'
-URL=''http://prdownloads.sourceforge.net/edac-utils/edac-utils-0.16.tar.bz2
-DIRNAME='edac-utils-0.16'
-
+GITURL="https://github.com/grondo/edac-utils.git"
+DIRNAME='ecac-utils'
 BINARIES="\
 src/util/edac-util \
 src/util/edac-ctl"
+
+fetch () { 
+  git_fetch ${GITURL} ${DIRNAME}
+}
+
+unpack () {
+  # nothing to do here..
+  return  
+}
 
 $1 $2
 
