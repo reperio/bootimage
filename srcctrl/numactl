@@ -16,6 +16,24 @@ numactl"
 LIBRARIES="\
 libnuma.so.1"
 
+get () {
+  _URL=$1
+  _FILENAME=${FILENAME}
+
+  if [ -e "${SRCDIR}/${_FILENAME}" ]; then
+    return 0
+  else
+    cd ${SRCDIR}
+    echo "" >&2
+    wget -c ${_URL} -O ${_FILENAME}
+    if [ $? != 0 ]; then
+      printf 'Could not fetch %s' ${_URL}
+      return 1
+    fi
+    return 0
+  fi
+}
+
 
 build () {
   checkdone
