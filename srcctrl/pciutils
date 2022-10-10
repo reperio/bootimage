@@ -5,13 +5,26 @@
 
 . ./functions
 
-FILENAME='pciutils-3.1.5.tar.gz'
-URL='ftp://atrey.karlin.mff.cuni.cz/pub/linux/pci/pciutils-3.1.5.tar.gz'
-DIRNAME='pciutils-3.1.5'
+FILENAME='pciutils-3.8.0.tar.gz'
+URL='https://codeload.github.com/pciutils/pciutils/tar.gz/refs/tags/v3.8.0'
+DIRNAME='pciutils-3.8.0'
 
-fetch () {
-  get $URL
-  get http://pciids.sourceforge.net/v2.2/pci.ids.bz2
+get () {
+  _URL=$1
+  _FILENAME=${FILENAME}
+
+  if [ -e "${SRCDIR}/${_FILENAME}" ]; then
+    return 0
+  else
+    cd ${SRCDIR}
+    echo "" >&2
+    wget -c ${_URL} -O ${_FILENAME}
+    if [ $? != 0 ]; then
+      printf 'Could not fetch %s' ${_URL}
+      return 1
+    fi
+    return 0
+  fi
 }
 
 build () {
