@@ -5,10 +5,9 @@
 
 . ./functions
 
-FILENAME='dropbear-2016.74.tar.bz2'
-# URL='http://matt.ucc.asn.au/dropbear/releases/dropbear-0.52.tar.bz2'
-URL='https://matt.ucc.asn.au/dropbear/dropbear-2016.74.tar.bz2'
-DIRNAME='dropbear-2016.74'
+FILENAME='dropbear-2022.82.tar.bz2'
+URL='https://matt.ucc.asn.au/dropbear/dropbear-2022.82.tar.bz2'
+DIRNAME='dropbear-2022.82'
 
 SBINARIES='dropbear'
 BINARIES='dbclient scp'
