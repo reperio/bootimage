@@ -94,7 +94,7 @@ MPlib        = -lmpi -L$(MPdir)/lib
 #
 LAdir        = $(shell echo $$SRCDIR)/mkl/lib/intel64
 LAinc        = 
-LAlib        = -Wl,--start-group $(LAdir)/libmkl_intel_lp64.a $(LAdir)/libmkl_sequential.a $(LAdir)/libmkl_core.a -Wl,--end-group -lpthread
+LAlib        = -Wl,--start-group $(LAdir)/libmkl_intel_lp64.a $(LAdir)/libmkl_sequential.a $(LAdir)/libmkl_core.a -Wl,--end-group -lpthread -ldl
 #
 # ----------------------------------------------------------------------
 # - F77 / C interface --------------------------------------------------
