@@ -5,9 +5,9 @@
 
 . ./functions
 
-FILENAME='hdparm-9.52.tar.gz'
-URL='https://downloads.sourceforge.net/project/hdparm/hdparm/hdparm-9.52.tar.gz'
-DIRNAME='hdparm-9.52'
+FILENAME='hdparm-9.65.tar.gz'
+URL='https://downloads.sourceforge.net/project/hdparm/hdparm/hdparm-9.65.tar.gz'
+DIRNAME='hdparm-9.65'
 BINARIES='hdparm'
 SBINARIES=''
 
