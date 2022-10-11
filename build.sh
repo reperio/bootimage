@@ -67,9 +67,9 @@ simple_runparts () {
 
       if [ "${_OPERAND}" = "fetch" ]
       then
-        sh ${file} ${_OPERAND} > ${_LOGFILE}
+        bash ${file} ${_OPERAND} > ${_LOGFILE}
       else
-        sh ${file} ${_OPERAND} >> ${_LOGFILE}
+        bash ${file} ${_OPERAND} >> ${_LOGFILE}
       fi
       if [ $? != 0 ]
       then
