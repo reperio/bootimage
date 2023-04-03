@@ -1,0 +1,3 @@
+kernel/drivers/acpi
+kernel/drivers/edac
+kernel/drivers/char/ipmi
