@@ -1,9 +1,0 @@
-#!ipxe
-# 
-# DESCRIPTION Advanced Clustering's Cloner System v3
-# 
-
-initrd tftp://${next-server}/bootimage/initrd || shell
-kernel tftp://${next-server}/bootimage/kernel initrd=initrd sshpasswd=breakin startup=cloner3 multicast=1 nextboot=localboot reboot=1 server=${next-server} vga=1 || shell
-boot || shell
-

@@ -1,8 +1,2 @@
-*.so
-*.[oa]
-stage/
-src/
-log/
-!dist/latest/.keep
-*.iso
-srcctrl/amiflashdrv
+*.sw?
+
