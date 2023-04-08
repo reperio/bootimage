@@ -41,6 +41,14 @@ $(ls -la /lib/modules | tail -1 | awk '{print $NF}') || exit 4
 # Copy out the kernel and initramfs
 cp /boot/vmlinuz-lts /mnt/out/vmlinux
 chmod 0666 /mnt/out/initramfs /mnt/out/vmlinux
-rm -f /tmp/breakin.*
-cd / && rm -rf breakin
+rm -f /tmp/breakin.* breakin
+
+# Make the iso
+mkdir -p /iso/boot/grub
+cp /boot/vmlinuz-lts /iso/vmlinuz
+cp /mnt/out/initramfs /iso/initramfs
+cp /mnt/out/grub.cfg /iso/boot/grub/
+grub-mkrescue -o /mnt/out/bootimg.iso /iso
+chmod 0666 /mnt/out/bootimg.iso
+rm -rf /iso
 

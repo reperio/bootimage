@@ -23,11 +23,11 @@ build container:
 docker build . -t bootimage:latest
 ```
 
-Then, to build ``breakin`` and generate the kernel + initramfs, run:
+Then, to build ``breakin`` and generate the kernel + initramfs + ISO, run:
 ```sh
 docker run -v "${PWD}":/mnt/out -it bootimage:latest
 ```
 
-Upon success, you'll have two files ``vmlinux`` (the kernel) and
-``initramfs`` in the current directory.
+Upon success, you'll have three files ``vmlinux``, ``initramfs``,
+and ``bootimg.iso`` in the current directory.
 
