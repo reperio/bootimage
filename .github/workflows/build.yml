@@ -46,7 +46,7 @@ jobs:
           then
             sed -i -e s/-ltinfo//g Makefile
           fi
-          make
+          make VERSION=${{ github.ref_name }}
         shell: alpine.sh {0}
       - name: Install breakin
         run: |
