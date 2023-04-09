@@ -66,12 +66,6 @@ ip_choose_if() {
 #   ip=dhcp
 #
 configure_ip() {
-	[ -n "$MAC_ADDRESS" ] && return
-
-	local IFS=':'
-	set -- ${KOPT_ip:-dhcp}
-	unset IFS
-
 	local client_ip="$1"
 	local gw_ip="$3"
 	local netmask="$4"
@@ -100,7 +94,7 @@ configure_ip() {
 		fi
 		ebegin "Obtaining IP via DHCP ($device)"
 		ifconfig "$device" 0.0.0.0
-		udhcpc -i "$device" -f -q
+		udhcpc -i "$device" -S -f -n -q -t 2 -T 1 -A 2
 		eend $?
 	else
 		# manual configuration
@@ -231,9 +225,6 @@ do
 done
 modprobe -a hid hid_generic usbhid usb-storage
 
-# Other drivers
-
-
 # workaround for vmware
 if grep -q VMware /sys/devices/virtual/dmi/id/sys_vendor 2>/dev/null; then
 	modprobe -a ata_piix mptspi sr-mod
@@ -249,11 +240,21 @@ find /sys -name 'modalias' -type f -exec cat '{}' + | sort -u | xargs modprobe -
 find /sys -name 'modalias' -type f -exec cat '{}' + | sort -u | xargs modprobe -b -a 2>/dev/null
 
 # Setup networking
+if [ "${KOPT_ip:-dhcp}" == "dhcp" ]
+then
+	for i in /sys/class/net/*
+	do
+		if fgrep -q -v unknown $i/operstate
+		then
+			configure_ip dhcp x x x x ${i##*/}
+		fi
+	done
+fi
+
 ip a add 127.0.0.1/8 broadcast 127.255.255.255 dev lo 2>/dev/null
 ip a add ::1/8 dev lo 2>/dev/null
-ip l set lo up 
+ip l set lo up
 printf "127.0.0.1\tlocalhost\n::1\tlocalhost\n" > /etc/hosts
-configure_ip
 
 if [ "$(hostname)" == "(none)" ]
 then
