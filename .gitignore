@@ -1,8 +1,4 @@
-*.so
-*.[oa]
-stage/
-src/
-log/
-!dist/latest/.keep
+*.sw?
 *.iso
-srcctrl/amiflashdrv
+vmlinux
+initramfs

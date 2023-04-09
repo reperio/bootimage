@@ -1,0 +1,87 @@
+
+name: Build
+on: push
+permissions:
+  contents: write
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - name: Clone breakin
+        uses: actions/checkout@v3
+        with:
+          repository: reperio/breakin
+          path: breakin
+      - name: Setup Alpine
+        id:   alpine
+        uses: jirutka/setup-alpine@v1.1.1
+        with:
+          branch: v3.17
+          packages: >
+            linux-lts
+            linux-headers
+            alpine-sdk
+            dropbear-ssh
+            util-linux-misc
+            mkinitfs
+            curl-dev
+            ncurses-dev
+            openmpi-dev
+            openblas-dev
+            rasdaemon
+            syslinux
+            grub
+            grub-bios
+            grub-efi
+            xorriso
+      - name: Build breakin
+        run: |
+          cd /home/runner/work/bootimage/bootimage/breakin
+          cat ../mce.sh > scripts/tests/mcelog
+          chmod 0750 scripts/tests/mcelog
+          sed -i -e '4irm -f /tmp/.syslog_pos' scripts/stop.sh
+          if [ $(find /usr/lib -name libtinfo.so* 2>/dev/null | wc -l) -eq 0 ]
+          then
+            sed -i -e s/-ltinfo//g Makefile
+          fi
+          make
+        shell: alpine.sh {0}
+      - name: Install breakin
+        run: |
+          cd /home/runner/work/bootimage/bootimage/breakin
+          make install
+        shell: alpine.sh -r {0}
+      - name: Make initramfs
+        run: |
+          cd /home/runner/work/bootimage/bootimage
+          cat > breakin.files <(cat breakin.files ; apk info -L ncurses-libs libcurl brotli-libs nghttp2-libs \
+          libssl zlib openmpi openblas ipmitool readline rasdaemon  \
+          dmidecode sqlite-libs libsmartcols dropbear-ssh | grep -v 'contains:' | grep .)
+          mkinitfs -P $(pwd) -c mkinitfs.conf -i init -o /initramfs $(ls -la /lib/modules | tail -1 | awk '{print $NF}')
+        shell: alpine.sh -r {0}
+      - name: Make ISO image
+        run: |
+          mkdir -p /iso/boot/grub
+          cp /boot/vmlinuz-lts /iso/vmlinuz
+          cp /initramfs /iso/initramfs
+          cp /home/runner/work/bootimage/bootimage/grub.cfg /iso/boot/grub/
+          grub-mkrescue -o /bootimg.iso /iso
+          rm -rf /iso
+        shell: alpine.sh -r {0}
+      - name: Copy Artifacts
+        if: startsWith(github.ref, 'refs/tags/')
+        run: |
+          sudo mv ${{ steps.alpine.outputs.root-path }}/boot/vmlinuz-lts vmlinux
+          sudo mv ${{ steps.alpine.outputs.root-path }}/initramfs .
+          sudo mv ${{ steps.alpine.outputs.root-path }}/bootimg.iso .
+          sudo chmod 0644 vmlinux initramfs bootimg.iso
+      - name: Publish
+        if: startsWith(github.ref, 'refs/tags/')
+        uses: softprops/action-gh-release@v1
+        with:
+          files: |
+            vmlinux
+            initramfs
+            bootimg.iso
+

@@ -1,0 +1,285 @@
+#!/bin/sh
+
+# this is the init script version
+VERSION=3.6.2-r0
+
+# some helpers
+ebegin() {
+	last_emsg="$*"
+	echo "$last_emsg..." > /dev/kmsg
+	[ "$KOPT_quiet" = yes ] && return 0
+	echo -n " * $last_emsg: "
+}
+
+eend() {
+	local msg
+	if [ "$1" = 0 ] || [ $# -lt 1 ] ; then
+		echo "$last_emsg: ok." > /dev/kmsg
+		[ "$KOPT_quiet" = yes ] && return 0
+		echo "ok."
+	else
+		shift
+		echo "$last_emsg: failed. $*" > /dev/kmsg
+		if [ "$KOPT_quiet" = "yes" ]; then
+			echo -n "$last_emsg "
+		fi
+		echo "failed. $*"
+		echo "initramfs emergency recovery shell launched. Type 'exit' to continue boot"
+		/bin/busybox sh
+	fi
+}
+
+# determine the default interface to use if ip=dhcp is set
+# uses the first "eth" interface with operstate 'up'.
+ip_choose_if() {
+	if [ -n "$KOPT_BOOTIF" ]; then
+		mac=$(printf "%s\n" "$KOPT_BOOTIF"|sed 's/^01-//;s/-/:/g')
+		dev=$(grep -l $mac /sys/class/net/*/address|head -n 1)
+		dev=${dev%/*}
+		[ -n "$dev" ] && echo "${dev##*/}" && return
+	fi
+	for x in /sys/class/net/eth*; do
+		if grep -iq up $x/operstate;then
+			[ -e "$x" ] && echo ${x##*/} && return
+		fi
+	done
+	[ -e "$x" ] && echo ${x##*/} && return
+}
+
+# if "ip=dhcp" is specified on the command line, we obtain an IP address
+# using udhcpc. we do this now and not by enabling kernel-mode DHCP because
+# kernel-model DHCP appears to require that network drivers be built into
+# the kernel rather than as modules. At this point all applicable modules
+# in the initrd should have been loaded.
+#
+# You need af_packet.ko available as well modules for your Ethernet card.
+#
+# See https://www.kernel.org/doc/Documentation/filesystems/nfs/nfsroot.txt
+# for documentation on the format.
+#
+# Valid syntaxes:
+#   ip=client-ip:server-ip:gw-ip:netmask:hostname:device:autoconf:
+#     :dns0-ip:dns1-ip:ntp0-ip
+#   ip=dhcp
+#   "server-ip", "hostname" and "ntp0-ip" are not supported here.
+# Default (when configure_ip is called without setting ip=):
+#   ip=dhcp
+#
+configure_ip() {
+	[ -n "$MAC_ADDRESS" ] && return
+
+	local IFS=':'
+	set -- ${KOPT_ip:-dhcp}
+	unset IFS
+
+	local client_ip="$1"
+	local gw_ip="$3"
+	local netmask="$4"
+	local device="$6"
+	local autoconf="$7"
+	local dns1="$8"
+	local dns2="$9"
+
+	case "$client_ip" in
+		off|none) return;;
+		dhcp) autoconf="dhcp";;
+	esac
+
+	[ -n "$device" ] || device=$(ip_choose_if)
+
+	if [ -z "$device" ]; then
+		echo "ERROR: IP requested but no network device was found"
+		return 1
+	fi
+
+	if [ "$autoconf" = "dhcp" ]; then
+		# automatic configuration
+		if [ ! -e /usr/share/udhcpc/default.script ]; then
+			echo "ERROR: DHCP requested but not present in initrd"
+			return 1
+		fi
+		ebegin "Obtaining IP via DHCP ($device)"
+		ifconfig "$device" 0.0.0.0
+		udhcpc -i "$device" -f -q
+		eend $?
+	else
+		# manual configuration
+		[ -n "$client_ip" -a -n "$netmask" ] || return
+		ebegin "Setting IP ($device)"
+		if ifconfig "$device" "$client_ip" netmask "$netmask"; then
+			[ -z "$gw_ip" ] || ip route add 0.0.0.0/0 via "$gw_ip" dev "$device"
+		fi
+		eend $?
+	fi
+
+	# Never executes if variables are empty
+	for i in $dns1 $dns2; do
+		echo "nameserver $i" >> /etc/resolv.conf
+	done
+
+	MAC_ADDRESS=$(cat /sys/class/net/$device/address)
+}
+
+/bin/busybox mkdir -p /usr/bin /usr/sbin /proc /sys /dev /tmp /var/run /var/log
+
+# Spread out busybox symlinks and make them available without full path
+/bin/busybox --install -s
+export PATH=/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin
+
+# Make sure /dev/null is a device node. If /dev/null does not exist yet, the command
+# mounting the devtmpfs will create it implicitly as an file with the "2>" redirection.
+# The -c check is required to deal with initramfs with pre-seeded device nodes without
+# error message.
+[ -c /dev/null ] || mknod -m 666 /dev/null c 1 3
+
+mount -t sysfs -o noexec,nosuid,nodev,relatime sysfs /sys
+mount -t debugfs -o nosuid,nodev,noexec,relatime debugfs /sys/kernel/debug 2>/dev/null
+mount -t devtmpfs -o exec,nosuid,mode=0755,size=2M devtmpfs /dev 2>/dev/null \
+	|| mount -t tmpfs -o exec,nosuid,mode=0755,size=2M tmpfs /dev
+
+# Make sure /dev/kmsg is a device node. Writing to /dev/kmsg allows the use of the
+# earlyprintk kernel option to monitor early init progress. As above, the -c check
+# prevents an error if the device node has already been seeded.
+[ -c /dev/kmsg ] || mknod -m 660 /dev/kmsg c 1 11
+[ -c /dev/mem  ] || mknod -m 640 /dev/mem c 1 1
+
+mount -t proc -o noexec,nosuid,nodev,relatime proc /proc
+ln -s /proc/mounts /etc/mtab
+
+# pty device nodes (later system will need it)
+[ -c /dev/ptmx ] || mknod -m 666 /dev/ptmx c 5 2
+[ -d /dev/pts ] || mkdir -m 755 /dev/pts
+mount -t devpts -o gid=5,mode=0620,noexec,nosuid devpts /dev/pts
+
+# shared memory area (later system will need it)
+[ -d /dev/shm ] || mkdir /dev/shm
+mount -t tmpfs -o nodev,nosuid,noexec shm /dev/shm
+mount -t tmpfs -o size=16m,mode=1777,nodev,nosuid,noexec,noatime tmpfs /tmp
+mount -t tmpfs -o size=8m,nodev,nosuid,noexec,noatime tmpfs /var/run
+mount -t tmpfs -o size=32m,nodev,nosuid,noexec,noatime tmpfs /var/log
+
+# read the kernel options. we need surve things like:
+#  acpi_osi="!Windows 2006" xen-pciback.hide=(01:00.0)
+set -- $(cat /proc/cmdline)
+
+myopts="alpine_dev autodetect debug_init dma init init_args modules quiet ip blacklist BOOTIF"
+for opt; do
+	for i in $myopts; do
+		case "$opt" in
+		$i=*) eval "KOPT_${i}"='${opt#*=}';;
+		$i)   eval "KOPT_${i}=yes";;
+		no$i) eval "KOPT_${i}=no";;
+		esac
+	done
+done
+
+echo "Alpine Init $VERSION" > /dev/kmsg
+[ "$KOPT_quiet" = yes ] || echo "Alpine Init $VERSION"
+
+# enable debugging if requested
+[ -n "$KOPT_debug_init" ] && set -x
+
+# set default values
+: ${KOPT_init:=/sbin/init}
+
+# pick first keymap if found
+for map in /etc/keymap/*; do
+	if [ -f "$map" ]; then
+		ebegin "Setting keymap ${map##*/}"
+		zcat "$map" | loadkmap
+		eend
+		break
+	fi
+done
+
+# hide kernel messages
+dmesg -n 1
+
+# optional blacklist
+for i in ${KOPT_blacklist//,/ }; do
+	echo "blacklist $i" >> /etc/modprobe.d/boot-opt-blacklist.conf
+done
+
+ebegin "Seeding /dev"
+mdev -s &>/dev/null
+
+if [ -e /sys/proc/kernel/hotplug ]
+then
+	echo "/sbin/mdev" > /sys/proc/kernel/hotplug
+fi
+
+# Poke network devices again
+for i in /sys/class/net/*/uevent; do printf 'add' > "$i"; done 2>/dev/null
+eend $?
+
+ebegin "Loading boot drivers"
+modprobe -a $(echo "$KOPT_modules" | tr ',' ' ' ) ipv6 loop squashfs simpledrm 2>/dev/null
+if [ -f /etc/modules ] ; then
+	sed 's/\#.*//g' < /etc/modules |
+	while read module args; do
+		modprobe -q $module $args
+	done
+fi
+
+# Load others by modalias
+find /sys -name 'modalias' -type f -exec cat '{}' + | sort -u | xargs modprobe -b -a 2>/dev/null
+find /sys -name 'modalias' -type f -exec cat '{}' + | sort -u | xargs modprobe -b -a 2>/dev/null
+
+# Also, ensure we try to load edac and ipmi drivers
+for i in /lib/modules/$(uname -r)/kernel/drivers/edac/*
+do
+	modprobe $i &>/dev/null
+done
+
+modprobe acpi_ipmi &>/dev/null
+for i in /lib/modules/$(uname -r)/kernel/drivers/char/ipmi/*
+do
+	modprobe $i &>/dev/null
+done
+
+# Other drivers
+
+
+# workaround for vmware
+if grep -q VMware /sys/devices/virtual/dmi/id/sys_vendor 2>/dev/null; then
+	modprobe -a ata_piix mptspi sr-mod
+fi
+eend
+
+# Setup networking
+ip a add 127.0.0.1/8 broadcast 127.255.255.255 dev lo 2>/dev/null
+ip a add ::1/8 dev lo 2>/dev/null
+ip l set lo up 
+printf "127.0.0.1\tlocalhost\n::1\tlocalhost\n" > /etc/hosts
+configure_ip
+
+if [ "$(hostname)" == "(none)" ]
+then
+	hostname localhost &>/dev/null
+fi
+
+ebegin "Starting syslogd"
+syslogd -D -S -s 0 &
+eend
+
+ebegin "Starting klogd"
+klogd
+eend $?
+
+ebegin "Starting rasdaemon"
+rasdaemon
+eend $?
+
+[ -e /usr/bin/rsh ] || ln -sf /usr/bin/ssh /usr/bin/rsh
+/usr/local/etc/breakin/startup.sh || {
+	echo "breakin exited with code $?"
+	echo "initramfs emergency recovery shell launched"
+	exec /bin/ash
+}
+
+echo "Exit this shell to shutdown"
+/bin/ash
+
+echo "Shutting down in 3 seconds..."
+poweroff -f -n -d 3
+
