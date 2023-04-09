@@ -200,6 +200,16 @@ for i in ${KOPT_blacklist//,/ }; do
 	echo "blacklist $i" >> /etc/modprobe.d/boot-opt-blacklist.conf
 done
 
+ebegin "Loading boot drivers"
+usbmods=xhci-pci ehci-pci ohci-pci uhci-hcd usb_common
+modprobe -a $(echo "$KOPT_modules" | tr ',' ' ' ) ipv6 loop ${usbmods} squashfs simpledrm 2>/dev/null
+if [ -f /etc/modules ] ; then
+	sed 's/\#.*//g' < /etc/modules |
+	while read module args; do
+		modprobe -q $module $args
+	done
+fi
+
 ebegin "Seeding /dev"
 mdev -s &>/dev/null
 
@@ -208,34 +218,18 @@ then
 	echo "/sbin/mdev" > /sys/proc/kernel/hotplug
 fi
 
-# Poke network devices again
-for i in /sys/class/net/*/uevent; do printf 'add' > "$i"; done 2>/dev/null
-eend $?
-
-ebegin "Loading boot drivers"
-modprobe -a $(echo "$KOPT_modules" | tr ',' ' ' ) ipv6 loop squashfs simpledrm 2>/dev/null
-if [ -f /etc/modules ] ; then
-	sed 's/\#.*//g' < /etc/modules |
-	while read module args; do
-		modprobe -q $module $args
-	done
-fi
-
-# Load others by modalias
-find /sys -name 'modalias' -type f -exec cat '{}' + | sort -u | xargs modprobe -b -a 2>/dev/null
-find /sys -name 'modalias' -type f -exec cat '{}' + | sort -u | xargs modprobe -b -a 2>/dev/null
-
 # Also, ensure we try to load edac and ipmi drivers
 for i in /lib/modules/$(uname -r)/kernel/drivers/edac/*
 do
-	modprobe $i &>/dev/null
+	modprobe $(basename -a -s .ko.gz $i) &>/dev/null
 done
 
 modprobe acpi_ipmi &>/dev/null
 for i in /lib/modules/$(uname -r)/kernel/drivers/char/ipmi/*
 do
-	modprobe $i &>/dev/null
+	modprobe $(basename -a -s .ko.gz $i) &>/dev/null
 done
+modprobe -a hid hid_generic usbhid usb-storage
 
 # Other drivers
 
@@ -245,6 +239,14 @@ if grep -q VMware /sys/devices/virtual/dmi/id/sys_vendor 2>/dev/null; then
 	modprobe -a ata_piix mptspi sr-mod
 fi
 eend
+
+# Poke network devices again
+for i in /sys/class/net/*/uevent; do printf 'add' > "$i"; done 2>/dev/null
+eend $?
+
+# Load others by modalias
+find /sys -name 'modalias' -type f -exec cat '{}' + | sort -u | xargs modprobe -b -a 2>/dev/null
+find /sys -name 'modalias' -type f -exec cat '{}' + | sort -u | xargs modprobe -b -a 2>/dev/null
 
 # Setup networking
 ip a add 127.0.0.1/8 broadcast 127.255.255.255 dev lo 2>/dev/null
