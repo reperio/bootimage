@@ -95,7 +95,7 @@ configure_ip() {
 		ebegin "Obtaining IP via DHCP ($device)"
 		ifconfig "$device" 0.0.0.0
 		udhcpc -i "$device" -S -f -n -q -t 2 -T 1 -A 2
-		eend $?
+		eend 0
 	else
 		# manual configuration
 		[ -n "$client_ip" -a -n "$netmask" ] || return
@@ -244,7 +244,8 @@ if [ "${KOPT_ip:-dhcp}" == "dhcp" ]
 then
 	for i in /sys/class/net/*
 	do
-		if fgrep -q -v unknown $i/operstate
+		grep -q -v unknown $i/operstate
+		if [ "${i##*/}" != "lo" -a $? == 0 ]
 		then
 			configure_ip dhcp x x x x ${i##*/}
 		fi
