@@ -30,6 +30,7 @@ jobs:
             openmpi-dev
             openblas-dev
             rasdaemon
+            ipmitool
             syslinux
             grub
             grub-bios
@@ -45,7 +46,7 @@ jobs:
           then
             sed -i -e s/-ltinfo//g Makefile
           fi
-          make
+          make VERSION=${{ github.ref_name }}
         shell: alpine.sh {0}
       - name: Install breakin
         run: |
@@ -55,10 +56,11 @@ jobs:
       - name: Make initramfs
         run: |
           cd /home/runner/work/bootimage/bootimage
-          cat > breakin.files <(cat breakin.files ; apk info -L ncurses-libs libcurl brotli-libs nghttp2-libs \
+          cat breakin.modules > /breakin.modules
+          cat > /breakin.files <(cat breakin.files ; apk info -L ncurses-libs libcurl brotli-libs nghttp2-libs \
           libssl zlib openmpi openblas ipmitool readline rasdaemon  \
           dmidecode sqlite-libs libsmartcols dropbear-ssh | grep -v 'contains:' | grep .)
-          mkinitfs -P $(pwd) -c mkinitfs.conf -i init -o /initramfs $(ls -la /lib/modules | tail -1 | awk '{print $NF}')
+          mkinitfs -P / -c mkinitfs.conf -i init -o /initramfs $(ls -la /lib/modules | tail -1 | awk '{print $NF}')
         shell: alpine.sh -r {0}
       - name: Make ISO image
         run: |
